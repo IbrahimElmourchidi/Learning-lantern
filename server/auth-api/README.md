@@ -46,6 +46,12 @@ More detailed Information can be found in the link to documentation below
     </td>
   </tr>
 </table>
+
+<h1>Database</h1>
+<p align="center">
+  <a href="https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/database_desing/ERD.png?raw=true" target="blank"><img src="https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/database_desing/ERD.png?raw=true" width="100%" height="auto" alt="Auth-api ERD" /></a>
+</p>
+
 <h1>Deployment Link</h1>
 
 <p>- This API is hosted on Heroku <a href="https://learning-lantern-auth.herokuapp.com/">here</a></p>
