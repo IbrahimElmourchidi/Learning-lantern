@@ -1,0 +1,30 @@
+<section class="plans" style="width: 100%">
+  <h1 class="section-title">Pick Your Plan</h1>
+  <div class="plan-list">
+    <div *ngFor="let plan of planList">
+      <mat-card class="plan-card">
+        <mat-card-header>
+          <mat-card-title>{{ plan.name }}</mat-card-title>
+        </mat-card-header>
+
+        <p class="imp">All the prices are for 1 year subscription</p>
+        <mat-card-content style="width: 90%">
+          <mat-list
+            role="list"
+            *ngFor="let item of plan.detail | keyvalue"
+            style="width: 100%"
+          >
+            <mat-list-item role="listitem" class="space-between">
+              <span>{{ item.key }}</span>
+              <span style="margin-left: auto">{{ item.value }}</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="accent">Get Your Portal</button>
+        </mat-card-actions>
+        <br />
+      </mat-card>
+    </div>
+  </div>
+</section>

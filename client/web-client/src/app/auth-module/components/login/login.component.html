@@ -1,0 +1,84 @@
+<mat-card class="login-container">
+  <h1>Login</h1>
+  <form
+    class="login-from"
+    action="."
+    [formGroup]="loginForm"
+    (ngSubmit)="login()"
+  >
+    <mat-form-field>
+      <mat-label> University</mat-label>
+      <mat-select
+        class="amount-input"
+        formControlName="userUniversity"
+        name="userUniversity"
+        required
+      >
+        <mat-option
+          *ngFor="let university of universityList"
+          value="{{ university.id }}"
+          >{{ university.name }}</mat-option
+        >
+      </mat-select>
+      <mat-error>this field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field color="primary">
+      <mat-label>Your email</mat-label>
+      <input
+        name="userEmail"
+        matInput
+        formControlName="userEmail"
+        placeholder="user@domain.com"
+        required
+      />
+
+      <mat-error *ngIf="userEmail.errors?.['required']"
+        >This Field is Required</mat-error
+      >
+      <mat-error *ngIf="userEmail.errors?.['email']"
+        >Please enter a valid email</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Enter your password</mat-label>
+      <input
+        matInput
+        required
+        name="userPassword"
+        formControlName="userPassword"
+        [type]="hide ? 'password' : 'text'"
+      />
+      <mat-hint
+        >Password should be 6 - 30 chars long and should contain letters and
+        numbers, and special character [!@#$%^&].
+      </mat-hint>
+      <mat-error *ngIf="userPassword.hasError('required')"
+        >This Field is Required</mat-error
+      >
+      <mat-error *ngIf="userPassword.hasError('pattern')"
+        >Password should be 6 - 30 chars long and should contain letters and
+        numbers, and special character [!@#$%^&].</mat-error
+      >
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="forget-container">
+      <a routerLink=".">Forget Password?</a>
+    </div>
+
+    <span class="submit">
+      <button mat-stroked-button type="submit" color="primary">Login</button>
+    </span>
+    <p style="text-align: center">
+      <a routerLink="../signup">Don't have an accout? signup now.</a>
+    </p>
+  </form>
+</mat-card>

@@ -1,0 +1,12 @@
+<div class="service-container">
+  <img
+    [src]="serviceDetail.imgSrc"
+    [alt]="serviceDetail.altText"
+    class="service-img"
+  />
+  <div class="service-description">
+    <h2 class="imp">{{ serviceDetail.serviceName }}</h2>
+    <p [innerHTML]="serviceDetail.serviceDescription"></p>
+    <button mat-raised-button color="accent" class="demo-btn">Demo</button>
+  </div>
+</div>

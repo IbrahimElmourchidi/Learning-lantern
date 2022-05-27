@@ -1,0 +1,98 @@
+<mat-toolbar class="header-container">
+  <nav>
+    <ul style="width: 100%">
+      <li>
+        <a routerLink="/en/welcome">
+          <img
+            src="/assets/img/logo.webp"
+            alt="logo"
+            class="icon50"
+            srcset="/assets/img/logo_mob.webp 50w /assets/img/logo_mob.webp 100w"
+            aria-label="go to home page"
+          />
+        </a>
+      </li>
+      <li class="separator"></li>
+      <li>
+        <ul class="nav-links desk">
+          <li>
+            <a
+              routerLink="/en/welcome"
+              [class.active]="welcomeStats.activeLink === 'home'"
+              (click)="changeActive('home'); scrollTO('home')"
+              aria-label="go to home section"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/en/welcome"
+              [class.active]="welcomeStats.activeLink === 'services'"
+              (click)="changeActive('services'); scrollTO('services')"
+              aria-label="go to services section"
+              >Services</a
+            >
+          </li>
+          <li>
+            <a
+              [class.active]="welcomeStats.activeLink === 'contact'"
+              (click)="changeActive('contact'); scrollTO('contact')"
+              routerLink="/en/welcome"
+              aria-label="go to contacts section"
+              >Contact Us</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="separator50"></li>
+
+      <li class="desk">
+        <a routerLink="/en/auth/login" aria-label="log in" *ngIf="showLogin">
+          <mat-icon>login</mat-icon>Login
+        </a>
+        <ng-container *ngIf="!showLogin">
+          <button
+            mat-button
+            [matMenuTriggerFor]="profileMenu"
+            aria-label="show profile"
+            style="color: white; transform: scale(1.2)"
+          >
+            userName
+          </button>
+          <mat-menu #profileMenu="matMenu">
+            <button mat-menu-item routerLink="/en/classroom">
+              <mat-icon>class</mat-icon>Classroom
+            </button>
+            <button mat-menu-item (click)="logout()">logout</button>
+          </mat-menu>
+        </ng-container>
+      </li>
+      <li>
+        <button
+          mat-button
+          [matMenuTriggerFor]="menu"
+          aria-label="change language"
+          style="color: white; transform: scale(1.2)"
+        >
+          EN
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>EN</button>
+          <button mat-menu-item>AR</button>
+        </mat-menu>
+      </li>
+      <li>
+        <button
+          mat-icon-button
+          class="mobile"
+          aria-label="open side nav"
+          style="color: white; transform: scale(1.2); margin-right: 0.25rem"
+          (click)="toggleSideNav()"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</mat-toolbar>
+<div class="up-shift"></div>

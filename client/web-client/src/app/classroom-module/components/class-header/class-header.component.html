@@ -1,0 +1,63 @@
+<mat-toolbar class="class-header">
+  <button mat-icon-button (click)="sideToggle()">
+    <mat-icon style="transform: scale(1.5)"> menu</mat-icon>
+  </button>
+  <a routerLink="/en/welcome">
+    <img
+      src="../../assets/img/logo.webp"
+      alt="logo"
+      class="icon50"
+      title="Learning Lantern logo"
+    />
+  </a>
+
+  <div class="separator"></div>
+
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="profile"
+    style="margin-right: 0.5rem"
+  >
+    <mat-icon
+      style="margin-right: 0.2rem; transform: scale(1.2); color: white"
+      color="primary"
+      >account_circle</mat-icon
+    >
+    <mat-icon> arrow_drop_down</mat-icon>
+  </button>
+  <mat-menu #profile="matMenu">
+    <a mat-menu-item style="display: flex; align-items: center">
+      <img
+        src="https://thispersondoesnotexist.com/image"
+        alt="profile"
+        class="profile-picture"
+      />
+      User Name</a
+    >
+    <a mat-menu-item routerLink=".">
+      <mat-icon color="primary" style="margin-right: 0.25rem"
+        >settings</mat-icon
+      >
+      <span>Settings</span>
+    </a>
+    <a mat-menu-item (click)="logout()">
+      <mat-icon color="primary" style="margin-right: 0.25rem">logout</mat-icon>
+      <span>Log Out</span>
+    </a>
+  </mat-menu>
+
+  <div class="lang">
+    <button
+      mat-button
+      style="font-size: 1.2rem"
+      class="nav-item"
+      [matMenuTriggerFor]="menu"
+    >
+      EN
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>AR</button>
+      <button mat-menu-item>EN</button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

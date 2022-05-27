@@ -1,0 +1,28 @@
+<section class="services-section" id="services">
+  <div class="up-shift"></div>
+  <h1 class="section-title">Our Services</h1>
+  <div class="service-menu">
+    <app-service-item
+      [serviceDetail]="servicesList[activeService]"
+    ></app-service-item>
+  </div>
+  <div class="paginator">
+    <button
+      mat-icon-button
+      [disabled]="activeService === 0"
+      (click)="prevService()"
+      aria-label="previous service"
+    >
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <p>{{ activeService + 1 }} of {{ servicesList.length }}</p>
+    <button
+      mat-icon-button
+      [disabled]="activeService === servicesList.length - 1"
+      (click)="nextService()"
+      aria-label="next service"
+    >
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
+  </div>
+</section>

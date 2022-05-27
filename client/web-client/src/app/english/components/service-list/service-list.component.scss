@@ -1,0 +1,39 @@
+.services-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1em;
+  margin: 2rem 0rem;
+  background-color: rgba(230, 230, 230, 0.5);
+  width: 100%;
+  box-shadow: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: rgb(var(--color-primary));
+  border-bottom: 4px solid rgb(var(--color-accent));
+}
+.service-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.paginator {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+app-service-item {
+  width: 100%;
+}
+
+@media all and (max-width: 900px) {
+}

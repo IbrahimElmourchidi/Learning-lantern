@@ -1,0 +1,24 @@
+.contact-us {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max(350px, 80%);
+}
+form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+@media all and (min-width: 900px) {
+  .contact-form {
+    width: 700px;
+  }
+}

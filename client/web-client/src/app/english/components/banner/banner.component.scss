@@ -1,0 +1,36 @@
+.banner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2em;
+  align-items: center;
+}
+
+.message {
+  font-size: 1.2rem;
+  line-height: 2.5rem;
+}
+.welcome-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.banner-img {
+  width: min(600px, 95%);
+}
+
+.underline {
+  border-bottom: 4px solid rgb(var(--color-accent));
+}
+
+@media all and (min-width: 900px) {
+  .message {
+    width: 700px;
+  }
+  .banner {
+    flex-direction: row;
+  }
+  .banner-img {
+    width: 600px;
+  }
+}
