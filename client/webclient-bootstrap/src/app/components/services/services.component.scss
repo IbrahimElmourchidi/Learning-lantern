@@ -1,0 +1,19 @@
+.img-wrapper {
+  height: 350px;
+  width: auto;
+}
+
+.container-fluid {
+  background: var(--app-card-color) !important;
+}
+
+@media all and (max-width: 900px) {
+  .serv-wrapper {
+    flex-direction: column;
+  }
+
+  .img-wrapper {
+    height: 250px;
+    width: auto;
+  }
+}

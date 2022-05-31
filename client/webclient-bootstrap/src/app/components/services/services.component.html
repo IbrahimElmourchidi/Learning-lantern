@@ -1,0 +1,32 @@
+<div class="container-fluid p-4 my-4 shadow">
+  <div class="d-flex justify-content-center">
+    <h2 class="important underline text-center" style="display: inline-block">
+      Our Services
+    </h2>
+  </div>
+
+  <ngb-carousel
+    *ngIf="services"
+    [interval]="4000"
+    class="p-4"
+    [keyboard]="false"
+    [showNavigationArrows]="false"
+  >
+    <ng-template ngbSlide *ngFor="let serv of services">
+      <div class="serv-wrapper d-flex align-items-center mb-4">
+        <div class="img-wrapper">
+          <img [src]="serv.imgSrc" alt="Random first slide" class="img-fluid" />
+        </div>
+        <div class="serv-text">
+          <div class="serv-title important p-4">
+            {{ serv.serviceName }}
+          </div>
+          <p class="serv-desc ps-4" [innerHTML]="serv.serviceDescription"></p>
+          <div class="demo">
+            <button class="btn btn-secondary m-4">Demo</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</div>

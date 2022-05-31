@@ -1,0 +1,33 @@
+ul li a {
+  color: var(--app-contrast-text);
+  padding: 0.4em 1em;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-top: 1rem;
+  border-radius: 999px;
+}
+ul li a:hover {
+  color: var(--app-accent-color);
+}
+
+.active {
+  color: var(--app-button-text) !important;
+  background: var(--app-accent-color);
+}
+
+.list-group a {
+  background: var(--app-main-color);
+  color: var(--app-contrast-text);
+}
+
+.list-group a:hover {
+  color: var(--app-button-text);
+  background: var(--app-accent-color);
+}
+
+.btn-close {
+  color: var(--app-accent-color) !important;
+}
+
+@media all and (min-width: 992px) {
+}
