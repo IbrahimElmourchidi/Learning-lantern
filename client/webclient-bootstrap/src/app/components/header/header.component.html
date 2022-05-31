@@ -1,0 +1,116 @@
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark shadow p-1">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="">
+      <img src="/assets/img/logo.webp" alt="logo" class="logo" />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasExample"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+        <div class="nav-links d-flex me-4">
+          <li class="nav-item" (click)="changeActive('home')">
+            <a
+              routerLink=""
+              class="text-uppercase text-decoration-none"
+              [class.active]="activeLink === 'home'"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item" (click)="changeActive('services')">
+            <a
+              routerLink=""
+              class="text-uppercase text-decoration-none"
+              [class.active]="activeLink === 'services'"
+              >Services</a
+            >
+          </li>
+          <li class="nav-item" (click)="changeActive('contact')">
+            <a
+              routerLink=""
+              class="text-uppercase text-decoration-none"
+              [class.active]="activeLink === 'contact'"
+              >Contact Us</a
+            >
+          </li>
+        </div>
+        <div class="login ms-4 d-flex">
+          <li>
+            <a routerLink="" class="text-uppercase text-decoration-none">
+              <i class="bi bi-box-arrow-in-right"></i>
+              login</a
+            >
+          </li>
+          <li (click)="toggleMode()">
+            <a class="text-uppercase text-decoration-none">
+              <i
+                class="bi bi-brightness-high-fill"
+                *ngIf="currentMode === 'dark'"
+              ></i>
+              <i
+                class="bi bi-brightness-high"
+                *ngIf="currentMode === 'light'"
+              ></i>
+            </a>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- off canvas start -->
+<div
+  class="offcanvas offcanvas-start bg-primary"
+  tabindex="-1"
+  id="offcanvasExample"
+  aria-labelledby="offcanvasExampleLabel"
+>
+  <div class="offcanvas-header">
+    <img src="assets/img/logo.webp" alt="logo" class="logo" />
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body p-0 mt-4">
+    <div class="list-group list-group-flush p-0 m-0">
+      <a
+        routerLink=""
+        class="list-group-item list-group-item-action text-uppercase"
+        (click)="changeActive('home')"
+        >home</a
+      >
+      <a
+        routerLink=""
+        class="list-group-item list-group-item-action text-uppercase"
+        (click)="changeActive('services')"
+        >Services</a
+      >
+      <a
+        routerLink=""
+        class="list-group-item list-group-item-action text-uppercase"
+        (click)="changeActive('contact')"
+        >Contact Us</a
+      >
+      <a class="list-group-item list-group-item-action" (click)="toggleMode()">
+        <i
+          class="bi bi-brightness-high-fill"
+          *ngIf="currentMode === 'dark'"
+        ></i>
+        <i class="bi bi-brightness-high" *ngIf="currentMode === 'light'"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- off canvas end -->

@@ -1,0 +1,145 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/card";
+
+.light {
+  $app-main: #673ab7;
+  $app-accent: #ffd740;
+  $app-text: #000;
+  $app-bg: #fafafa;
+  $app-card: #ccc;
+
+  --app-page-text: #000;
+  --app-contrast-text: #fff;
+  --app-button-text: #000;
+  --app-main-color: #673ab7;
+  --app-accent-color: #ffd740;
+  --app-bg-color: #fafafa;
+  --app-card-color: #e9e9e9;
+
+  $theme-colors: (
+    "success": $success,
+    "danger": $danger,
+    "info": $indigo,
+    "dark": $dark,
+    "light": $light,
+    "primary": $app-main,
+    "secondary": $app-accent,
+  );
+
+  /* redefine theme color variables */
+  @each $color, $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  /* redefine theme color rgb vars (used for bg- colors) */
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-bg: $app-bg;
+  $body-color: $app-text;
+
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+
+  @import "../node_modules/bootstrap/scss/bootstrap";
+}
+
+.dark {
+  $app-main: #9c27b0;
+  $app-accent: #69f0ae;
+  $app-text: #fff;
+  $app-bg: #303030;
+  $app-card: #424242;
+
+  --app-page-text: #fff;
+  --app-button-text: #000;
+  --app-contrast-text: #fff;
+  --app-main-color: #9c27b0;
+  --app-accent-color: #69f0ae;
+  --app-bg-color: #303030;
+  --app-card-color: #424242;
+
+  /* redefine theme colors for dark theme */
+  $primary: #012345;
+  $secondary: #111111;
+  $success: #222222;
+  $dark: #000;
+
+  $theme-colors: (
+    "success": $success,
+    "danger": $danger,
+    "info": $indigo,
+    "dark": $dark,
+    "light": $light,
+    "primary": $app-main,
+    "secondary": $app-accent,
+  );
+
+  /* redefine theme color variables */
+  @each $color, $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  /* redefine theme color rgb vars (used for bg- colors) */
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-bg: $app-bg;
+  $body-color: $app-text;
+  $card-bg: $app-card;
+  $input-bg: $app-card;
+  $input-focus-bg: #333333;
+  $input-color: $app-text;
+  $input-focus-color: $app-text;
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+
+  @import "../node_modules/bootstrap/scss/bootstrap";
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.important {
+  color: var(--app-main-color);
+  font-weight: 600;
+}
+
+.dark .important {
+  color: var(--app-accent-color);
+  font-weight: 600;
+}
+
+.underline {
+  border-bottom: 0.15em solid var(--app-accent-color);
+}
+
+.dark .underline {
+  border-bottom: 0.15em solid var(--app-main-color);
+}
+
+.abstract {
+  background: url("src/assets/img/abstract-light.webp");
+  background-size: cover;
+}
+.dark .abstract {
+  background: url("src/assets/img/abstract-dark.webp");
+  background-size: cover;
+}
+
+@media all and (max-width: 900px) {
+  .desk {
+    display: none;
+  }
+}
