@@ -3,14 +3,16 @@ POST http://localhost:3000/user/create
 Content-Type: application/json
 
 {
-    "userEmail":"hema@gmail.com",
+    "userEmail":"hema4@gmail.com",
     "userPassword":"123456Hr",
-    "userFName":"hema",
+    "userFName":"hema4",
     "userLName":"mohamed"
 }
 
 ### get all users paginated
 GET http://localhost:3000/user/all?limit=80&page=1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjZjZlMjFmMC02ZjRkLTQ5ZjAtYWRjYS03OTVmMWM5Njc2Y2MiLCJ1c2VyRk5hbWUiOiJoZW1hMiIsImlzVmFsaWRhdGVkIjpmYWxzZSwiaWF0IjoxNjU0MDkxNzMzLCJleHAiOjE2NTQwOTIwMzN9.4lsabDhkS9t38VZXX3LIAv2U9kRKUdkp3qJ-N-jmdag
+
 
 ### get single user by id 
 GET http://localhost:3000/user/617fa20b-7846-4b1c-a048-b54c450db421
@@ -24,4 +26,14 @@ Content-type: application/json
     "userFName":"hema2",
     "userLName":"mohamed2",
     "userPassword":"123456Hr"
+}
+
+
+### login user
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "userEmail": "hema2@gmail.com",
+    "userPassword": "123456Hr"
 }

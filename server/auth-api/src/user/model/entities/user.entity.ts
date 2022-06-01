@@ -1,3 +1,4 @@
+import { RolesEnum } from 'src/shared/enums/roles.enum';
 import {
   Entity,
   Column,
@@ -52,9 +53,9 @@ export class User implements UserI {
   IsValidated: boolean;
   @Column({
     nullable: false,
-    default: false,
+    default: RolesEnum.student,
   })
-  IsAdmin: boolean;
+  role: number;
 
   @BeforeInsert()
   emailTolower() {
