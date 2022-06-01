@@ -3,9 +3,9 @@ POST http://localhost:3000/user/create
 Content-Type: application/json
 
 {
-    "userEmail":"hema4@gmail.com",
+    "userEmail":"hema7@gmail.com",
     "userPassword":"123456Hr",
-    "userFName":"hema4",
+    "userFName":"hema7",
     "userLName":"mohamed"
 }
 
