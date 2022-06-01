@@ -1,0 +1,31 @@
+<style>
+  .button{ background-color: green; border-radius: 8px; color: white; font-size:
+  1.2rem; padding: 1em 2em; }
+</style>
+
+<div class='container' align='center' height='600px'>
+  <div class='card'>
+    <img
+      background='white'
+      src='https://raw.githubusercontent.com/IbrahimElmourchidi/Learning-lantern/main/logo.png'
+      alt='Learing-Lantern Logo'
+    /><br />
+    <h2>Welcome To Learning Lantern</h2><br />
+    <p>Thanks for registering at Learing-Lantern to validate your email account
+      please click on the button below</p><br />
+    <a
+      class='button'
+      style='text-decoration: none; color:white'
+      href='https://real-learning-lantern.web.app/en/auth/validate-email?code={{code}}&id={{user}}'
+    >Validate Email</a>
+    <br /><br />
+  </div>
+</div>
+
+{{! 
+
+.container{ width: 100%; min-height:500px ;display: flex; flex-direction:
+  column; justify-content: center; align-items: center; } .card{ width:
+  max(380px, 60%); display: flex; flex-direction: column; align-items: center;
+  justify-content: center;}
+ }}

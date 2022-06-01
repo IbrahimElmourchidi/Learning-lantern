@@ -20,15 +20,17 @@ import {
 import { UpdateInfoI } from 'src/user/model/interfaces/update-name.interface';
 import { LoginI } from 'src/user/model/interfaces/login.interface';
 import { AuthService } from 'src/auth/services/auth.service';
+import { MailService } from 'src/mail/services/mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     private readonly authService: AuthService,
+    private mailer: MailService,
   ) {}
 
-  async createUser(createInstace: CreateUserI): Promise<User> {
+  async createUser(createInstace: CreateUserI): Promise<boolean> {
     // check if user already exist and throw error if it is
     const user = await this.getUserByEmail(createInstace.Email);
     if (user) throw new ConflictException('User Already Exists');
@@ -38,7 +40,13 @@ export class UserService {
     // generate Validation Code
     const code = await this.generateCode(8);
     createInstace['ValidationCode'] = code;
-    return this.saveUser(createInstace);
+    const dbUser = await this.saveUser(createInstace);
+    const mailOk = await this.mailer.sendValidationEmail(
+      dbUser.Id,
+      dbUser.ValidationCode,
+      dbUser.Email,
+    );
+    return true;
   }
 
   async getAllUsers(options: IPaginationOptions): Promise<Pagination<User>> {

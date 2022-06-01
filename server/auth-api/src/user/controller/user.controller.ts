@@ -35,7 +35,7 @@ export class UserController {
   // create new user
   @Serialize(UserSerializeDto)
   @Post('create')
-  createUser(@Body() createDto: CreateDto): Promise<User> {
+  createUser(@Body() createDto: CreateDto): Promise<boolean> {
     const createInstace = this.userHelper.signupDtoToInstance(createDto);
     return this.userService.createUser(createInstace);
   }
