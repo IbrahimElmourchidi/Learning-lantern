@@ -17,13 +17,15 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import { CreateDto } from 'src/user/model/dtos/signup.dto';
 import { UpdateInfoI } from 'src/user/model/interfaces/update-name.interface';
+import { LoginI } from 'src/user/model/interfaces/login.interface';
+import { AuthService } from 'src/auth/services/auth.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
+    private readonly authService: AuthService,
   ) {}
 
   async createUser(createInstace: CreateUserI): Promise<User> {
@@ -46,8 +48,8 @@ export class UserService {
   async getUserById(Id: string): Promise<User> {
     try {
       const user = await this.userRepo.findOne({ where: { Id } });
-      if (!user) throw new NotFoundException('User doesnot exist')
-      return user
+      if (!user) throw new NotFoundException('User doesnot exist');
+      return user;
     } catch (error) {
       throw new InternalServerErrorException(
         'Internal Server Error,Database Error',
@@ -55,19 +57,34 @@ export class UserService {
     }
   }
 
-  async updateUserName(Id:string,updateInstace:UpdateInfoI):Promise<User>{
+  async updateUserName(Id: string, updateInstace: UpdateInfoI): Promise<User> {
     // check if user even exist
-    const user = await this.getUserById(Id)
-    const passOk = await this.comparePass(updateInstace.Password,user.Password)
-    if(!(user&&passOk)) throw new UnauthorizedException("invalid credentials") 
+    const user = await this.getUserById(Id);
+    const passOk = await this.comparePass(
+      updateInstace.Password,
+      user.Password,
+    );
+    if (!(user && passOk))
+      throw new UnauthorizedException('invalid credentials');
     delete updateInstace.Password;
-    const newUser = this.assignObject(user, updateInstace) as User
-    return this.updateUser(newUser)
+    const newUser = this.assignObject(user, updateInstace) as User;
+    return this.updateUser(newUser);
+  }
+
+  // login user
+  async login(LoginInstance: LoginI): Promise<string> {
+    // check if user exists
+    let user = await this.getUserByEmail(LoginInstance.Email);
+    if (!user) throw new UnauthorizedException('invalid credentials');
+    let passMatch = this.comparePass(LoginInstance.Password, user.Password);
+    if (!passMatch) throw new UnauthorizedException('invalid credentials');
+    return this.authService.generateToken(user);
   }
 
   private async getUserByEmail(Email: string): Promise<User> {
     try {
-      return this.userRepo.findOne({ where: { Email } });
+      let user = this.userRepo.findOne({ where: { Email } });
+      return user;
     } catch (error) {
       throw new InternalServerErrorException(
         'Internal Server Error,Database Error',
@@ -75,7 +92,7 @@ export class UserService {
     }
   }
   private async generateCode(len: number): Promise<string> {
-    let buffer = randomBytes(Math.floor(len / 2)) as Buffer;
+    const buffer = randomBytes(Math.floor(len / 2)) as Buffer;
     return buffer.toString('base64url');
   }
   private async saveUser(createInstance: CreateUserI): Promise<User> {
@@ -88,19 +105,21 @@ export class UserService {
     }
   }
 
-  private async comparePass(pass, hash):Promise<boolean>{
-    return bcrypt.compare(pass, hash)
+  private async comparePass(pass, hash): Promise<boolean> {
+    return bcrypt.compare(pass, hash);
   }
 
-  private assignObject(start:{}, assign:{}){
-    return Object.assign(start,assign)
+  private assignObject(start: Object, assign: Object) {
+    return Object.assign(start, assign);
   }
 
-  private updateUser(user:User):Promise<User>{
+  private updateUser(user: User): Promise<User> {
     try {
-      return this.userRepo.save(user)
+      return this.userRepo.save(user);
     } catch (error) {
-      throw new InternalServerErrorException("Internal Server Error, Database Error")
+      throw new InternalServerErrorException(
+        'Internal Server Error, Database Error',
+      );
     }
   }
 }

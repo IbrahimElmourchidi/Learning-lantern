@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { LoginDto } from 'src/user/model/dtos/login.dto';
 import { CreateDto } from 'src/user/model/dtos/signup.dto';
 import { UpdateDto } from 'src/user/model/dtos/update.dto';
 import { CreateUserI } from 'src/user/model/interfaces/create-user.interface';
+import { LoginI } from 'src/user/model/interfaces/login.interface';
 import { UpdateInfoI } from 'src/user/model/interfaces/update-name.interface';
 
 @Injectable()
@@ -27,11 +29,18 @@ export class UserHelperService {
     };
   }
 
-  updateDtoToInstace(dto:UpdateDto):UpdateInfoI{
-    return{
-      FirstName:dto.userFName,
-      LastName:dto.userLName,
-      Password:dto.userPassword
-    }
+  updateDtoToInstace(dto: UpdateDto): UpdateInfoI {
+    return {
+      FirstName: dto.userFName,
+      LastName: dto.userLName,
+      Password: dto.userPassword,
+    };
+  }
+
+  loginDtoToInstance(dto: LoginDto): LoginI {
+    return {
+      Email: dto.userEmail,
+      Password: dto.userPassword,
+    };
   }
 }

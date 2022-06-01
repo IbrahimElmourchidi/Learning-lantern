@@ -7,5 +7,5 @@ export interface UserI {
   DateCreated: Date;
   ValidationCode: string;
   IsValidated: boolean;
-  IsAdmin: boolean;
+  role: number;
 }
