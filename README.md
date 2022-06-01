@@ -49,10 +49,10 @@ for each api or client folder there will be user_stories folder, a readme file &
 
 This takes you step by step how this project was build
 
-- [Day 001: initial setup the auth-api (auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/main/server/auth-api/user_stories/001.md)
-- [Day 002: auth-api basic end points (auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/main/server/auth-api/user_stories/002.md)
+- [Day 001: initial setup the auth-api (auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/001.md)
+- [Day 002: auth-api basic end points (auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/002.md)
 - [Day 003: initial setup & home page (web-client)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/client/webclient-bootstrap/user_stories/001.md)
-- [Day 004: login endpoit and basic role system(auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/main/server/auth-api/user_stories/003.md)
+- [Day 004: login endpoit and basic role system(auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/003.md)
 
 # docs
 
