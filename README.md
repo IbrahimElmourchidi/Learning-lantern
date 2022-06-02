@@ -54,6 +54,7 @@ This takes you step by step how this project was build
 - [Day 003: initial setup & home page (web-client)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/client/webclient-bootstrap/user_stories/001.md)
 - [Day 004: login endpoit and basic role system(auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/003.md)
 - [Day 005: send validation email(auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/004.md)
+- [Day 006: add user profile entity](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/005.md)
 
 # docs
 
