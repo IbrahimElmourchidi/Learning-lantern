@@ -26,12 +26,14 @@ export class SerializePaginatedInterceptor implements NestInterceptor {
         // });
         let result = [];
         let rawData = data['items'];
-        for (let i of rawData)
+        for (let i of rawData) {
+          console.log(typeof i.Profile);
           result.push(
             plainToInstance(this.dto, i, {
               excludeExtraneousValues: true,
             }),
           );
+        }
         data['items'] = result;
         return data;
       }),

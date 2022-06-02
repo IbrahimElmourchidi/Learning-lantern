@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigSchemaValidator } from 'environment/config.schema';
+
+import { Profile } from './user/model/entities/profile.entity';
 import { User } from './user/model/entities/user.entity';
 import { UserModule } from './user/user.module';
 @Module({
@@ -17,7 +19,7 @@ import { UserModule } from './user/user.module';
         type: 'postgres',
         url: config.get('DB_URL'),
         synchronize: config.get('DB_SYNC'),
-        entities: [User],
+        entities: [User, Profile],
       }),
     }),
     UserModule,

@@ -1,10 +1,17 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
+import { Profile } from '../../entities/profile.entity';
 
 export class UserSerializeDto {
   @Expose()
   Id: string;
+
   @Expose()
-  FirstName: string;
+  IsConfirmed: boolean;
+
   @Expose()
-  LastName: string;
+  IsValidated: boolean;
+
+  @Expose()
+  @Transform(({ obj }) => obj.Profile)
+  Profile: Profile;
 }

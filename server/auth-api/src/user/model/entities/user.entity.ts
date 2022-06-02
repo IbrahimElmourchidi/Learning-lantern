@@ -6,9 +6,12 @@ import {
   Index,
   CreateDateColumn,
   BeforeInsert,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
 
 import { UserI } from '../interfaces/user.interface';
+import { Profile } from './profile.entity';
 
 @Entity()
 export class User implements UserI {
@@ -27,16 +30,7 @@ export class User implements UserI {
     length: 60,
   })
   Password: string;
-  @Column({
-    nullable: false,
-    length: 30,
-  })
-  FirstName: string;
-  @Column({
-    nullable: false,
-    length: 60,
-  })
-  LastName: string;
+
   @CreateDateColumn({
     type: Date,
   })
@@ -53,16 +47,22 @@ export class User implements UserI {
   IsValidated: boolean;
   @Column({
     nullable: false,
+    default: false,
+  })
+  IsConfirmed: boolean;
+  @Column({
+    nullable: false,
     default: RolesEnum.student,
   })
   role: number;
+
+  @OneToOne(() => Profile, (Profile) => Profile.user)
+  @JoinColumn()
+  Profile: Profile;
 
   @BeforeInsert()
   emailTolower() {
     // change the email to lower case
     this.Email = this.Email.toLowerCase();
-    // trim the FirstName and LastName to remove extra spaces
-    this.FirstName = this.FirstName.trim();
-    this.LastName = this.LastName.trim();
   }
 }
