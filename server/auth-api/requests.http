@@ -3,19 +3,21 @@ POST http://localhost:3000/user/create
 Content-Type: application/json
 
 {
-    "userEmail":"hema7@gmail.com",
+    "userEmail":"hema@gmail.com",
     "userPassword":"123456Hr",
-    "userFName":"hema7",
+    "userFName":"hema",
     "userLName":"mohamed"
 }
 
 ### get all users paginated
 GET http://localhost:3000/user/all?limit=80&page=1
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjZjZlMjFmMC02ZjRkLTQ5ZjAtYWRjYS03OTVmMWM5Njc2Y2MiLCJ1c2VyRk5hbWUiOiJoZW1hMiIsImlzVmFsaWRhdGVkIjpmYWxzZSwiaWF0IjoxNjU0MDkxNzMzLCJleHAiOjE2NTQwOTIwMzN9.4lsabDhkS9t38VZXX3LIAv2U9kRKUdkp3qJ-N-jmdag
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlYjg2OTkyNi00ZjBjLTQwMmItYjQ4ZS1kNzNmOTU2ODgzOGQiLCJpc1ZhbGlkYXRlZCI6ZmFsc2UsImlhdCI6MTY1NDE2MjM1MSwiZXhwIjoxNjU0MTYyNjUxfQ.6cARR1uvEl_zqYnCkZ-drGYl3uXeLBani1DKFxo6ytY
+
+
 
 
 ### get single user by id 
-GET http://localhost:3000/user/617fa20b-7846-4b1c-a048-b54c450db421
+GET http://localhost:3000/user/one/617fa20b-7846-4b1c-a048-b54c450db421
 
 
 ### update user name
@@ -34,6 +36,52 @@ POST http://localhost:3000/user/login
 Content-Type: application/json
 
 {
-    "userEmail": "hema2@gmail.com",
+    "userEmail": "hema@gmail.com",
     "userPassword": "123456Hr"
 }
+
+
+### change password
+PUT http://localhost:3000/user/change-password
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZTY2MTI3OC0xNGRlLTQzYjMtODA5OS04YWEzYmQ0NTM4YmYiLCJpc1ZhbGlkYXRlZCI6ZmFsc2UsImlhdCI6MTY1NDE3MTM1OSwiZXhwIjoxNjU0MTcxNjU5fQ.zMCuJrYYrDW8ekkXlEPPNEm7B6gkv9R7_bnYckzNwp4
+Content-Type: application/json
+
+{
+    "oldPassword": "654321Hr",
+    "newPassword": "123456Hr"
+}
+
+
+### change Email
+PUT http://localhost:3000/user/change-email
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZWViNWYyZC0yMjQ4LTRjYWMtYTgxYS0zNTVkZWY4OTQ2NDgiLCJpc1ZhbGlkYXRlZCI6ZmFsc2UsImlhdCI6MTY1NDE3MjY5NiwiZXhwIjoxNjU0MTcyOTk2fQ.nQ8_JAvQGFPs8KCnYPluU9xAPHItVLbxyGdso_TUoEA
+Content-Type: application/json
+
+{
+    "userPassword": "123456Hr",
+    "userEmail":"hemanew@gmail.com"
+}
+
+
+### delete account
+DELETE http://localhost:3000/user/delete
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiZTY2MTI3OC0xNGRlLTQzYjMtODA5OS04YWEzYmQ0NTM4YmYiLCJpc1ZhbGlkYXRlZCI6ZmFsc2UsImlhdCI6MTY1NDE3NDYyNiwiZXhwIjoxNjU0MTc0OTI2fQ.KnKZ7y3Ghl6aGwSHMJHN2AjFTKCm36pb01mjzf9HtTk
+Content-Type: application/json
+
+{
+    "userPassword": "123456Hr"
+}
+
+
+### validate email 
+POST http://localhost:3000/user/validate-email
+Content-Type: application/json
+
+{
+    "userId":"c7d0ddc1-d3df-4ff0-bc92-54dd9cf11c6b",
+    "validationCode":"0A6szg"
+}
+
+### resend validation
+GET http://localhost:3000/user/resend-validation
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjN2QwZGRjMS1kM2RmLTRmZjAtYmM5Mi01NGRkOWNmMTFjNmIiLCJpc1ZhbGlkYXRlZCI6dHJ1ZSwiaWF0IjoxNjU0MTg5MjA4LCJleHAiOjE2NTQxODk1MDh9.S6OdaGo-n28azJWT1vjaMjzIxCmXRX_BS5bDZAaC0I4
