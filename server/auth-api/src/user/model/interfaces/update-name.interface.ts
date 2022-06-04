@@ -1,5 +1,9 @@
-export interface UpdateInfoI{
-    FirstName:string;
-    LastName:string;
-    Password:string;
+/**@ignore */
+export interface UpdateInfoI {
+  /**@ignore */
+  FirstName: string;
+  /**@ignore */
+  LastName: string;
+  /**@ignore */
+  Password: string;
 }

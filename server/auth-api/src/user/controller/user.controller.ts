@@ -33,13 +33,14 @@ import { User } from '../model/entities/user.entity';
 import { UserHelperService } from '../services/user-helper/user-helper.service';
 import { UserService } from '../services/user-service/user.service';
 
+/** the user controller contains all routes */
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly userHelper: UserHelperService,
   ) {}
-  // create new user
+  /**create new user */
   @Serialize(UserSerializeDto)
   @Post('create')
   createUser(@Body() createDto: CreateDto): Promise<boolean> {
@@ -47,7 +48,7 @@ export class UserController {
     return this.userService.createUser(createInstace);
   }
 
-  // get all users paginated
+  /**get all users paginated */
   @Roles(RolesEnum.admin, RolesEnum.super)
   @SerializePaginated(UserSerializeDto)
   @UseGuards(JwtGuard, RoleGuard)
@@ -64,14 +65,14 @@ export class UserController {
     });
   }
 
-  //get single user by id
+  /**get single user by id */
   @Serialize(UserSerializeDto)
   @Get('one/:id')
   async getSingleUser(@Param('id') Id): Promise<User> {
     return this.userService.getUserById(Id);
   }
 
-  // update user name
+  /**update user name */
   @Put('update/:id')
   async updateUserName(
     @Body() updateDto: UpdateDto,
@@ -81,14 +82,14 @@ export class UserController {
     return this.userService.updateUserName(id, updateInstace);
   }
 
-  //login user
+  /**login user */
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<string> {
     const loginInstance = this.userHelper.loginDtoToInstance(loginDto);
     return this.userService.login(loginInstance);
   }
 
-  //update user password
+  /**update user password */
   @Serialize(UserSerializeDto)
   @UseGuards(JwtGuard)
   @Put('change-password')
@@ -101,7 +102,7 @@ export class UserController {
     return this.userService.changePassword(req.user.userId, changePassInstance);
   }
 
-  // change email
+  /**change email */
   @Serialize(UserSerializeDto)
   @UseGuards(JwtGuard)
   @Put('change-email')
@@ -110,7 +111,7 @@ export class UserController {
     return this.userService.changeEmail(req.user.userId, changeEmailInstance);
   }
 
-  // delete account
+  /**delete account */
   @Serialize(UserSerializeDto)
   @UseGuards(JwtGuard)
   @Delete('delete')
@@ -125,14 +126,14 @@ export class UserController {
       deleteAccountInstance,
     );
   }
-  // validate user email
+  /**validate user email */
   @Post('validate-email')
   async validateEmail(@Body() validateDto: ValidateEmailDto): Promise<string> {
     const validateInstance = this.userHelper.validateDtoToInstance(validateDto);
     return this.userService.validateEmail(validateInstance);
   }
 
-  // resend validation email
+  /**resend validation email */
   @UseGuards(JwtGuard)
   @Get('resend-validation')
   async resendValidtion(@Req() req: any): Promise<boolean> {
