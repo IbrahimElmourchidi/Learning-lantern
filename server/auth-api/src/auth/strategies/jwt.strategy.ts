@@ -3,8 +3,17 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+/**
+ * defines the strategy used for authenticatin , we are using JWT strategy
+ */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  /**
+   *
+   * you should invoke the super constructor .
+   *
+   * @param config
+   */
   constructor(private config: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -13,6 +22,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  /**
+   * This method attach the pay load from the JWT to user property in the request
+   * @param payload
+   * @returns
+   */
   async validate(payload: any) {
     return payload;
   }

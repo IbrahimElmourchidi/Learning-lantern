@@ -12,19 +12,22 @@ import { LoginI } from 'src/user/model/interfaces/login.interface';
 import { UpdateInfoI } from 'src/user/model/interfaces/update-name.interface';
 import { ValidateEmailI } from 'src/user/model/interfaces/validate-email.interface';
 
-@Injectable()
 /**
- * this service is just a helper service in the user module
+ *
+ * this service is just a helper service in the user module that makes sure
+ * that the Dtos are transformed to the valid schema used in the api
+ *
  */
+@Injectable()
 export class UserHelperService {
   /**
    * this function transform the request body from the UserDto schema to the
    * the UserI schema used inside the api.
-   *
    * using this apprach gives more flexibility to the front end team to
    * update the schema of the request body as they want and you will only
    * need to modify the DTO and this Helper function.
    * @param dto
+   * @returns
    */
   signupDtoToInstance(dto: CreateDto): CreateUserI {
     return {
@@ -35,6 +38,12 @@ export class UserHelperService {
     };
   }
 
+  /**
+   * Transform the UpdateDTo to the UpdateInfoI (which is the valid schema used in the api)
+   *
+   * @param dto
+   * @returns
+   */
   updateDtoToInstace(dto: UpdateDto): UpdateInfoI {
     return {
       FirstName: dto.userFName,
@@ -43,6 +52,12 @@ export class UserHelperService {
     };
   }
 
+  /**
+   * Transform the LoginDTo to the LoginI (which is the valid schema used in the api)
+   * @param dto
+   * @returns
+   */
+
   loginDtoToInstance(dto: LoginDto): LoginI {
     return {
       Email: dto.userEmail,
@@ -50,6 +65,11 @@ export class UserHelperService {
     };
   }
 
+  /**
+   * Transform the ChangePasswordDTo to the ChangePassI (which is the valid schema used in the api)
+   * @param dto
+   * @returns
+   */
   changePassDtoToInstance(dto: changePasswordDto): ChangePassI {
     return {
       OldPass: dto.oldPassword,
@@ -57,12 +77,21 @@ export class UserHelperService {
     };
   }
 
+  /**
+   * Transform the DeleteAccountDTo to the DeleteAccountI (which is the valid schema used in the api)
+   * @param dto
+   * @returns
+   */
   deleteAccountDtoToInstance(dto: DeleteAccountDto): DeleteAccountI {
     return {
       Password: dto.userPassword,
     };
   }
-
+  /**
+   * Transform the ValidateEmialDTo to the ValidateEmailI (which is the valid schema used in the api)
+   * @param dto
+   * @returns
+   */
   validateDtoToInstance(dto: ValidateEmailDto): ValidateEmailI {
     return {
       Id: dto.userId,
