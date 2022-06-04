@@ -21,12 +21,25 @@ More detailed Information can be found in the link to documentation below
     <td>POST /user/signup</td>
     <td>
         Create new User 
+        <br>
+        Body:<br>
+        {
+          userEmail:string<br>
+          userPassword:string<br>
+          userFName:string<br>
+          userLName:string<br>
+        }
     </td>
   </tr>
   <tr>
     <td>POST /user/login</td>
     <td>
-        Login an existing user 
+        Login an existing user <br>
+        Body:<br>
+        {<br>
+          userEmail:string<br>
+          userPassword:string<br>
+        }
     </td>
   </tr>
   <tr>
@@ -35,14 +48,79 @@ More detailed Information can be found in the link to documentation below
         Get all users paginated 
         <br>page = the page number
         <br>limit = how many user displayed per page
+        <br>Note: JWT is Attached with the request
+    </td>
+  </tr>
+  <tr>
+    <td>GET /user/one/:id</td>
+    <td>
+        get the user with the given id
+    </td>
+  </tr>
+  <tr>
+    <td>PUT /user/update/:id</td>
+    <td>
+        update the first and last name of the user with the given id.<br>
+        Body:<br>
+        {<br>
+          userFName:string<br>
+          userLName:string<br>
+          userPassword:string<br>
+        }
+    </td>
+  </tr>
+  <tr>
+    <td>PUT /user/change-password</td>
+    <td>
+        change the password of the user<br>
+        Body:<br>
+        {<br>
+          oldPassword:string<br>
+          newPassword:string<br>
+        }<br>
+        Note: JWT Must be attached
+    </td>
+
+  </tr>
+  <tr>
+    <td>PUT /user/change-email</td>
+    <td>
+        change the email of the user<br>
+        Body:<br>
+        {<br>
+          userEmail:string<br>
+          userPassword:string<br>
+        }<br>
+        Note : JWT Must be Attached
+    </td>
+  </tr>
+  <tr>
+    <td>DELETE /user/delete</td>
+    <td>
+        delte the account of the user<br>
+        Body:<br>
+        {<br>
+          userPassword:string<br>
+        }<br>
+        Note : JWT Must be Attached
     </td>
   </tr>
    <tr>
-    <td>GET /user/validate-email?`id= {userId}
-</td>
+    <td>GET /user/validate-email</td>
     <td>
-        Send a validation email to the user with the given id
-        <br>Note: 
+        validate the user's email
+    </td>
+  </tr>
+  <tr>
+    <td>GET /user/resend-validation</td>
+    <td>
+        resend validation email to the user
+        <br>
+        {<br>
+          userId:string<br>
+          validationCode:string<br>
+        }<br>
+        Note:JWT Must Be Attached
     </td>
   </tr>
 </table>

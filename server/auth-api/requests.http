@@ -9,6 +9,16 @@ Content-Type: application/json
     "userLName":"mohamed"
 }
 
+### login user
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "userEmail": "hema@gmail.com",
+    "userPassword": "123456Hr"
+}
+
+
 ### get all users paginated
 GET http://localhost:3000/user/all?limit=80&page=1
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlYjg2OTkyNi00ZjBjLTQwMmItYjQ4ZS1kNzNmOTU2ODgzOGQiLCJpc1ZhbGlkYXRlZCI6ZmFsc2UsImlhdCI6MTY1NDE2MjM1MSwiZXhwIjoxNjU0MTYyNjUxfQ.6cARR1uvEl_zqYnCkZ-drGYl3uXeLBani1DKFxo6ytY
@@ -28,16 +38,6 @@ Content-type: application/json
     "userFName":"hema2",
     "userLName":"mohamed2",
     "userPassword":"123456Hr"
-}
-
-
-### login user
-POST http://localhost:3000/user/login
-Content-Type: application/json
-
-{
-    "userEmail": "hema@gmail.com",
-    "userPassword": "123456Hr"
 }
 
 
