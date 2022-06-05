@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigSchemaValidator } from 'environment/config.schema';
+import { ListenerModule } from './listener/listener.module';
 
 import { Profile } from './user/model/entities/profile.entity';
 import { User } from './user/model/entities/user.entity';
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module';
       }),
     }),
     UserModule,
+    ListenerModule,
   ],
 })
 export class AppModule {}
