@@ -4,6 +4,7 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
@@ -12,6 +13,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { ClientProxy, MessagePattern } from '@nestjs/microservices';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
@@ -39,11 +41,13 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly userHelper: UserHelperService,
+    @Inject('auth_serv') private readonly client: ClientProxy,
   ) {}
   /**create new user */
   @Serialize(UserSerializeDto)
   @Post('create')
   createUser(@Body() createDto: CreateDto): Promise<boolean> {
+    this.client.emit('new', 'new user created');
     const createInstace = this.userHelper.signupDtoToInstance(createDto);
     return this.userService.createUser(createInstace);
   }
