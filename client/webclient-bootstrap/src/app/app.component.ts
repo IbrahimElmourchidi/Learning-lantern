@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   defaultMode = 'light';
-
   ngOnInit(): void {
     let currentMode = localStorage.getItem('view-mode');
     let root = document.querySelector('html');

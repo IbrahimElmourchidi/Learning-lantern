@@ -25,5 +25,12 @@ export class HeaderComponent {
 
   changeActive(str: string): void {
     this.activeLink = str;
+    this.scrollTO(str);
+  }
+
+  scrollTO(str: string) {
+    document
+      .getElementById(str)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }

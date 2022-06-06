@@ -1,4 +1,7 @@
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark shadow p-1">
+<nav
+  class="navbar navbar-expand-lg bg-primary navbar-dark shadow p-1 w-100 position-fixed mb-4"
+  style="z-index: 999"
+>
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="">
       <img src="/assets/img/logo.webp" alt="logo" class="logo" />
@@ -19,7 +22,7 @@
         <div class="nav-links d-flex me-4">
           <li class="nav-item" (click)="changeActive('home')">
             <a
-              routerLink=""
+              routerLink="/#home"
               class="text-uppercase text-decoration-none"
               [class.active]="activeLink === 'home'"
               >Home</a
@@ -27,10 +30,18 @@
           </li>
           <li class="nav-item" (click)="changeActive('services')">
             <a
-              routerLink=""
+              routerLink="/#services"
               class="text-uppercase text-decoration-none"
               [class.active]="activeLink === 'services'"
               >Services</a
+            >
+          </li>
+          <li class="nav-item" (click)="changeActive('plans')">
+            <a
+              routerLink="/#plans"
+              class="text-uppercase text-decoration-none"
+              [class.active]="activeLink === 'plans'"
+              >Prices</a
             >
           </li>
           <li class="nav-item" (click)="changeActive('contact')">
