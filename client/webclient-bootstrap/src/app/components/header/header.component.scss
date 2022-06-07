@@ -29,5 +29,16 @@ ul li a:hover {
   color: var(--app-accent-color) !important;
 }
 
+.list-group-item {
+  padding: 1em;
+}
+.dropdown-item {
+  border-radius: 0px !important;
+  color: var(--app-text) !important;
+}
+.dropdown-item:hover {
+  background: var(--app-accent-color) !important;
+  color: var(--app-button-text) !important;
+}
 @media all and (min-width: 992px) {
 }

@@ -1,26 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AppState, StateService } from 'src/app/shared/services/state.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   activeLink = 'home';
-  currentMode = localStorage.getItem('view-mode') || 'light';
+  appState!: AppState;
+  constructor(private state: StateService) {}
+  ngOnInit(): void {
+    let authorized = localStorage.getItem('loggedIn');
+    this.state.currentState.subscribe((state) => (this.appState = state));
+  }
   toggleMode() {
     let root = document.querySelector('html');
     if (root?.classList.contains('light')) {
       root.classList.remove('light');
       root.classList.add('dark');
       localStorage.setItem('view-mode', 'dark');
-      this.currentMode = 'dark';
+      this.state.changeState({ dark: true });
       return;
     }
     root?.classList.remove('dark');
     root?.classList.add('light');
     localStorage.setItem('view-mode', 'light');
-    this.currentMode = 'light';
+    this.state.changeState({ dark: false });
   }
 
   changeActive(str: string): void {

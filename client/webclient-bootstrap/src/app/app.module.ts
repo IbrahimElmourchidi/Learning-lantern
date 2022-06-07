@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +14,9 @@ import { ServiceListComponent } from './components/services/services.component';
 import { VideoComponent } from './components/video/video.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 
+import { HttpService } from './shared/services/http.service';
+import { StateService } from './shared/services/state.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,8 +29,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     ContactUsComponent,
     FooterComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, NgbModule],
-  providers: [],
+  imports: [BrowserModule, AppRoutingModule, NgbModule, HttpClientModule],
+  providers: [HttpService, StateService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
