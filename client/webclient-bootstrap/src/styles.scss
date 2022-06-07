@@ -19,6 +19,7 @@
   --app-accent-color: #ffd740;
   --app-bg-color: #fafafa;
   --app-card-color: #e9e9e9;
+  --app-theme-text: #673ab7;
 
   $theme-colors: (
     "success": $success,
@@ -64,6 +65,7 @@
   --app-accent-color: #69f0ae;
   --app-bg-color: #303030;
   --app-card-color: #424242;
+  --app-theme-text: #69f0ae;
 
   /* redefine theme colors for dark theme */
   $primary: #012345;
@@ -100,6 +102,8 @@
   $input-focus-bg: #333333;
   $input-color: $app-text;
   $input-focus-color: $app-text;
+  $form-select-bg: $app-card;
+  $form-select-color: $app-text;
   --#{$variable-prefix}body-color: #{$body-color};
   --#{$variable-prefix}body-bg: #{$body-bg};
 
@@ -138,6 +142,9 @@
   background-size: cover;
 }
 
+.pointer {
+  cursor: pointer;
+}
 @media all and (max-width: 900px) {
   .desk {
     display: none;

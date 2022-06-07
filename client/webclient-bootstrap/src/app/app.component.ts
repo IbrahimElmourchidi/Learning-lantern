@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppState, StateService } from './shared/services/state.service';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   defaultMode = 'light';
-
+  constructor(private state: StateService) {}
   ngOnInit(): void {
     let currentMode = localStorage.getItem('view-mode');
+    let loggedIn = localStorage.getItem('loggedIn');
+    if (loggedIn) {
+      this.state.changeState({
+        logedIn: true,
+      });
+    }
+    if (currentMode === 'dark') this.state.changeState({ dark: true });
     let root = document.querySelector('html');
     if (!currentMode) currentMode = this.defaultMode;
     root?.classList.add(currentMode);

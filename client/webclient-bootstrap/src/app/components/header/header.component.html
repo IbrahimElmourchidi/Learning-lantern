@@ -1,4 +1,7 @@
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark shadow p-1">
+<nav
+  class="navbar navbar-expand-lg bg-primary navbar-dark shadow p-1 w-100 position-fixed mb-4"
+  style="z-index: 999"
+>
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="">
       <img src="/assets/img/logo.webp" alt="logo" class="logo" />
@@ -19,7 +22,7 @@
         <div class="nav-links d-flex me-4">
           <li class="nav-item" (click)="changeActive('home')">
             <a
-              routerLink=""
+              routerLink="/"
               class="text-uppercase text-decoration-none"
               [class.active]="activeLink === 'home'"
               >Home</a
@@ -27,15 +30,23 @@
           </li>
           <li class="nav-item" (click)="changeActive('services')">
             <a
-              routerLink=""
+              routerLink="/"
               class="text-uppercase text-decoration-none"
               [class.active]="activeLink === 'services'"
               >Services</a
             >
           </li>
+          <li class="nav-item" (click)="changeActive('plans')">
+            <a
+              routerLink="/"
+              class="text-uppercase text-decoration-none"
+              [class.active]="activeLink === 'plans'"
+              >Prices</a
+            >
+          </li>
           <li class="nav-item" (click)="changeActive('contact')">
             <a
-              routerLink=""
+              routerLink="/"
               class="text-uppercase text-decoration-none"
               [class.active]="activeLink === 'contact'"
               >Contact Us</a
@@ -43,22 +54,40 @@
           </li>
         </div>
         <div class="login ms-4 d-flex">
-          <li>
-            <a routerLink="" class="text-uppercase text-decoration-none">
+          <li *ngIf="!appState.logedIn">
+            <a
+              routerLink="/auth/login"
+              class="text-uppercase text-decoration-none"
+            >
               <i class="bi bi-box-arrow-in-right"></i>
               login</a
             >
           </li>
+          <li class="nav-item dropdown" *ngIf="appState.logedIn">
+            <a
+              routerLink="."
+              class="text-uppercase text-decoration-none"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-person-circle"></i>
+              Profile</a
+            >
+            <ul
+              class="dropdown-menu"
+              [class.dropdown-menu-dark]="appState.dark"
+            >
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+
           <li (click)="toggleMode()">
             <a class="text-uppercase text-decoration-none">
-              <i
-                class="bi bi-brightness-high-fill"
-                *ngIf="currentMode === 'dark'"
-              ></i>
-              <i
-                class="bi bi-brightness-high"
-                *ngIf="currentMode === 'light'"
-              ></i>
+              <i class="bi bi-brightness-high-fill" *ngIf="appState.dark"></i>
+              <i class="bi bi-brightness-high" *ngIf="!appState.dark"></i>
             </a>
           </li>
         </div>
@@ -85,29 +114,48 @@
   <div class="offcanvas-body p-0 mt-4">
     <div class="list-group list-group-flush p-0 m-0">
       <a
-        routerLink=""
+        routerLink="/"
+        data-bs-dismiss="offcanvas"
         class="list-group-item list-group-item-action text-uppercase"
         (click)="changeActive('home')"
         >home</a
       >
       <a
-        routerLink=""
+        routerLink="/"
+        data-bs-dismiss="offcanvas"
         class="list-group-item list-group-item-action text-uppercase"
         (click)="changeActive('services')"
         >Services</a
       >
       <a
-        routerLink=""
+        routerLink="/"
+        data-bs-dismiss="offcanvas"
+        class="list-group-item list-group-item-action text-uppercase"
+        (click)="changeActive('plans')"
+        >Prices</a
+      >
+      <a
+        routerLink="/"
+        data-bs-dismiss="offcanvas"
         class="list-group-item list-group-item-action text-uppercase"
         (click)="changeActive('contact')"
         >Contact Us</a
       >
-      <a class="list-group-item list-group-item-action" (click)="toggleMode()">
-        <i
-          class="bi bi-brightness-high-fill"
-          *ngIf="currentMode === 'dark'"
-        ></i>
-        <i class="bi bi-brightness-high" *ngIf="currentMode === 'light'"></i>
+      <a
+        routerLink="/auth/login"
+        class="list-group-item list-group-item-action text-uppercase"
+        data-bs-dismiss="offcanvas"
+      >
+        <i class="bi bi-box-arrow-in-right"></i>
+        login</a
+      >
+      <a
+        class="list-group-item list-group-item-action"
+        data-bs-dismiss="offcanvas"
+        (click)="toggleMode()"
+      >
+        <i class="bi bi-brightness-high-fill" *ngIf="appState.dark"></i>
+        <i class="bi bi-brightness-high" *ngIf="!appState.dark"></i>
       </a>
     </div>
   </div>

@@ -1,0 +1,98 @@
+<div class="row justify-content-center p-4">
+  <div class="card col-sm-6 m-4 text-center shadow p-4">
+    <div class="card-title pt-4">
+      <h4 class="text-uppercase">login</h4>
+    </div>
+    <div class="card-body p-0">
+      <form
+        class="text-start my-4"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="mb-4">
+          <label for="University" class="mb-2">University:</label>
+          <select
+            class="form-select"
+            id="University"
+            aria-label="Default select example"
+            formControlName="userUniversity"
+          >
+            <option value="1">Assuit University</option>
+            <option value="2">EELU University</option>
+          </select>
+          <ng-container
+            *ngIf="userUniversity.invalid && userUniversity.touched"
+          >
+            <small
+              *ngIf="userUniversity.errors?.['required']"
+              class="text-danger"
+            >
+              This Field is Required
+            </small>
+          </ng-container>
+        </div>
+        <div class="mb-4">
+          <label for="Email" class="form-label">Your Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="Email"
+            placeholder="name@example.com*"
+            formControlName="userEmail"
+          />
+          <ng-container *ngIf="userEmail.invalid && userEmail.touched">
+            <small *ngIf="userEmail.errors?.['required']" class="text-danger">
+              This Field is Required
+            </small>
+            <small *ngIf="userEmail.errors?.['email']" class="text-danger">
+              Please enter a valid email
+            </small>
+          </ng-container>
+        </div>
+        <div class="mb-4">
+          <label for="Email" class="form-label">Your Password:</label>
+          <div class="input-group">
+            <input
+              [type]="hide ? 'password' : 'text'"
+              class="form-control"
+              id="password"
+              placeholder="Your Password"
+              formControlName="userPassword"
+            />
+            <span class="input-group-text pointer" (click)="hide = !hide">
+              <i class="bi bi-eye-fill" *ngIf="hide"></i>
+              <i class="bi bi-eye-slash-fill" *ngIf="!hide"></i>
+            </span>
+          </div>
+          <ng-container *ngIf="userPassword.invalid && userPassword.touched">
+            <small
+              *ngIf="userPassword.errors?.['required']"
+              class="text-danger"
+            >
+              This Field is Required
+            </small>
+            <small *ngIf="userPassword.errors?.['pattern']" class="text-danger">
+              Please enter a valid Password<br />
+              <span class="text-dark"
+                >a valid password contains at least 8 charactes with at least 1
+                UPPERCASE letter, 1 lowercase letter, and numbers.</span
+              >
+            </small>
+          </ng-container>
+        </div>
+        <div class="my-4 row justify-content-between align-items-center">
+          <a routerLink="/auth/signup" class="col-md-6 mb-4">
+            Donot have account? Signup here
+          </a>
+          <button
+            type="submit"
+            class="btn btn-primary ms-auto text-uppercase col-md-4 mb-4"
+          >
+            <i class="bi bi-box-arrow-in-right"></i>
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
