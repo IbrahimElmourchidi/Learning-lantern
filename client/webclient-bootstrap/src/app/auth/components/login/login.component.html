@@ -71,12 +71,11 @@
             >
               This Field is Required
             </small>
-            <small *ngIf="userPassword.errors?.['pattern']" class="text-danger">
-              Please enter a valid Password<br />
-              <span class="text-dark"
-                >a valid password contains at least 8 charactes with at least 1
-                UPPERCASE letter, 1 lowercase letter, and numbers.</span
-              >
+            <small *ngIf="userPassword.errors?.['pattern']">
+              <span class="text-danger">Please enter a valid Password</span
+              ><br />
+              a valid password contains at least 8 charactes with at least 1
+              UPPERCASE letter, 1 lowercase letter, and numbers.
             </small>
           </ng-container>
         </div>

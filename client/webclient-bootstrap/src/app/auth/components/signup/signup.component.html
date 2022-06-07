@@ -4,18 +4,32 @@
       <h4 class="text-uppercase">signup</h4>
     </div>
     <div class="card-body p-0">
-      <form class="text-start my-4">
+      <form
+        class="text-start my-4"
+        [formGroup]="signupForm"
+        (ngSubmit)="onSubmit()"
+      >
         <div class="mb-4">
           <label for="University" class="mb-2">University:</label>
           <select
             class="form-select"
             id="University"
             aria-label="Default select example"
+            formControlName="userUniversity"
           >
-            <option selected>Select University</option>
             <option value="1">Assuit University</option>
             <option value="2">EELU University</option>
           </select>
+          <ng-container
+            *ngIf="userUniversity.invalid && userUniversity.touched"
+          >
+            <small
+              *ngIf="userUniversity.errors?.['required']"
+              class="text-danger"
+            >
+              This Field is Required
+            </small>
+          </ng-container>
         </div>
         <div class="mb-4">
           <label for="FullName" class="form-label">Your FullName:</label>
@@ -24,7 +38,19 @@
             class="form-control"
             id="FullName"
             placeholder="Full Name"
+            formControlName="userFName"
           />
+          <ng-container *ngIf="userFName.invalid && userFName.touched">
+            <small *ngIf="userFName.errors?.['required']" class="text-danger">
+              This Field is Required
+            </small>
+            <small *ngIf="userFName.errors?.['lastName']" class="text-danger">
+              Please enter a valid Fullname.
+            </small>
+            <small *ngIf="userFName.errors?.['minlength']" class="text-danger">
+              minimum length 2.
+            </small>
+          </ng-container>
         </div>
         <div class="mb-4">
           <label for="Email" class="form-label">Your Email:</label>
@@ -33,7 +59,16 @@
             class="form-control"
             id="Email"
             placeholder="name@example.com*"
+            formControlName="userEmail"
           />
+          <ng-container *ngIf="userEmail.invalid && userEmail.touched">
+            <small *ngIf="userEmail.errors?.['required']" class="text-danger">
+              This Field is Required
+            </small>
+            <small *ngIf="userEmail.errors?.['email']" class="text-danger">
+              Please enter a valid email
+            </small>
+          </ng-container>
         </div>
         <div class="mb-4">
           <label for="password" class="form-label">Your Password:</label>
@@ -43,12 +78,27 @@
               class="form-control"
               id="password"
               placeholder="Your Password"
+              formControlName="userPassword"
             />
             <span class="input-group-text pointer" (click)="hide = !hide">
               <i class="bi bi-eye-fill" *ngIf="hide"></i>
               <i class="bi bi-eye-slash-fill" *ngIf="!hide"></i>
             </span>
           </div>
+          <ng-container *ngIf="userPassword.invalid && userPassword.touched">
+            <small
+              *ngIf="userPassword.errors?.['required']"
+              class="text-danger"
+            >
+              This Field is Required
+            </small>
+            <small *ngIf="userPassword.errors?.['pattern']">
+              <span class="text-danger">Please enter a valid Password</span
+              ><br />
+              a valid password contains at least 8 charactes with at least 1
+              UPPERCASE letter, 1 lowercase letter, and numbers.
+            </small>
+          </ng-container>
         </div>
         <div class="mb-4">
           <label for="confirm" class="form-label">Confirm Password:</label>
@@ -58,6 +108,7 @@
               class="form-control"
               id="confirm"
               placeholder="Confirm Password"
+              formControlName="confirmPassword"
             />
             <span class="input-group-text pointer" (click)="hide = !hide">
               <i class="bi bi-eye-fill" *ngIf="hide"></i>
@@ -71,10 +122,16 @@
             type="checkbox"
             role="switch"
             id="flexSwitchCheckChecked"
+            formControlName="iAgree"
           />
           <label class="form-check-label" for="flexSwitchCheckChecked"
             >I Agree on <a routerLink=".">Terms & Conditions</a></label
-          >
+          ><br />
+          <ng-container *ngIf="iAgree.invalid && iAgree.touched">
+            <small class="text-danger"
+              >Please Agree on Terms and Conditions.</small
+            >
+          </ng-container>
         </div>
 
         <div class="my-4 row justify-content-between align-items-center">
@@ -82,7 +139,7 @@
             Already have account? login here
           </a>
           <button
-            type="button"
+            type="submit"
             class="btn btn-primary col-md-4 mb-4 text-uppercase"
           >
             <i class="bi bi-person-plus"></i>

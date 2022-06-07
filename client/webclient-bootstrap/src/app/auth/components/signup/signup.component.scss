@@ -2,3 +2,13 @@ a,
 a:hover {
   color: var(--app-theme-text);
 }
+
+.form-control.ng-invalid.ng-touched,
+.form-select.ng-invalid.ng-touched {
+  border-color: red !important;
+}
+
+.form-control.ng-valid,
+.form-select.ng-valid {
+  border-color: green !important;
+}
