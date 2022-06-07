@@ -88,7 +88,7 @@ export class UserController {
 
   /**login user */
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<string> {
+  async login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
     const loginInstance = this.userHelper.loginDtoToInstance(loginDto);
     return this.userService.login(loginInstance);
   }

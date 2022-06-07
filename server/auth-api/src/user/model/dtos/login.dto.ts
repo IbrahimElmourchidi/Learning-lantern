@@ -6,6 +6,6 @@ export class LoginDto {
   @IsEmail()
   userEmail: string;
   /**@ignore */
-  @Matches('^(?=.*[A-Z].*[a-z])(?=.*[0-9]).{8,30}$')
+  @Matches('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,30}$')
   userPassword: string;
 }

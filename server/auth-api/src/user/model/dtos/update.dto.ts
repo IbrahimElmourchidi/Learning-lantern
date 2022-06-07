@@ -12,6 +12,6 @@ export class UpdateDto {
   userLName: string;
   /**@ignore */
   @IsString()
-  @Matches('^(?=.*[A-Z].*[a-z])(?=.*[0-9]).{8,30}$')
+  @Matches('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,30}$')
   userPassword: string;
 }

@@ -162,13 +162,14 @@ export class UserService {
    * @returns JWT
    */
   // login user
-  async login(LoginInstance: LoginI): Promise<string> {
+  async login(LoginInstance: LoginI): Promise<{ token: string }> {
     // check if user exists
     const user = await this.checkEmailPass(
       LoginInstance.Email,
       LoginInstance.Password,
     );
-    return this.authService.generateToken(user);
+    const token = await this.authService.generateToken(user);
+    return { token };
   }
 
   /**
