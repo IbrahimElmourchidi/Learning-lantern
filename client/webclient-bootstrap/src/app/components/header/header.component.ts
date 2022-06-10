@@ -11,7 +11,6 @@ export class HeaderComponent implements OnInit {
   appState!: AppState;
   constructor(private state: StateService) {}
   ngOnInit(): void {
-    let authorized = localStorage.getItem('loggedIn');
     this.state.currentState.subscribe((state) => (this.appState = state));
   }
   toggleMode() {

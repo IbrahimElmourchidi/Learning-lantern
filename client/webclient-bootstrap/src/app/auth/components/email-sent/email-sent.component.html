@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row justify-content-center align-items-center">
+    <div class="card col-md-6 text-center shadow rounded p-4 m-4">
+      <div class="card-body">
+        <div class="card-title">
+          <h4>Verification Email Sent</h4>
+          <hr />
+        </div>
+        <p class="card-text my-4">
+          A verification Email Was sent to <strong>{{ userEmail }}</strong>
+          <br />
+          Please check you email.
+        </p>
+        <button class="btn btn-secondary" (click)="resendValidationEmail()">
+          Resend Validation Email
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

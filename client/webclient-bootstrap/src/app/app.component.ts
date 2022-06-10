@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { AppState, StateService } from './shared/services/state.service';
 
 @Component({
@@ -8,11 +9,13 @@ import { AppState, StateService } from './shared/services/state.service';
 })
 export class AppComponent implements OnInit {
   defaultMode = 'light';
-  constructor(private state: StateService) {}
+  constructor(
+    private state: StateService,
+    private jwtService: JwtHelperService
+  ) {}
   ngOnInit(): void {
     let currentMode = localStorage.getItem('view-mode');
-    let loggedIn = localStorage.getItem('loggedIn');
-    if (loggedIn) {
+    if (this.jwtService.isTokenExpired()) {
       this.state.changeState({
         logedIn: true,
       });
