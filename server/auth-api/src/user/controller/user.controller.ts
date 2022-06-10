@@ -46,7 +46,7 @@ export class UserController {
   /**create new user */
   @Serialize(UserSerializeDto)
   @Post('create')
-  createUser(@Body() createDto: CreateDto): Promise<boolean> {
+  createUser(@Body() createDto: CreateDto): Promise<{ token: string }> {
     this.client.emit('new', 'new user created');
     const createInstace = this.userHelper.signupDtoToInstance(createDto);
     return this.userService.createUser(createInstace);
@@ -132,7 +132,9 @@ export class UserController {
   }
   /**validate user email */
   @Post('validate-email')
-  async validateEmail(@Body() validateDto: ValidateEmailDto): Promise<string> {
+  async validateEmail(
+    @Body() validateDto: ValidateEmailDto,
+  ): Promise<{ token: string }> {
     const validateInstance = this.userHelper.validateDtoToInstance(validateDto);
     return this.userService.validateEmail(validateInstance);
   }

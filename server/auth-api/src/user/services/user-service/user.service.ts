@@ -57,7 +57,7 @@ export class UserService {
    * @returns true if creation was successfull, false otherwise
    */
 
-  async createUser(createInstace: CreateUserI): Promise<boolean> {
+  async createUser(createInstace: CreateUserI): Promise<{ token: string }> {
     // check if user already exist and throw error if it is
     const user = await this.getUserByEmail(createInstace.Email);
     if (user) throw new ConflictException('User Already Exists');
@@ -79,7 +79,7 @@ export class UserService {
       dbUser.ValidationCode,
       dbUser.Email,
     );
-    return true;
+    return this.authService.generateToken(dbUser);
   }
 
   /**
@@ -168,8 +168,7 @@ export class UserService {
       LoginInstance.Email,
       LoginInstance.Password,
     );
-    const token = await this.authService.generateToken(user);
-    return { token };
+    return this.authService.generateToken(user);
   }
 
   /**
@@ -227,7 +226,9 @@ export class UserService {
    * @returns if the validatin was successful return JWT
    */
   // validate email
-  async validateEmail(validationInstance: ValidateEmailI): Promise<string> {
+  async validateEmail(
+    validationInstance: ValidateEmailI,
+  ): Promise<{ token: string }> {
     //check if user exist
     const user = await this.getUserById(validationInstance.Id);
     if (!user) throw new NotFoundException('user not found');

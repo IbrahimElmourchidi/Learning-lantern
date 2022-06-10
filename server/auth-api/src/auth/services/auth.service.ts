@@ -19,9 +19,10 @@ export class AuthService {
    * @param user
    * @returns
    */
-  async generateToken(user: Partial<User>): Promise<string> {
+  async generateToken(user: Partial<User>): Promise<{ token: string }> {
     const payload = this.generatePayload(user);
-    return this.jwt.signAsync(payload);
+    const token = await this.jwt.signAsync(payload);
+    return { token };
   }
 
   /**
