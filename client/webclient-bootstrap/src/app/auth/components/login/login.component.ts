@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.invalid) {
       Object.keys(this.loginForm.controls).forEach((key) => {
-        console.log(key);
+     
         this.loginForm.controls[key].markAsDirty();
         this.loginForm.controls[key].markAsTouched();
       });
@@ -67,7 +67,6 @@ export class LoginComponent implements OnInit {
         (res: any) => {
           let result = res as { token: string };
           localStorage.setItem('token', result.token);
-          localStorage.setItem('loggedIn', 'true');
           this.state.changeState({
             logedIn: true,
           });

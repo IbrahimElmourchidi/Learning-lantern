@@ -17,6 +17,5 @@ export class StateService {
     const current = this.state.getValue();
     newState = Object.assign(current, newState);
     this.state.next(newState as AppState);
-    console.log(this.state.getValue());
   }
 }

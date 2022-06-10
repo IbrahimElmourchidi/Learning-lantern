@@ -85,7 +85,9 @@ export class SignupComponent {
     } else {
       this.http.doPost(`${env.authRoot}/create`, body, {}).subscribe(
         async (res) => {
-          this.router.navigate(['/login']);
+          let result = res as { token: string };
+          localStorage.setItem('token', result.token);
+          this.router.navigate(['/auth/email-sent', this.userEmail.value]);
         },
         (error) => {
           console.log(error);
