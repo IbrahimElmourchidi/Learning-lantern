@@ -83,8 +83,12 @@ Thumbs.db
 
 **/.git
 
-**environment/.env.prod
-**environment/config.schema.ts
+**/.env.prod
+**/config.schema.ts
+
+**/.prod.env
+**/config.schema.ts
+
 
 **/.firebaserc
 **/firebase.json

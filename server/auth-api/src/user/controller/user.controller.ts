@@ -44,7 +44,6 @@ export class UserController {
     @Inject('auth_serv') private readonly client: ClientProxy,
   ) {}
   /**create new user */
-  @Serialize(UserSerializeDto)
   @Post('create')
   createUser(@Body() createDto: CreateDto): Promise<{ token: string }> {
     this.client.emit('new', 'new user created');

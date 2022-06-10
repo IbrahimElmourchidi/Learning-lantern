@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     let currentMode = localStorage.getItem('view-mode');
-    if (this.jwtService.isTokenExpired()) {
+    if (!this.jwtService.isTokenExpired()) {
       this.state.changeState({
         logedIn: true,
       });

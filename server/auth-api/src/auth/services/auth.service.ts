@@ -22,7 +22,7 @@ export class AuthService {
   async generateToken(user: Partial<User>): Promise<{ token: string }> {
     const payload = this.generatePayload(user);
     const token = await this.jwt.signAsync(payload);
-    return { token };
+    return { token: token };
   }
 
   /**

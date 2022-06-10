@@ -25,7 +25,7 @@ export class ListenerModule {
           urls: config.get('MQ_URLS').split(' '),
           queue: 'auth',
           queueOptions: {
-            durable: false,
+            durable: config.get('MQ_DURABLE') == 'true',
           },
         },
       }),

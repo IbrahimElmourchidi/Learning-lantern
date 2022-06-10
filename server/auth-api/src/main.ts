@@ -10,13 +10,14 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get<ConfigService>(ConfigService);
-  const microservice = app.connectMicroservice({
+
+  const microservice2 = app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
       urls: configService.get('MQ_URLS').split(' '),
-      queue: 'auth',
+      queue: 'chat',
       queueOptions: {
-        durable: false,
+        durable: configService.get('MQ_DURABLE') == 'true',
       },
     },
   });

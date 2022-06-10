@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  authRoot: 'https://learning-lantern-auth-api.herokuapp.com/user',
 };

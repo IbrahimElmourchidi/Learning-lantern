@@ -3,7 +3,7 @@ POST http://localhost:3000/user/create
 Content-Type: application/json
 
 {
-    "userEmail":"hema@gmail.com",
+    "userEmail":"hema23@gmail.com",
     "userPassword":"123456Hr",
     "userFName":"hema",
     "userLName":"mohamed"
@@ -85,3 +85,14 @@ Content-Type: application/json
 ### resend validation
 GET http://localhost:3000/user/resend-validation
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjN2QwZGRjMS1kM2RmLTRmZjAtYmM5Mi01NGRkOWNmMTFjNmIiLCJpc1ZhbGlkYXRlZCI6dHJ1ZSwiaWF0IjoxNjU0MTg5MjA4LCJleHAiOjE2NTQxODk1MDh9.S6OdaGo-n28azJWT1vjaMjzIxCmXRX_BS5bDZAaC0I4
+
+### create remote
+POST https://learning-lantern-auth-api.herokuapp.com/user/create
+Content-Type: application/json
+
+{
+    "userEmail":"hema6@gmail.com",
+    "userPassword":"123456Hr",
+    "userFName":"hema",
+    "userLName":"mohamed"
+}
