@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   authRoot: 'http://localhost:3000/user',
+  socketRoot: 'http://localhost:3001',
 };
 
 /*

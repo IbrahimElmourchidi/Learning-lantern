@@ -57,7 +57,8 @@ This takes you step by step how this project was build
 - [Day 006: add user profile entity (auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/005.md)
 - [Day 007: Refactor and add documentaition (auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/006.md)
 - [Day 008: basic microservice setup(auth-api)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/server/auth-api/user_stories/007.md)
-- [Day 009: finish auth module (web-client)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/client/webclient-bootstrap/user_stories/001.md)
+- [Day 009: finish auth module (web-client)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/client/webclient-bootstrap/user_stories/002.md)
+- [Day 010: Connect the socket (web-client)](https://github.com/IbrahimElmourchidi/Learning-lantern/blob/development/client/webclient-bootstrap/user_stories/003.md)
 
 # docs
 

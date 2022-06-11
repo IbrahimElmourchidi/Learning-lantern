@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
-import { ChatModule } from './chat.module';
 import { Transport } from '@nestjs/microservices';
 import { ValidationPipe } from '@nestjs/common';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ChatModule);
+  const app = await NestFactory.create(AppModule);
   const config = app.get<ConfigService>(ConfigService);
   const authListener = app.connectMicroservice({
     transport: Transport.RMQ,

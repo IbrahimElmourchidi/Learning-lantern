@@ -3,7 +3,7 @@ POST http://localhost:3000/user/create
 Content-Type: application/json
 
 {
-    "userEmail":"hema23@gmail.com",
+    "userEmail":"hema25@gmail.com",
     "userPassword":"123456Hr",
     "userFName":"hema",
     "userLName":"mohamed"
