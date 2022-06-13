@@ -1,4 +1,11 @@
 <div class="container">
-  <p>class room container works</p>
-  <p>{{ title | async }}</p>
+  <label for="roomName">Room Name</label>
+  <input type="text" id="roomName" [(ngModel)]="roomName" /> <br />
+  <button class="btn btn-primary" (click)="createNewRoom()">Add</button>
+</div>
+
+<div class="roomList">
+  <ul>
+    <li *ngFor="let room of (rooms | async)?.items">{{ room.Name }}</li>
+  </ul>
 </div>

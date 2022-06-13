@@ -27,6 +27,7 @@ import { changePasswordDto } from 'src/user/model/dtos/changePassword.dto';
 import { ChangePassI } from 'src/user/model/interfaces/change-password.interface';
 import { DeleteAccountI } from 'src/user/model/interfaces/delete-account.interface';
 import { ValidateEmailI } from 'src/user/model/interfaces/validate-email.interface';
+import { UserI } from 'src/user/model/interfaces/user.interface';
 
 /**
  * This Service is concerned with all the database logic related to user entity
@@ -57,7 +58,9 @@ export class UserService {
    * @returns true if creation was successfull, false otherwise
    */
 
-  async createUser(createInstace: CreateUserI): Promise<{ token: string }> {
+  async createUser(
+    createInstace: CreateUserI,
+  ): Promise<{ token: string; user: UserI }> {
     // check if user already exist and throw error if it is
     const user = await this.getUserByEmail(createInstace.Email);
     if (user) throw new ConflictException('User Already Exists');
@@ -79,7 +82,8 @@ export class UserService {
       dbUser.ValidationCode,
       dbUser.Email,
     );
-    return this.authService.generateToken(dbUser);
+    const token = await this.authService.generateToken(dbUser);
+    return { token: token.token, user: dbUser };
   }
 
   /**

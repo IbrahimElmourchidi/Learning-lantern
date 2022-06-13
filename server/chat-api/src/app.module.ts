@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { configValidationSchema } from 'env/config.schema';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
+import { Room } from './chat/model/entities/room.entity';
 import { ListenerModule } from './listener/listener.module';
 import { User } from './user/model/entities/user.entity';
 import { UserModule } from './user/user.module';
@@ -21,10 +22,9 @@ import { UserModule } from './user/user.module';
         type: 'postgres',
         url: config.get('DB_URL'),
         synchronize: config.get('DB_SYNC'),
-        entities: [User],
+        entities: [User, Room],
       }),
     }),
-    UserModule,
     ChatModule,
     ListenerModule,
   ],

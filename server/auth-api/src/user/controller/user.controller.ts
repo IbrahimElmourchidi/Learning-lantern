@@ -45,10 +45,11 @@ export class UserController {
   ) {}
   /**create new user */
   @Post('create')
-  createUser(@Body() createDto: CreateDto): Promise<{ token: string }> {
-    this.client.emit('new', 'new user created');
+  async createUser(@Body() createDto: CreateDto): Promise<{ token: string }> {
     const createInstace = this.userHelper.signupDtoToInstance(createDto);
-    return this.userService.createUser(createInstace);
+    const result = await this.userService.createUser(createInstace);
+    this.client.emit('newUser', result.user);
+    return { token: result.token };
   }
 
   /**get all users paginated */

@@ -41,7 +41,6 @@ export class SerializePaginatedInterceptor implements NestInterceptor {
         let result = [];
         let rawData = data['items'];
         for (let i of rawData) {
-          console.log(typeof i.Profile);
           result.push(
             plainToInstance(this.dto, i, {
               excludeExtraneousValues: true,

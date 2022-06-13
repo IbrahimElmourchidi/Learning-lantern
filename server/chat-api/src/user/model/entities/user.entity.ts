@@ -1,13 +1,10 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Room } from 'src/chat/model/entities/room.entity';
+import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryColumn('uuid')
   Id: string;
-  @Column({
-    unique: true,
-  })
-  PImage: string;
   @Column({
     nullable: false,
     default: 4,
@@ -23,4 +20,7 @@ export class User {
     length: 60,
   })
   LastName: string;
+
+  @ManyToMany(() => Room, (room) => room.users)
+  rooms: Room[];
 }

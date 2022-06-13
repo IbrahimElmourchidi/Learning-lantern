@@ -5,11 +5,13 @@ import {
   ClientsProviderAsyncOptions,
   Transport,
 } from '@nestjs/microservices';
-import { AuthListenerController } from './controllers/admin-listener.controller';
+import { AuthModule } from 'src/auth/auth.module';
+import { UserModule } from 'src/user/user.module';
+import { AuthListenerController } from './controllers/auth-listener.controller';
 
 @Module({
   controllers: [AuthListenerController],
-  imports: [],
+  imports: [UserModule],
   exports: [],
 })
 export class ListenerModule {

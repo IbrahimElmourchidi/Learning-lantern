@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../model/entities/user.entity';
+import { UserI } from '../model/interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -16,12 +17,14 @@ export class UserService {
    * @returns Promise with the user object found in the database
    */
   async getUserById(Id: string): Promise<User> {
+    return this.userRepo.findOne({ where: { Id } });
+  }
+
+  async createUser(user: UserI) {
     try {
-      return this.userRepo.findOne({ where: { Id } });
+      this.userRepo.save(user);
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Internal Server Error,Database Error',
-      );
+      throw new InternalServerErrorException();
     }
   }
 }
