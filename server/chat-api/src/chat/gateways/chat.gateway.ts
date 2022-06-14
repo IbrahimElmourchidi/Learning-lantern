@@ -8,6 +8,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/services/auth.service';
+import { PageI } from 'src/shared/interfaces/page.interface';
 import { UserService } from 'src/user/services/user.service';
 import { RoomI } from '../model/interfaces/room.interface';
 import { RoomService } from '../services/room.service';
@@ -44,7 +45,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         socket.data.user = user;
         const rooms = await this.roomService.getRoomsForUser(user.Id, {
           page: 1,
-          limit: 5,
+          limit: 10,
         });
         socket.emit('rooms', rooms);
       }
@@ -66,5 +67,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async createRoom(socket: Socket, room: RoomI): Promise<RoomI> {
     console.log(room);
     return this.roomService.createRoom(room, socket.data.user);
+  }
+
+  @SubscribeMessage('roomPaginate')
+  async onPaginationRoom(socket: Socket, page: PageI) {
+    page.limit = page.limit < 20 ? page.limit : 20;
+    const rooms = await this.roomService.getRoomsForUser(
+      socket.data.user,
+      page,
+    );
+    socket.emit('rooms', rooms);
   }
 }

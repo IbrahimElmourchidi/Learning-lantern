@@ -32,7 +32,9 @@ export class RoomService {
     const query = this.roomRepo
       .createQueryBuilder('room')
       .leftJoin('room.users', 'user')
-      .where('user.Id = :Id', { Id });
+      .where('user.Id = :Id', { Id })
+      .leftJoinAndSelect('room.users', 'all_users')
+      .orderBy('room.Name', 'ASC');
     return paginate(query, options);
   }
 }
