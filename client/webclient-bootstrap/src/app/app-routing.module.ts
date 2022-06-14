@@ -20,11 +20,11 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: 'class',
-    loadChildren: () =>
-      import('./classroom/classroom.module').then((m) => m.ClassroomModule),
-  },
+  // {
+  //   path: 'class',
+  //   loadChildren: () =>
+  //     import('./classroom/classroom.module').then((m) => m.ClassroomModule),
+  // },
   {
     path: '**',
     component: NotFoundComponent,
