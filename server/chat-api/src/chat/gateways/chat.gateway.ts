@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,9 +7,11 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { AuthService } from 'src/auth/services/auth.service';
 import { PageI } from 'src/shared/interfaces/page.interface';
 import { UserService } from 'src/user/services/user.service';
+import { Room } from '../model/entities/room.entity';
 import { RoomI } from '../model/interfaces/room.interface';
 import { RoomService } from '../services/room.service';
 
@@ -32,6 +34,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return 'ok in shaa allah';
   }
 
+  // @UseGuards(JwtGuard)
   async handleConnection(socket: Socket, ...args: any[]) {
     try {
       let veri = await this.authService.verifyJWT(
@@ -39,15 +42,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
       const user = await this.userService.getUserById(veri.userId);
       if (!user) {
-        console.log('unauthorized');
         this.disconnect(socket);
       } else {
         socket.data.user = user;
-        const rooms = await this.roomService.getRoomsForUser(user.Id, {
-          page: 1,
-          limit: 10,
-        });
-        socket.emit('rooms', rooms);
+        this.emitRoom(socket);
       }
     } catch (error) {
       this.disconnect(socket);
@@ -64,9 +62,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('createRoom')
-  async createRoom(socket: Socket, room: RoomI): Promise<RoomI> {
-    console.log(room);
-    return this.roomService.createRoom(room, socket.data.user);
+  async createRoom(socket: Socket, room: Room) {
+    await this.roomService.createRoom(room, socket.data.user);
+    this.emitRoom(socket);
   }
 
   @SubscribeMessage('roomPaginate')
@@ -76,6 +74,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.data.user,
       page,
     );
+    socket.emit('rooms', rooms);
+  }
+
+  @SubscribeMessage('joinRoom')
+  async joinRoom(socket: Socket, roomId: string) {
+    console.log(socket.data.user);
+    await this.roomService.joinRoom(roomId, socket.data.user);
+    this.emitRoom(socket);
+  }
+
+  async emitRoom(socket: Socket) {
+    const user = socket.data.user;
+    const rooms = await this.roomService.getRoomsForUser(user.Id, {
+      page: 1,
+      limit: 10,
+    });
     socket.emit('rooms', rooms);
   }
 }

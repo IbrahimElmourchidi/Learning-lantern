@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PlaceHolderDirective } from '../shared/directeives/placeholder.directive';
 import { ClassroomRoutingModule } from './classroom-routing.module';
 import { CalendarComponent } from './compnents/calendar/calendar.component';
 import { ClassContainerComponent } from './compnents/class-container.ts/class-container.component';
@@ -16,7 +18,7 @@ import { ChatService } from './services/chat.service';
     CalendarComponent,
     TodoComponent,
   ],
-  imports: [CommonModule, ClassroomRoutingModule],
+  imports: [CommonModule, ClassroomRoutingModule, ReactiveFormsModule],
   exports: [],
   providers: [ChatService],
 })

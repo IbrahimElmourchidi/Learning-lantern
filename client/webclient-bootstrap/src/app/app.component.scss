@@ -2,3 +2,13 @@
   min-height: 100vh;
   position: relative;
 }
+
+.notification-container {
+  position: fixed;
+  z-index: 100;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+}

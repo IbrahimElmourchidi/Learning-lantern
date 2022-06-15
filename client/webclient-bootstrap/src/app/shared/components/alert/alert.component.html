@@ -1,4 +1,17 @@
-<div class="backdrop"></div>
-<div class="alert-box">
-  <div class="card">simple card</div>
+<div
+  class="card"
+  style="width: 350px"
+  [class.hidden]="isHidden"
+  [class.green]="style === 'green'"
+  [class.red]="style === 'red'"
+>
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <p class="p-0 m-0">{{ header }}</p>
+    <button type="button" class="btn-close" (click)="closeMe()"></button>
+  </div>
+  <div class="card-body py-0" *ngIf="message.length">
+    <div class="card-text">
+      <p>{{ message }}</p>
+    </div>
+  </div>
 </div>

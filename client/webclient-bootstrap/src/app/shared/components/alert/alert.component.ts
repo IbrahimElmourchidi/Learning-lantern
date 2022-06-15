@@ -1,8 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-alert',
+  selector: 'app-global-alert',
   templateUrl: 'alert.component.html',
   styleUrls: ['alert.component.scss'],
 })
-export class AlertComponent {}
+export class AlertComponent {
+  @Input() header = '';
+  @Input() message = '';
+  @Input() style = '';
+  isHidden = false;
+  closeMe() {
+    this.isHidden = true;
+  }
+}

@@ -145,4 +145,10 @@ export class UserController {
   async resendValidtion(@Req() req: any): Promise<boolean> {
     return this.userService.resendValidation(req.user.Id);
   }
+
+  @Serialize(UserSerializeDto)
+  @Get('find-by-email')
+  async findByUserName(@Query('email') email: string) {
+    return this.userService.findAllByEmail(email);
+  }
 }

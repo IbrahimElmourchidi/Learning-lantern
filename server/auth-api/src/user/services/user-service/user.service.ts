@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
+import { Connection, Like, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 
@@ -395,5 +395,13 @@ export class UserService {
     let passMatch = await this.comparePass(Password, user.Password);
     if (!passMatch) throw new UnauthorizedException('invalid credentials');
     return user;
+  }
+
+  async findAllByEmail(Email: string): Promise<User[]> {
+    return this.userRepo
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.Profile', 'Profile')
+      .where({ Email: Like(`%${Email}%`) })
+      .getMany();
   }
 }

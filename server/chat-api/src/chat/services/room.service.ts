@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   IPaginationOptions,
@@ -8,23 +8,37 @@ import {
 import { User } from 'src/user/model/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Room } from '../model/entities/room.entity';
-import { RoomI } from '../model/interfaces/room.interface';
 
 @Injectable()
 export class RoomService {
   constructor(@InjectRepository(Room) private roomRepo: Repository<Room>) {}
 
-  async createRoom(room: RoomI, creator: User): Promise<Room> {
+  async createRoom(room: Room, creator: User): Promise<Room> {
     const newRoom = await this.addCreatorToRoom(room, creator);
-    console.log(newRoom);
     return this.roomRepo.save(newRoom);
   }
 
-  async addCreatorToRoom(room: RoomI, creator: User): Promise<RoomI> {
+  async joinRoom(roomId: string, user: User): Promise<Room> {
+    let room = await this.findRoomById(roomId);
+    room = await this.addCreatorToRoom(room, user);
+    return this.roomRepo.save(room);
+  }
+  async addCreatorToRoom(room: Room, creator: User): Promise<Room> {
     room.users.push(creator);
     return room;
   }
 
+  async findRoomById(Id: string): Promise<Room> {
+    try {
+      return this.roomRepo
+        .createQueryBuilder('room')
+        .leftJoinAndSelect('room.users', 'users')
+        .where({ Id })
+        .getOne();
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
+  }
   async getRoomsForUser(
     Id: string,
     options: IPaginationOptions,

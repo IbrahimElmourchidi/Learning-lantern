@@ -1,6 +1,6 @@
 <nav
   class="navbar navbar-expand-lg bg-primary navbar-dark shadow p-1 w-100 position-fixed mb-4"
-  style="z-index: 999"
+  style="z-index: 10"
 >
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="">
@@ -65,7 +65,6 @@
           </li>
           <li class="nav-item dropdown" *ngIf="appState.logedIn">
             <a
-              routerLink="."
               class="text-uppercase text-decoration-none"
               role="button"
               data-bs-toggle="dropdown"
@@ -169,7 +168,6 @@
         login</a
       >
       <a
-        routerLink="."
         class="list-group-item list-group-item-action text-uppercase accordion-button"
         data-bs-toggle="collapse"
         data-bs-target="#collapseOne"

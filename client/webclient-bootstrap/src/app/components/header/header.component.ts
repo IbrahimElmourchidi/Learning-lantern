@@ -9,6 +9,7 @@ import { AppState, StateService } from 'src/app/shared/services/state.service';
 export class HeaderComponent implements OnInit {
   activeLink = 'home';
   appState!: AppState;
+  notifyState!: Notification;
   constructor(private state: StateService) {}
   ngOnInit(): void {
     this.state.currentState.subscribe((state) => (this.appState = state));

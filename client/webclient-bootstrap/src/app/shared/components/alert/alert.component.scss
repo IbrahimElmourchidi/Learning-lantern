@@ -1,20 +1,17 @@
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75);
-  z-index: 50;
+.card {
+  z-index: 50 !important;
+  margin-bottom: 1rem;
 }
-.alert-box {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hidden {
+  display: none !important;
+}
+
+.green {
+  background-color: green;
+  color: var(--app-contrast-text);
+}
+
+.red {
+  background-color: red;
+  color: var(--app-contrast-text);
 }

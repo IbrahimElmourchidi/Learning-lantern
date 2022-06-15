@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { RoomI, RoomPaginate } from '../interfaces/room.interface';
 
 export interface AppState {
   logedIn: boolean;
   dark: boolean;
+  rooms?: RoomPaginate;
 }
 @Injectable()
 export class StateService {

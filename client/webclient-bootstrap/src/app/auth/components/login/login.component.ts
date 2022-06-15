@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.invalid) {
       Object.keys(this.loginForm.controls).forEach((key) => {
-     
         this.loginForm.controls[key].markAsDirty();
         this.loginForm.controls[key].markAsTouched();
       });
@@ -70,6 +69,7 @@ export class LoginComponent implements OnInit {
           this.state.changeState({
             logedIn: true,
           });
+          alert('ok');
           this.router.navigate(['/']);
         },
         (error: any) => {

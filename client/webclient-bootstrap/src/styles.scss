@@ -106,6 +106,7 @@
   $input-focus-color: $app-text;
   $form-select-bg: $app-card;
   $form-select-color: $app-text;
+  $modal-content-bg: $app-card;
   --#{$variable-prefix}body-color: #{$body-color};
   --#{$variable-prefix}body-bg: #{$body-bg};
 
@@ -164,6 +165,7 @@ body {
 .bg-header {
   background: var(--app-header-color);
 }
+
 @media all and (max-width: 900px) {
   .desk {
     display: none !important;

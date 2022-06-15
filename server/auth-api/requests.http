@@ -96,3 +96,6 @@ Content-Type: application/json
     "userFName":"hema",
     "userLName":"mohamed"
 }
+
+### get all matching email
+GET http://localhost:3000/user/find-by-email?email=hem

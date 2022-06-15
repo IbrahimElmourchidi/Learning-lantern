@@ -14,6 +14,7 @@ export class Room implements RoomI {
   Id: string;
   @Column({
     nullable: false,
+    length: 30,
   })
   Name: string;
 

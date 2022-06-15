@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  authRoot: 'http://localhost:3000/user',
-  socketRoot: 'http://localhost:3001',
+  authRoot: 'http://172.31.239.49:3000/user',
+  socketRoot: 'http://172.31.239.49:3001',
 };
 
 /*

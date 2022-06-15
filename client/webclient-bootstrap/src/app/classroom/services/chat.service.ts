@@ -5,7 +5,9 @@ import { RoomI, RoomPaginate } from 'src/app/shared/interfaces/room.interface';
 @Injectable()
 export class ChatService {
   constructor(private socket: Socket, private jwtService: JwtHelperService) {}
-  send() {}
+  send(eventName: string, data: any) {
+    this.socket.emit(eventName, data);
+  }
 
   listen(eventName: string) {
     return this.socket.fromEvent<any>(eventName);
