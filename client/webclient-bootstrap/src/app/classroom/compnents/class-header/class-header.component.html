@@ -6,8 +6,9 @@
     <a class="navbar-brand" routerLink="">
       <img src="/assets/img/logo.webp" alt="logo" class="logo" />
     </a>
-    <button
-      class="navbar-toggler"
+
+    <a
+      class="toggle-btn me-3"
       type="button"
       data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasExample"
@@ -16,43 +17,10 @@
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </a>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
-        <div class="nav-links d-flex me-4">
-          <li class="nav-item" (click)="changeActive('home')">
-            <a
-              routerLink="/"
-              class="text-uppercase text-decoration-none"
-              [class.active]="activeLink === 'home'"
-              >Home</a
-            >
-          </li>
-          <li class="nav-item" (click)="changeActive('services')">
-            <a
-              routerLink="/"
-              class="text-uppercase text-decoration-none"
-              [class.active]="activeLink === 'services'"
-              >Services</a
-            >
-          </li>
-          <li class="nav-item" (click)="changeActive('plans')">
-            <a
-              routerLink="/"
-              class="text-uppercase text-decoration-none"
-              [class.active]="activeLink === 'plans'"
-              >Prices</a
-            >
-          </li>
-          <li class="nav-item" (click)="changeActive('contact')">
-            <a
-              routerLink="/"
-              class="text-uppercase text-decoration-none"
-              [class.active]="activeLink === 'contact'"
-              >Contact Us</a
-            >
-          </li>
-        </div>
         <div class="login ms-4 d-flex">
           <li *ngIf="!appState.logedIn">
             <a
@@ -81,7 +49,7 @@
             >
               <li>
                 <a
-                  routerLink="/class/list"
+                  routerLink="."
                   data-bs-dismiss="offcanvas"
                   class="dropdown-item"
                 >
@@ -132,32 +100,22 @@
   <div class="offcanvas-body p-0 mt-4">
     <div class="list-group list-group-flush p-0 m-0">
       <a
-        routerLink="/"
+        routerLink="/class/list"
         data-bs-dismiss="offcanvas"
         class="list-group-item list-group-item-action text-uppercase"
-        (click)="changeActive('home')"
-        >home</a
+        >Classroom List</a
       >
       <a
-        routerLink="/"
+        routerLink="/class/calendar"
         data-bs-dismiss="offcanvas"
         class="list-group-item list-group-item-action text-uppercase"
-        (click)="changeActive('services')"
-        >Services</a
+        >Calendar</a
       >
       <a
-        routerLink="/"
+        routerLink="/class/todo"
         data-bs-dismiss="offcanvas"
         class="list-group-item list-group-item-action text-uppercase"
-        (click)="changeActive('plans')"
-        >Prices</a
-      >
-      <a
-        routerLink="/"
-        data-bs-dismiss="offcanvas"
-        class="list-group-item list-group-item-action text-uppercase"
-        (click)="changeActive('contact')"
-        >Contact Us</a
+        >Todo</a
       >
       <a
         *ngIf="!appState.logedIn"

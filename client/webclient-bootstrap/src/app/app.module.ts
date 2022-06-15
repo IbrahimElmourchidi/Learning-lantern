@@ -21,6 +21,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { HttpService } from './shared/services/http.service';
 import { StateService } from './shared/services/state.service';
 import { LandingComponent } from './components/landing/landing.component';
+import { AlertComponent } from './shared/components/alert/alert.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -46,6 +47,8 @@ const socketConfig: SocketIoConfig = {
     FooterComponent,
     NotFoundComponent,
     LandingComponent,
+    // shared components
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
