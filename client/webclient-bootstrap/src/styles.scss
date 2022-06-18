@@ -166,8 +166,16 @@ body {
   background: var(--app-header-color);
 }
 
+.mobile {
+  display: none !important;
+}
+
 @media all and (max-width: 900px) {
   .desk {
     display: none !important;
+  }
+
+  .mobile {
+    display: flex !important;
   }
 }

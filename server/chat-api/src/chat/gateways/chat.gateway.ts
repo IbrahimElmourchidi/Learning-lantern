@@ -1,4 +1,4 @@
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import { OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,12 +7,17 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { AuthService } from 'src/auth/services/auth.service';
 import { PageI } from 'src/shared/interfaces/page.interface';
 import { UserService } from 'src/user/services/user.service';
+import { JoinedRoom } from '../model/entities/joined-room.entity';
 import { Room } from '../model/entities/room.entity';
+import { JoinedRoomI } from '../model/interfaces/joined-room.interface';
+import { MessageI } from '../model/interfaces/message.interface';
 import { RoomI } from '../model/interfaces/room.interface';
+import { ConnectedUserService } from '../services/connected-user.service';
+import { JoinedRoomService } from '../services/joined-room.service';
+import { MessageService } from '../services/message.service';
 import { RoomService } from '../services/room.service';
 
 import { allowedHosts } from './allowed-hosts';
@@ -20,7 +25,9 @@ import { allowedHosts } from './allowed-hosts';
 @WebSocketGateway({
   cors: { origin: allowedHosts },
 })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ChatGateway
+  implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
+{
   @WebSocketServer()
   server: Server;
   conn = 0;
@@ -28,7 +35,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private authService: AuthService,
     private userService: UserService,
     private roomService: RoomService,
+    private connectedUserService: ConnectedUserService,
+    private joinedRoomService: JoinedRoomService,
+    private messagesService: MessageService,
   ) {}
+
+  async onModuleInit() {
+    await this.connectedUserService.deleteAll();
+    await this.joinedRoomService.deleteAll();
+  }
+
   @SubscribeMessage('hello')
   handleMessage(client: Socket, payload: any): string {
     return 'ok in shaa allah';
@@ -36,6 +52,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   // @UseGuards(JwtGuard)
   async handleConnection(socket: Socket, ...args: any[]) {
+    // verify the jwt
     try {
       let veri = await this.authService.verifyJWT(
         socket.handshake.headers.authorization,
@@ -44,7 +61,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (!user) {
         this.disconnect(socket);
       } else {
+        // add user data to the socket object
         socket.data.user = user;
+
+        // save connection to database
+        await this.connectedUserService.create({
+          SocketId: socket.id,
+          user: user,
+        });
+        // emit room to the user
         this.emitRoom(socket);
       }
     } catch (error) {
@@ -52,7 +77,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  handleDisconnect(socket: Socket) {
+  async handleDisconnect(socket: Socket) {
+    //remove connection from DB
+    await this.connectedUserService.deleteBySocketId(socket.id);
+    await this.joinedRoomService.deleteBySocketId(socket.id);
+    // close the socket
     socket.disconnect();
   }
 
@@ -79,7 +108,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('joinRoom')
   async joinRoom(socket: Socket, roomId: string) {
-    console.log(socket.data.user);
     await this.roomService.joinRoom(roomId, socket.data.user);
     this.emitRoom(socket);
   }
@@ -91,5 +119,49 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       limit: 10,
     });
     socket.emit('rooms', rooms);
+  }
+
+  @SubscribeMessage('getRoomMessages')
+  async getRoomMessages(socket: Socket, room: RoomI) {
+    if (room) {
+      const messages = await this.messagesService.findMessagesFromRoom(room, {
+        page: 1,
+        limit: 10,
+      });
+      socket.emit('messages', messages);
+    }
+  }
+
+  @SubscribeMessage('enterRoom')
+  async enterRoom(socket: Socket, room: RoomI) {
+    console.log(`room ${room.Name} entered`);
+
+    await this.joinedRoomService.create({
+      SocketId: socket.id,
+      user: socket.data.user,
+      room,
+    });
+  }
+  OnDestroy;
+  @SubscribeMessage('leaveRoom')
+  async leaveRoom(socket: Socket) {
+    await this.joinedRoomService.deleteBySocketId(socket.id);
+  }
+
+  @SubscribeMessage('addMessage')
+  async addMessage(socket: Socket, message: MessageI) {
+    const createMessage: MessageI = await this.messagesService.create(
+      message,
+      socket.data.user,
+    );
+    const room: RoomI = await this.roomService.getRoomById(
+      createMessage.room.Id,
+    );
+    const joinedUser: JoinedRoomI[] = await this.joinedRoomService.findByRoom(
+      room,
+    );
+    for (const user of joinedUser) {
+      this.server.to(user.SocketId).emit('newMessage', createMessage);
+    }
   }
 }

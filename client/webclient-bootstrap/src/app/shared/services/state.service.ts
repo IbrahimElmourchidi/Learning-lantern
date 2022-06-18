@@ -6,12 +6,15 @@ export interface AppState {
   logedIn: boolean;
   dark: boolean;
   rooms?: RoomPaginate;
+  activeRoom?: RoomI;
+  alreadyJoined?: boolean;
 }
 @Injectable()
 export class StateService {
   private state = new BehaviorSubject<AppState>({
     logedIn: false,
     dark: false,
+    alreadyJoined: false,
   });
   currentState = this.state.asObservable();
 

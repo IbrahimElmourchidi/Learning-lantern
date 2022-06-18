@@ -1,0 +1,177 @@
+<div class="side p-2 desk shadow">
+  <ul
+    class="nav d-flex align-items-center justify-content-center p-0 flex-column"
+  >
+    <li class="nav-item my-4 middle">
+      <a
+        class="nav-link"
+        [class.active]="active === 'chat'"
+        (click)="changeActive('chat')"
+        aria-current="page"
+        routerLink="./chat"
+      >
+        <i class="bi bi-chat-dots-fill"></i>
+      </a>
+    </li>
+    <li class="nav-item my-4">
+      <a
+        class="nav-link"
+        routerLink="./join"
+        [class.active]="active === 'join'"
+        (click)="changeActive('join')"
+      >
+        <i class="bi bi-camera-video-fill"></i>
+      </a>
+    </li>
+    <li class="nav-item my-4">
+      <a
+        class="nav-link"
+        routerLink="./lesson"
+        [class.active]="active === 'text'"
+        (click)="changeActive('text')"
+      >
+        <i class="bi bi-journal-richtext"></i>
+      </a>
+    </li>
+    <li class="nav-item my-4">
+      <a
+        class="nav-link"
+        routerLink="./stat"
+        [class.active]="active === 'stat'"
+        (click)="changeActive('stat')"
+      >
+        <i class="bi bi-graph-up-arrow"></i>
+      </a>
+    </li>
+  </ul>
+
+  <div class="dropdown mb-4">
+    <a
+      class="text-uppercase text-decoration-none d-flex align-items-center"
+      role="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="bi bi-person-circle pe-1"></i>
+    </a>
+    <ul class="dropdown-menu" [class.dropdown-menu-dark]="appState.dark">
+      <li>
+        <a
+          routerLink="/class/list"
+          data-bs-dismiss="offcanvas"
+          class="dropdown-item"
+        >
+          <i class="bi bi-easel-fill"></i>
+          Classroom
+        </a>
+      </li>
+      <li>
+        <a routerLink="/" data-bs-dismiss="offcanvas" class="dropdown-item">
+          <i class="bi bi-gear-fill"></i>
+          Settings
+        </a>
+      </li>
+      <li (click)="toggleMode()" class="text-center">
+        <a class="text-uppercase text-decoration-none">
+          <i class="bi bi-brightness-high-fill" *ngIf="appState.dark"></i>
+          <i class="bi bi-brightness-high" *ngIf="!appState.dark"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="bottom mobile shadow p-2">
+  <ul class="nav d-flex align-items-center w-100 p-0 justify-content-center">
+    <li class="nav-item px-2 middle">
+      <a
+        class="nav-link"
+        [class.active]="active === 'chat'"
+        (click)="changeActive('chat')"
+        aria-current="page"
+        routerLink="./chat"
+      >
+        <i class="bi bi-chat-dots-fill"></i>
+      </a>
+    </li>
+    <li class="nav-item px-2">
+      <a
+        class="nav-link"
+        routerLink="./join"
+        [class.active]="active === 'join'"
+        (click)="changeActive('join')"
+      >
+        <i class="bi bi-camera-video-fill"></i>
+      </a>
+    </li>
+    <li class="nav-item px-2">
+      <a
+        class="nav-link"
+        routerLink="./lesson"
+        [class.active]="active === 'text'"
+        (click)="changeActive('text')"
+      >
+        <i class="bi bi-journal-richtext"></i>
+      </a>
+    </li>
+    <li class="nav-item px-2">
+      <a
+        class="nav-link"
+        routerLink="./stat"
+        [class.active]="active === 'stat'"
+        (click)="changeActive('stat')"
+      >
+        <i class="bi bi-graph-up-arrow"></i>
+      </a>
+    </li>
+  </ul>
+  <div class="dropdown me-4">
+    <a
+      class="text-uppercase text-decoration-none d-flex align-items-center"
+      role="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="bi bi-person-circle pe-1"></i>
+    </a>
+    <ul class="dropdown-menu" [class.dropdown-menu-dark]="appState.dark">
+      <li>
+        <a
+          routerLink="/class/list"
+          data-bs-dismiss="offcanvas"
+          class="dropdown-item"
+        >
+          <i class="bi bi-easel-fill"></i>
+          Classroom
+        </a>
+      </li>
+      <li>
+        <a routerLink="/" data-bs-dismiss="offcanvas" class="dropdown-item">
+          <i class="bi bi-gear-fill"></i>
+          Settings
+        </a>
+      </li>
+      <li (click)="toggleMode()" class="text-center">
+        <a class="text-uppercase text-decoration-none">
+          <i class="bi bi-brightness-high-fill" *ngIf="appState.dark"></i>
+          <i class="bi bi-brightness-high" *ngIf="!appState.dark"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="main">
+  <div class="d-flex justify-content-between align-items-center p-2 shadow-sm">
+    <div class="d-flex align-items-center justify-content-start">
+      <a routerLink="../list">
+        <i class="bi bi-chevron-left"></i>
+      </a>
+      <h3 class="m-0">Class titile</h3>
+    </div>
+    <button class="btn btn-secondary m-0">
+      <i class="bi bi-person-plus-fill" style="font-size: 1rem"></i>
+      Invite
+    </button>
+  </div>
+  <router-outlet></router-outlet>
+</div>

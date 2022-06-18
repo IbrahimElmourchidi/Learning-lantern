@@ -1,0 +1,20 @@
+<ul class="messages-container d-flex flex-column m-0" #scrollMe>
+  <li class="other" *ngFor="let message of (messages$ | async)?.items">
+    <small>{{ message.user?.FirstName }}</small>
+    <p>
+      {{ message.text }}
+    </p>
+  </li>
+</ul>
+<form class="d-flex mx-3 my-2 send" [formGroup]="sendMessageFrom">
+  <input
+    class="form-control me-2"
+    type="text-area"
+    placeholder="Send Message"
+    aria-label="Send Message"
+    [formControl]="userMessage"
+  />
+  <button class="btn btn-secondary" type="submit" (click)="sendMessage()">
+    <i class="bi bi-send-fill"></i>
+  </button>
+</form>

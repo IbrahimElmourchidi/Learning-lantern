@@ -58,7 +58,7 @@
               </li>
               <li>
                 <a
-                  routerLink="."
+                  routerLink="/"
                   data-bs-dismiss="offcanvas"
                   class="dropdown-item"
                 >
@@ -85,10 +85,12 @@
   class="offcanvas offcanvas-start bg-primary"
   tabindex="-1"
   id="offcanvasExample"
-  aria-labelledby="offcanvasExampleLabel"
+  aria-labelledby="sidebar"
 >
   <div class="offcanvas-header">
-    <img src="assets/img/logo.webp" alt="logo" class="logo" />
+    <a routerLink="/" data-bs-dismiss="offcanvas">
+      <img src="assets/img/logo.webp" alt="logo" class="logo" />
+    </a>
     <button
       type="button"
       class="btn-close"
@@ -126,16 +128,16 @@
         login</a
       >
       <a
-        class="list-group-item list-group-item-action text-uppercase accordion-button"
+        class="list-group-item list-group-item-action text-uppercase accordion-button collapsed"
         data-bs-toggle="collapse"
-        data-bs-target="#collapseOne"
+        data-bs-target="#collapseProfile"
         data-bs-dismiss="offcanvas"
       >
         <i class="bi bi-person-circle pe-1"></i>
         profile
         <i class="bi bi-caret-down-fill small"></i>
       </a>
-      <div id="collapseOne" class="accordion-collapse collapse">
+      <div id="collapseProfile" class="accordion-collapse collapse">
         <a
           routerLink="/class/list"
           data-bs-dismiss="offcanvas"
@@ -145,7 +147,7 @@
           Classroom
         </a>
         <a
-          routerLink="."
+          routerLink="/"
           data-bs-dismiss="offcanvas"
           class="list-group-item list-group-item-action text-uppercase"
         >

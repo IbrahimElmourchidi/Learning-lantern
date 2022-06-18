@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit {
           this.state.changeState({
             logedIn: true,
           });
-          alert('ok');
           this.router.navigate(['/']);
         },
         (error: any) => {

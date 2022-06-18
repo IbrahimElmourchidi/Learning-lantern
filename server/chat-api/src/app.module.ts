@@ -6,6 +6,9 @@ import { Room } from './chat/model/entities/room.entity';
 import { User } from './user/model/entities/user.entity';
 import { MQClientModule } from './MQClient/MQClient.module';
 import { ChatModule } from './chat/chat.module';
+import { ConnectedUser } from './chat/model/entities/connected-user.entity';
+import { JoinedRoom } from './chat/model/entities/joined-room.entity';
+import { Message } from './chat/model/entities/message.entity';
 
 @Module({
   imports: [
@@ -20,7 +23,7 @@ import { ChatModule } from './chat/chat.module';
         type: 'postgres',
         url: config.get('DB_URL'),
         synchronize: config.get('DB_SYNC'),
-        entities: [User, Room],
+        entities: [User, Room, ConnectedUser, JoinedRoom, Message],
       }),
     }),
     MQClientModule,

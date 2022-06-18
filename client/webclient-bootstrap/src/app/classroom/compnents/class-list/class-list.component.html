@@ -39,16 +39,21 @@
     <div
       class="card shadow-sm col-sm-4 m-4"
       style="width: 18rem"
-      *ngFor="let class of appState.rooms?.items"
+      *ngFor="let room of appState.rooms?.items; let i = index"
     >
       <!-- <img src="..." class="card-img-top" alt="..." /> -->
       <div class="card-body d-flex flex-column text-center">
-        <h5 class="card-title">{{ class.Name }}</h5>
+        <h5 class="card-title">{{ room.Name }}</h5>
         <p class="card-text">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum,
           culpa?
         </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <a
+          routerLink="/class/{{ room.Id }}/chat"
+          class="btn btn-primary"
+          (click)="setActiveRoom(i)"
+          >Go somewhere</a
+        >
       </div>
     </div>
   </div>
@@ -59,7 +64,7 @@
   class="modal fade"
   id="createRoomModal"
   tabindex="-1"
-  aria-labelledby="exampleModalLabel"
+  aria-labelledby="createRoomModal"
   aria-hidden="true"
 >
   <div class="modal-dialog">
@@ -118,7 +123,7 @@
   class="modal fade"
   id="JoinRoomModal"
   tabindex="-1"
-  aria-labelledby="exampleModalLabel"
+  aria-labelledby="JoinRoomModal"
   aria-hidden="true"
 >
   <div class="modal-dialog">
@@ -169,5 +174,3 @@
     </div>
   </div>
 </div>
-
-{{ roomId.errors | json }}

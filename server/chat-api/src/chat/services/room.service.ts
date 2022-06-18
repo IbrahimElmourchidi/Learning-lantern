@@ -8,6 +8,7 @@ import {
 import { User } from 'src/user/model/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Room } from '../model/entities/room.entity';
+import { RoomI } from '../model/interfaces/room.interface';
 
 @Injectable()
 export class RoomService {
@@ -19,13 +20,17 @@ export class RoomService {
   }
 
   async joinRoom(roomId: string, user: User): Promise<Room> {
-    let room = await this.findRoomById(roomId);
+    let room = await this.getRoomById(roomId);
     room = await this.addCreatorToRoom(room, user);
     return this.roomRepo.save(room);
   }
-  async addCreatorToRoom(room: Room, creator: User): Promise<Room> {
+  async addCreatorToRoom(room: RoomI, creator: User): Promise<RoomI> {
     room.users.push(creator);
     return room;
+  }
+
+  async getRoomById(Id: string): Promise<RoomI> {
+    return this.roomRepo.findOne({ where: { Id }, relations: ['users'] });
   }
 
   async findRoomById(Id: string): Promise<Room> {

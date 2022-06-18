@@ -1,0 +1,45 @@
+.self {
+  background-color: var(--app-main-color);
+  display: inline-block;
+  list-style: none;
+  margin: 0.75rem 0rem 0.75rem 3rem;
+  align-self: end;
+  padding: 0.5em;
+  border-radius: 8px;
+  max-width: 500px;
+  color: var(--app-contrast-text);
+}
+
+.other {
+  background-color: var(--app-card-color);
+  display: inline-block;
+  list-style: none;
+  max-width: 500px;
+  margin: 0.75rem 3rem 0.75rem 0rem;
+  align-self: start;
+  padding: 0.5em;
+  border-radius: 8px;
+}
+
+.messages-container {
+  overflow-y: scroll;
+  max-height: calc(100vh - 105px);
+}
+
+.send {
+  position: fixed;
+  bottom: 0px;
+  width: calc(100% - 95px);
+  margin: auto;
+}
+
+@media all and (max-width: 900px) {
+  .send {
+    width: 94%;
+    bottom: 70px;
+    margin: auto;
+  }
+  .messages-container {
+    height: calc(100vh - 175px);
+  }
+}

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { matchPassword } from 'src/app/shared/validator/confirm-password.validator';
 import { validateName } from 'src/app/shared/validator/name.validator';
 import { environment as env } from 'src/environments/environment';
@@ -10,7 +12,7 @@ import { environment as env } from 'src/environments/environment';
   templateUrl: 'signup.component.html',
   styleUrls: ['signup.component.scss'],
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
   hide: boolean = true;
   signupForm!: FormGroup;
   userUniversity!: FormControl;
@@ -19,9 +21,20 @@ export class SignupComponent {
   userPassword!: FormControl;
   confirmPassword!: FormControl;
   iAgree!: FormControl;
-  constructor(private router: Router, private http: HttpService) {
+  appState!: AppState;
+  constructor(
+    private router: Router,
+    private http: HttpService,
+    private appStateService: StateService
+  ) {
     this.initFormControls();
     this.createForm();
+  }
+
+  ngOnInit(): void {
+   this.appStateService.currentState.subscribe(
+      (data) => (this.appState = data)
+    );
   }
 
   initFormControls() {
@@ -95,4 +108,5 @@ export class SignupComponent {
       );
     }
   }
+  
 }
