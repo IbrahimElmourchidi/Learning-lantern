@@ -9,11 +9,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        secret: config.get('JWT_SECRET'),
-      }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
     }),
   ],
   providers: [JwtStrategy, JwtGuard, AuthService],

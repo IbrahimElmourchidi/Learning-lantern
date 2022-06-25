@@ -24,6 +24,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { AlertComponent } from './shared/components/alert/alert.component';
 import { PlaceHolderDirective } from './shared/directeives/placeholder.directive';
 import { NotifySerivce } from './shared/services/notify.service';
+import { ChatService } from './classroom/services/chat.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -66,7 +67,7 @@ const socketConfig: SocketIoConfig = {
     }),
     SocketIoModule.forRoot(socketConfig),
   ],
-  providers: [HttpService, StateService, AuthGuard, NotifySerivce],
+  providers: [HttpService, StateService, AuthGuard, NotifySerivce, ChatService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

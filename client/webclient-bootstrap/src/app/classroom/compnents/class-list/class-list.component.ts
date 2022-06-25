@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -19,8 +19,10 @@ export class ClassListComponent implements OnInit, OnDestroy {
   joinRoomForm!: FormGroup;
   roomName!: FormControl;
   roomId!: FormControl;
-  notifyMessage!: Subscription;
-
+  notifySerive!: Subscription;
+  getRoom!: Subscription;
+  newRoom!: Subscription;
+  shouldDestroy: Subscription[] = [];
   constructor(
     private chatService: ChatService,
     private notify: NotifySerivce,
@@ -28,29 +30,23 @@ export class ClassListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initFormControl();
-    this.appStateService.currentState.subscribe(
-      (state) => (this.appState = state)
-    );
-    this.chatService.getRooms().subscribe((data) => {
-      if (this.flag)
-        this.notify.changeNotify({
-          header: `Room ${this.roomName.value} was created.`,
-          style: 'green',
-        });
-      else this.flag = true;
+    this.getRoom = this.chatService.getRooms().subscribe((data) => {
       this.appState.rooms = data;
       this.enterRooms();
     });
-
-    this.notifyMessage = this.chatService.getNewMessage().subscribe((data) => {
-      if (data.room.Id !== this.appState.activeRoom?.Id) {
-        this.notify.changeNotify({
-          header: `New Message: ${data.room.Name}`,
-          message: data.text,
-        });
-      }
+    this.appStateService.currentState.subscribe((data) => {
+      this.appState = data;
     });
+    this.appStateService.changeState({ activeRoom: undefined });
+    this.shouldDestroy.push(this.getRoom);
+    this.notifySerive = this.chatService.getNewMessage().subscribe((data) => {
+      this.notify.changeNotify({
+        header: `New Message: ${data.room.Name}`,
+        message: data.text,
+      });
+    });
+    this.shouldDestroy.push(this.notifySerive);
+    this.initFormControl();
   }
 
   createRoom() {
@@ -105,17 +101,14 @@ export class ClassListComponent implements OnInit, OnDestroy {
   }
 
   enterRooms() {
-    if (this.appState.alreadyJoined === true) return;
     for (let room of this.appState.rooms!.items) {
-      console.log('lets enter rooom ', room.Name);
       this.chatService.enterRoom(room);
     }
-    this.appStateService.changeState({
-      alreadyJoined: true,
-    });
   }
 
   ngOnDestroy(): void {
-    this.notifyMessage.unsubscribe();
+    for (let sub of this.shouldDestroy) {
+      sub.unsubscribe();
+    }
   }
 }

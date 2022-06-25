@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { configValidationSchema } from 'env/config.schema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Room } from './chat/model/entities/room.entity';
 import { User } from './user/model/entities/user.entity';
@@ -12,19 +10,11 @@ import { Message } from './chat/model/entities/message.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: `env/.${process.env.NODE_ENV}.env`,
-      isGlobal: true,
-      validationSchema: configValidationSchema,
-    }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        type: 'postgres',
-        url: config.get('DB_URL'),
-        synchronize: config.get('DB_SYNC'),
-        entities: [User, Room, ConnectedUser, JoinedRoom, Message],
-      }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DB_URL,
+      synchronize: process.env.DB_SYNC == '1',
+      entities: [User, Room, ConnectedUser, JoinedRoom, Message],
     }),
     MQClientModule,
     ChatModule,

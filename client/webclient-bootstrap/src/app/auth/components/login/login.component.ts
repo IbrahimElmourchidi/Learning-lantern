@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ChatService } from 'src/app/classroom/services/chat.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 
@@ -69,7 +70,8 @@ export class LoginComponent implements OnInit {
           this.state.changeState({
             logedIn: true,
           });
-          this.router.navigate(['/']);
+
+          location.href = '/';
         },
         (error: any) => {
           console.log(error);

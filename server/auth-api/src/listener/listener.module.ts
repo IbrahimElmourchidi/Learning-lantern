@@ -1,7 +1,9 @@
 import { DynamicModule, Inject, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  ClientProviderOptions,
   ClientsModule,
+  ClientsModuleOptions,
   ClientsProviderAsyncOptions,
   Transport,
 } from '@nestjs/microservices';
@@ -9,32 +11,21 @@ import { AdminListenerController } from './controllers/admin-listener.controller
 
 @Module({
   controllers: [AdminListenerController],
-  imports: [],
-  exports: [],
-})
-export class ListenerModule {
-  constructor(private config: ConfigService) {}
-
-  static register(): DynamicModule {
-    let options: ClientsProviderAsyncOptions = {
-      name: 'auth_serv',
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
+  imports: [
+    ClientsModule.register([
+      {
+        name: 'auth_serv',
         transport: Transport.RMQ,
         options: {
-          urls: config.get('MQ_URLS').split(' '),
-          queue: 'auth',
+          urls: process.env.MQ_URLS.split(' '),
+          queue: process.env.AUTH_QUEUE,
           queueOptions: {
-            durable: config.get('MQ_DURABLE') == 'true',
+            durable: process.env.MQ_DURABLE,
           },
         },
-      }),
-    };
-    return {
-      module: ListenerModule,
-      providers: [ConfigService],
-      imports: [ClientsModule.registerAsync([options])],
-      exports: [ClientsModule],
-    };
-  }
-}
+      },
+    ]),
+  ],
+  exports: [ClientsModule],
+})
+export class ListenerModule {}

@@ -10,7 +10,6 @@ import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/services/auth.service';
 import { PageI } from 'src/shared/interfaces/page.interface';
 import { UserService } from 'src/user/services/user.service';
-import { JoinedRoom } from '../model/entities/joined-room.entity';
 import { Room } from '../model/entities/room.entity';
 import { JoinedRoomI } from '../model/interfaces/joined-room.interface';
 import { MessageI } from '../model/interfaces/message.interface';
@@ -31,6 +30,7 @@ export class ChatGateway
   @WebSocketServer()
   server: Server;
   conn = 0;
+  halt = false;
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -45,13 +45,14 @@ export class ChatGateway
     await this.joinedRoomService.deleteAll();
   }
 
-  @SubscribeMessage('hello')
-  handleMessage(client: Socket, payload: any): string {
-    return 'ok in shaa allah';
+  @SubscribeMessage('getRoomList')
+  handleMessage(socket: Socket, payload: any) {
+    this.emitRoom(socket);
   }
 
   // @UseGuards(JwtGuard)
   async handleConnection(socket: Socket, ...args: any[]) {
+    console.log('connection request recieved');
     // verify the jwt
     try {
       let veri = await this.authService.verifyJWT(
@@ -164,4 +165,6 @@ export class ChatGateway
       this.server.to(user.SocketId).emit('newMessage', createMessage);
     }
   }
+
+  // kurento start here
 }

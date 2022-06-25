@@ -91,7 +91,5 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    this.appStateService.changeState({ activeRoom: undefined });
-  }
+  ngOnDestroy(): void {}
 }

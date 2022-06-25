@@ -17,7 +17,7 @@ import { UserService } from './services/user-service/user.service';
     TypeOrmModule.forFeature([User, Profile]),
     AuthModule,
     MailModule,
-    ListenerModule.register(),
+    ListenerModule,
   ],
   providers: [UserService, UserHelperService],
   exports: [],

@@ -3,21 +3,19 @@ import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
-import { ConfigService } from '@nestjs/config';
+
 /**
  * This is the entry point of the application
  */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get<ConfigService>(ConfigService);
-
   const microservice2 = app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
-      urls: configService.get('MQ_URLS').split(' '),
+      urls: process.env.MQ_URLS.split(' '),
       queue: 'chat',
       queueOptions: {
-        durable: configService.get('MQ_DURABLE') == 'true',
+        durable: process.env.MQ_DURABLE,
       },
     },
   });

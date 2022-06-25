@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0 --port 4200",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -24,6 +24,8 @@
     "@popperjs/core": "^2.11.5",
     "@types/videojs": "^5.16.2",
     "bootstrap": "^5.1.3",
+    "kurento-client": "^6.16.0",
+    "kurento-utils": "^6.16.0",
     "ngx-socket-io": "^4.2.0",
     "rxjs": "~7.5.0",
     "socket.io": "^4.5.1",
@@ -38,6 +40,7 @@
     "@angular/localize": "^13.2.7",
     "@types/bootstrap": "^5.1.12",
     "@types/jasmine": "~3.10.0",
+    "@types/kurento-utils": "^6.7.1",
     "@types/node": "^12.11.1",
     "@types/video.js": "^7.3.40",
     "jasmine-core": "~4.0.0",

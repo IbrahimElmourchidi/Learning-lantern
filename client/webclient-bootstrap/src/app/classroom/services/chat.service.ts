@@ -7,9 +7,27 @@ import {
   MessagePaginateI,
 } from 'src/app/shared/interfaces/message.interface';
 import { RoomI, RoomPaginate } from 'src/app/shared/interfaces/room.interface';
+import { AppState, StateService } from 'src/app/shared/services/state.service';
 @Injectable()
 export class ChatService {
-  constructor(private socket: Socket, private jwtService: JwtHelperService) {}
+  appState!: AppState;
+  constructor(
+    private socket: Socket,
+    private jwtService: JwtHelperService,
+    private appStateService: StateService
+  ) {
+    this.appStateService.currentState.subscribe(
+      (state) => (this.appState = state)
+    );
+  }
+
+  listen(eventName: string): Observable<any> {
+    return this.socket.fromEvent<any>(eventName);
+  }
+
+  emit(eventName: string, data: any) {
+    this.socket.emit(eventName, data);
+  }
 
   getNewMessage(): Observable<MessageI> {
     return this.socket.fromEvent<MessageI>('newMessage');
@@ -28,7 +46,9 @@ export class ChatService {
   }
 
   enterRoom(room: RoomI) {
-    console.log('enter request to room', room.Name);
+    if (this.appState.joinedRooms?.includes(room)) return;
+    this.appState.joinedRooms?.push(room);
+    this.appStateService.changeState(this.appState);
     this.socket.emit('enterRoom', room);
   }
 
@@ -42,6 +62,10 @@ export class ChatService {
 
   getRooms() {
     return this.socket.fromEvent<RoomPaginate>('rooms');
+  }
+
+  getRoomList() {
+    return this.socket.emit('getRoomList');
   }
 
   createRoom(str: string) {

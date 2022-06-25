@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { PlaceHolderDirective } from '../shared/directeives/placeholder.directive';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClassroomRoutingModule } from './classroom-routing.module';
 import { CalendarComponent } from './compnents/calendar/calendar.component';
 import { ChatComponent } from './compnents/chat/chat.component';
@@ -13,7 +12,6 @@ import { JionMeetingComponent } from './compnents/join-meeting/join-meeting.comp
 import { UserStatisticsComponent } from './compnents/statistics/user-statistics.component';
 import { TextLessonComponent } from './compnents/text-lesson/text-lesson.component';
 import { TodoComponent } from './compnents/todo/todo.component';
-import { ChatService } from './services/chat.service';
 
 @NgModule({
   declarations: [
@@ -28,8 +26,13 @@ import { ChatService } from './services/chat.service';
     JionMeetingComponent,
     UserStatisticsComponent,
   ],
-  imports: [CommonModule, ClassroomRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ClassroomRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   exports: [],
-  providers: [ChatService],
+  providers: [],
 })
 export class ClassroomModule {}

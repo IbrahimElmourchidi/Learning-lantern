@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 
 @Component({
@@ -10,14 +9,17 @@ import { AppState, StateService } from 'src/app/shared/services/state.service';
 export class ClassInsideComponent implements OnInit {
   active = 'chat';
   appState!: AppState;
+  title!: string;
 
   constructor(private appStateService: StateService) {}
 
   ngOnInit(): void {
-    this.appStateService.currentState.subscribe(
-      (data) => (this.appState = data)
-    );
+    this.appStateService.currentState.subscribe((data) => {
+      this.appState = data;
+      this.title = this.appState.activeRoom?.Name || 'Class Title';
+    });
   }
+
   changeActive(str: string) {
     this.active = str;
   }

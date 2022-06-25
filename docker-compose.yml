@@ -1,0 +1,121 @@
+version: '3.4'
+
+services:
+  auth-api:
+    build:
+      dockerfile: dockerfile
+      context: ./server/auth-api
+      target: development
+    volumes:
+      - ./server/auth-api:/usr/auth/src
+      - /usr/auth/src/node_modules
+    command: npm run start:dev
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: dev
+      PORT: 3000
+      DB_URL: 'postgres://user:password@postgres:5432/auth'
+      DB_SYNC: 1
+      JWT_SECRET: isafe
+      email: elmourchiditest@gmail.com
+      CLIENT_ID: 25449033245-dp2136059hfmp2ihaf64b7d3nbrkhmk5.apps.googleusercontent.com
+      CLIENT_SECRET: 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
+      REDIRECT_URL: https://developers.google.com/oauthplayground
+      REFRESH_TOKEN: '1//043PrNH-0N6SUCgYIARAAGAQSNwF-L9Ir5Ws6rQMJQAFzeTF5jJp43su6OC_dRA0egsHIigR3emNvovylhGDOVYNnuFQDZAwHbJ0'
+      MQ_URLS: amqps://vbaaoqft:yHfTMqfroyV_O4sqYLSgoEZxdBo36Nc3@jackal.rmq.cloudamqp.com/vbaaoqft
+      MQ_DURABLE: 'false'
+      AUTH_QUEUE: 'auth'
+    ports:
+      - 3000:3000
+  chat-api:
+    build:
+      dockerfile: dockerfile
+      context: ./server/chat-api
+      target: development
+    volumes:
+      - ./server/chat-api:/usr/chat/src
+      - /usr/chat/src/node_modules
+    command: npm run start:dev
+    depends_on:
+      - postgres
+      - kurento
+    environment:
+      NODE_ENV: dev
+      PORT: 3000
+      DB_URL: 'postgres://user:password@postgres:5432/chat'
+      KURENTO_URL: 'ws://kurento:8888/kurento'
+      DB_SYNC: 1
+      JWT_SECRET: 'isafe'
+      MQ_URLS: 'amqps://vbaaoqft:yHfTMqfroyV_O4sqYLSgoEZxdBo36Nc3@jackal.rmq.cloudamqp.com/vbaaoqft'
+      MQ_DURABLE: 'false'
+      AUTH_QUEUE: 'auth'
+    ports:
+      - 3001:3000
+    links:
+      - kurento
+
+  web-client:
+    build:
+      dockerfile: dockerfile
+      context: ./client/webclient-bootstrap
+      target: development
+    command: npm run start
+    volumes:
+      - ./client/webclient-bootstrap:/usr/web/src
+      - /usr/web/src/node_modules
+    ports:
+      - 4200:4200
+    
+    links:
+      - auth-api
+      - chat-api
+
+  postgres:
+    image: postgres:10.4
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    ports:
+      - 35000:5432
+
+  postgres_admin:
+    image: dpage/pgadmin4:4.28
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - 5050:80
+    links:
+      - postgres
+  
+  kurento:
+    image: kurento/kurento-media-server:6.17
+    hostname: kurento
+    container_name: kurento_container
+    expose:
+      - 8888
+    ports:
+      - 8888:8888
+    networks:
+      - default
+
+  # openvidu:
+  #   image: openvidu/openvidu-server-kms:2.22.0
+  #   restart: on-failure
+  #   network_mode: host
+  #   environment:
+  #       - SERVER_PORT=4443
+  #       - OPENVIDU_URL=http://localhost:4443
+  #       - OPENVIDU_SECRET=MY_SECRET
+  #       - CALL_OPENVIDU_CERTTYPE=selfsigned
+  #       - OPENVIDU_RECORDING=true
+  #       - OPENVIDU_RECORDING_PATH=/out
+  #   ports:
+  #     - 4443:4443
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./out:/out
