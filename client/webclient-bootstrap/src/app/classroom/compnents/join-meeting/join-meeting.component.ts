@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../../services/chat.service';
+import { AppState, StateService } from 'src/app/shared/services/state.service';
 
 @Component({
   selector: 'app-join-meeting',
@@ -8,10 +8,19 @@ import { ChatService } from '../../services/chat.service';
 })
 export class JionMeetingComponent implements OnInit {
   meetingId!: string;
+  appState!: AppState;
 
-  constructor(private chatService: ChatService) {}
-  ngOnInit(): void {}
+  constructor(private appStateService: StateService) {}
+  ngOnInit(): void {
+    this.appStateService.currentState.subscribe(
+      (state) => (this.appState = state)
+    );
+  }
   joinMeeting() {
-    console.log(this.meetingId);
+    if (!this.meetingId || !this.appState.userName) {
+      console.log('err');
+      return;
+    }
+    console.log(this.meetingId, this.appState.userName);
   }
 }

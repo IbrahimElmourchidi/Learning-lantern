@@ -8,6 +8,7 @@ import { ClassContainerComponent } from './compnents/class-container.ts/class-co
 import { ClassHeaderComponent } from './compnents/class-header/class-header.component';
 import { ClassInsideComponent } from './compnents/class-inside/class-inside.component';
 import { ClassListComponent } from './compnents/class-list/class-list.component';
+import { InsideMeetingComponent } from './compnents/inside-meeting/inside-meeting.component';
 import { JionMeetingComponent } from './compnents/join-meeting/join-meeting.component';
 import { UserStatisticsComponent } from './compnents/statistics/user-statistics.component';
 import { TextLessonComponent } from './compnents/text-lesson/text-lesson.component';
@@ -25,6 +26,7 @@ import { TodoComponent } from './compnents/todo/todo.component';
     TextLessonComponent,
     JionMeetingComponent,
     UserStatisticsComponent,
+    InsideMeetingComponent,
   ],
   imports: [
     CommonModule,
