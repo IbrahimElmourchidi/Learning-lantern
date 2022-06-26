@@ -23,7 +23,7 @@ services:
       CLIENT_SECRET: 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
       REDIRECT_URL: https://developers.google.com/oauthplayground
       REFRESH_TOKEN: '1//043PrNH-0N6SUCgYIARAAGAQSNwF-L9Ir5Ws6rQMJQAFzeTF5jJp43su6OC_dRA0egsHIigR3emNvovylhGDOVYNnuFQDZAwHbJ0'
-      MQ_URLS: amqps://vbaaoqft:yHfTMqfroyV_O4sqYLSgoEZxdBo36Nc3@jackal.rmq.cloudamqp.com/vbaaoqft
+      MQ_URLS: 'amqp://myuser:mypassword@RabbitMQ:5672/'
       MQ_DURABLE: 'false'
       AUTH_QUEUE: 'auth'
     ports:
@@ -39,22 +39,46 @@ services:
     command: npm run start:dev
     depends_on:
       - postgres
+      - RabbitMQ
+    environment:
+      NODE_ENV: dev
+      PORT: 3005
+      DB_URL: 'postgres://user:password@postgres:5432/chat'
+      DB_SYNC: 1
+      JWT_SECRET: 'isafe'
+      MQ_URLS: 'amqp://myuser:mypassword@RabbitMQ:5672/'
+      MQ_DURABLE: 'false'
+      AUTH_QUEUE: 'auth'
+    ports:
+      - 3005:3005
+    links:
+      - RabbitMQ
+  rtc-api:
+    build:
+      dockerfile: dockerfile
+      context: ./server/rtc-api
+      target: development
+    volumes:
+      - ./server/rtc-api:/usr/rtc/src
+      - /usr/rtc/src/node_modules
+    command: npm run start:dev
+    depends_on:
+      - postgres
       - kurento
     environment:
       NODE_ENV: dev
-      PORT: 3000
+      PORT: 3006
       DB_URL: 'postgres://user:password@postgres:5432/chat'
       KURENTO_URL: 'ws://kurento:8888/kurento'
       DB_SYNC: 1
       JWT_SECRET: 'isafe'
-      MQ_URLS: 'amqps://vbaaoqft:yHfTMqfroyV_O4sqYLSgoEZxdBo36Nc3@jackal.rmq.cloudamqp.com/vbaaoqft'
+      MQ_URLS: 'amqp://myuser:mypassword@RabbitMQ:5672/'
       MQ_DURABLE: 'false'
       AUTH_QUEUE: 'auth'
     ports:
-      - 3001:3000
+      - 3006:3006
     links:
       - kurento
-
   web-client:
     build:
       dockerfile: dockerfile
@@ -66,10 +90,6 @@ services:
       - /usr/web/src/node_modules
     ports:
       - 4200:4200
-    
-    links:
-      - auth-api
-      - chat-api
 
   postgres:
     image: postgres:10.4
@@ -102,6 +122,16 @@ services:
       - 8888:8888
     networks:
       - default
+  RabbitMQ:
+    image: rabbitmq:3.10-management
+    hostname: rabbitmq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypassword
+
 
   # openvidu:
   #   image: openvidu/openvidu-server-kms:2.22.0

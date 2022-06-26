@@ -46,6 +46,6 @@ WORKDIR /usr/auth/src
 # copy the compiled code from the development stage
 COPY --from=development /usr/auth/src .
 
-EXPOSE 8080
+EXPOSE 4200
 
 CMD ["NODE_TLS_REJECT_UNAUTHORIZED=0",  "node", "dist/src/main"]

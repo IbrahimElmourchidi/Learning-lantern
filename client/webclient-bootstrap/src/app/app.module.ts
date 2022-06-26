@@ -25,18 +25,20 @@ import { AlertComponent } from './shared/components/alert/alert.component';
 import { PlaceHolderDirective } from './shared/directeives/placeholder.directive';
 import { NotifySerivce } from './shared/services/notify.service';
 import { ChatService } from './classroom/services/chat.service';
+import { ChatSocket, RtcSocket } from './shared/sockets/sockets.service';
+import { KurentoService } from './classroom/services/kurento.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
-const socketConfig: SocketIoConfig = {
-  url: env.socketRoot,
-  options: {
-    extraHeaders: {
-      Authorization: tokenGetter() as string,
-    },
-  },
-};
+// const socketConfig: SocketIoConfig = {
+//   url: env.socketRoot,
+//   options: {
+//     extraHeaders: {
+//       Authorization: tokenGetter() as string,
+//     },
+//   },
+// };
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,9 +67,17 @@ const socketConfig: SocketIoConfig = {
         allowedDomains: ['localhost:3000'],
       },
     }),
-    SocketIoModule.forRoot(socketConfig),
   ],
-  providers: [HttpService, StateService, AuthGuard, NotifySerivce, ChatService],
+  providers: [
+    HttpService,
+    StateService,
+    AuthGuard,
+    NotifySerivce,
+    ChatService,
+    ChatSocket,
+    KurentoService,
+    RtcSocket,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

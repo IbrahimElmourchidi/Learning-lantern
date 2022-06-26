@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   authRoot: 'http://0.0.0.0:3000/user',
-  socketRoot: 'http://0.0.0.0:3001',
+  chatRoot: 'http://0.0.0.0:3005',
+  rtcRoot: 'http://0.0.0.0:3006',
 };
 
 /*

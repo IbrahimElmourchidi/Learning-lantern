@@ -9,15 +9,13 @@ export interface AppState {
   rooms?: RoomPaginate;
   activeRoom?: RoomI;
   joinedRooms?: RoomI[];
-  userName?: string;
 }
 @Injectable()
 export class StateService {
-  constructor(private jwtService: JwtHelperService) {}
+  constructor() {}
   private state = new BehaviorSubject<AppState>({
     logedIn: false,
     dark: false,
-    userName: this.jwtService.decodeToken(this.jwtService.tokenGetter()).userId,
   });
   currentState = this.state.asObservable();
 

@@ -10,7 +10,7 @@ ARG NODE_ENV=dev
 ENV NODE_ENV=${NODE_ENV}
 
 #specify the working directory inside the container
-WORKDIR /usr/chat/src
+WORKDIR /usr/rtc/src
 
 #copying package.josn & packag-lock.json inside the container working directory
 COPY package*.json ./
@@ -23,7 +23,7 @@ COPY . .
 # start the app in dev mode
 RUN npm run build
 
-EXPOSE 3005
+EXPOSE 3006
 
 
 #################
@@ -38,11 +38,11 @@ ARG NODE_ENV=prod
 ENV NODE_ENV=${NODE_ENV}
 
 #specify the working directory inside the container
-WORKDIR /usr/chat/src
+WORKDIR /usr/rtc/src
 
 # copy the compiled code from the development stage
-COPY --from=development /usr/chat/src .
+COPY --from=development /usr/rtc/src .
 
-EXPOSE 3005
+EXPOSE 3006
 
 CMD ["NODE_TLS_REJECT_UNAUTHORIZED=0",  "node", "dist/src/main"]

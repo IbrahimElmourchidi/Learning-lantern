@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 
 @Component({
@@ -9,18 +10,24 @@ import { AppState, StateService } from 'src/app/shared/services/state.service';
 export class JionMeetingComponent implements OnInit {
   meetingId!: string;
   appState!: AppState;
-
-  constructor(private appStateService: StateService) {}
+  userName = '';
+  constructor(
+    private appStateService: StateService,
+    private jwtService: JwtHelperService
+  ) {}
   ngOnInit(): void {
     this.appStateService.currentState.subscribe(
       (state) => (this.appState = state)
     );
+    if (!this.jwtService.isTokenExpired()) {
+      this.userName = this.jwtService.decodeToken().userId;
+    }
   }
   joinMeeting() {
-    if (!this.meetingId || !this.appState.userName) {
+    if (!this.meetingId) {
       console.log('err');
       return;
     }
-    console.log(this.meetingId, this.appState.userName);
+    console.log(this.meetingId, this.userName);
   }
 }

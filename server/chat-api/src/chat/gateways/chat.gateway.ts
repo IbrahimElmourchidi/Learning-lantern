@@ -16,7 +16,6 @@ import { MessageI } from '../model/interfaces/message.interface';
 import { RoomI } from '../model/interfaces/room.interface';
 import { ConnectedUserService } from '../services/connected-user.service';
 import { JoinedRoomService } from '../services/joined-room.service';
-import { KurentoService } from '../services/kurento.service';
 import { MessageService } from '../services/message.service';
 import { RoomService } from '../services/room.service';
 import { allowedHosts } from './allowed-hosts';
@@ -38,7 +37,6 @@ export class ChatGateway
     private connectedUserService: ConnectedUserService,
     private joinedRoomService: JoinedRoomService,
     private messagesService: MessageService,
-    private kurenotService: KurentoService,
   ) {}
 
   async onModuleInit() {
@@ -168,22 +166,22 @@ export class ChatGateway
   }
 
   // kurento start here
-  @SubscribeMessage('kurentoStart')
-  async startMediaPipeLine(socket: Socket, data: any) {
-    console.log('kurento start request');
-    this.kurenotService.createMediaPipeLine(socket, data);
-  }
+  // @SubscribeMessage('kurentoStart')
+  // async startMediaPipeLine(socket: Socket, data: any) {
+  //   console.log('kurento start request');
+  //   this.kurenotService.createMediaPipeLine(socket, data);
+  // }
 
-  @SubscribeMessage('kurentoStop')
-  async stopMediaPipeLine(socket: Socket, data: any) {
-    console.log('kurento srop request');
-    this.kurenotService.stop(socket);
-  }
+  // @SubscribeMessage('kurentoStop')
+  // async stopMediaPipeLine(socket: Socket, data: any) {
+  //   console.log('kurento srop request');
+  //   this.kurenotService.stop(socket);
+  // }
 
-  @SubscribeMessage('kurentoOnIceCandidate')
-  async getCandidate(socket: Socket, data: any) {
-    console.log('kurento ice request');
-    this.kurenotService.onIceCandidate(socket, data);
-  }
+  // @SubscribeMessage('kurentoOnIceCandidate')
+  // async getCandidate(socket: Socket, data: any) {
+  //   console.log('kurento ice request');
+  //   this.kurenotService.onIceCandidate(socket, data);
+  // }
   //kurento ends here
 }

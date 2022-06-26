@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
             logedIn: true,
           });
 
-          location.href = '/';
+          this.router.navigate(['/']);
         },
         (error: any) => {
           console.log(error);

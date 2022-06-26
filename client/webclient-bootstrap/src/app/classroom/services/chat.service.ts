@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+
 import {
   MessageI,
   MessagePaginateI,
 } from 'src/app/shared/interfaces/message.interface';
 import { RoomI, RoomPaginate } from 'src/app/shared/interfaces/room.interface';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
+import { ChatSocket } from 'src/app/shared/sockets/sockets.service';
 @Injectable()
 export class ChatService {
   appState!: AppState;
   constructor(
-    private socket: Socket,
-    private jwtService: JwtHelperService,
+    private socket: ChatSocket,
     private appStateService: StateService
   ) {
+    socket.connect();
     this.appStateService.currentState.subscribe(
       (state) => (this.appState = state)
     );

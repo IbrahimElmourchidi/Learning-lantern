@@ -50,11 +50,11 @@ const classRoutes: Routes = [
         path: 'join',
         component: JionMeetingComponent,
       },
-      {
-        path: 'meeting/:id/:name',
-        component: InsideMeetingComponent,
-      },
     ],
+  },
+  {
+    path: 'meet/:roomId/:meetingId',
+    component: InsideMeetingComponent,
   },
 ];
 
