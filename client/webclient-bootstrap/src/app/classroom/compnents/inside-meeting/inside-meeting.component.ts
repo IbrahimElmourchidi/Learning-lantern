@@ -5,6 +5,9 @@ import { map } from 'rxjs';
 import { KurentoService } from '../../services/kurento.service';
 import * as kurento from 'kurento-client';
 
+export interface pariticpantsI {
+  id: string;
+}
 @Component({
   selector: 'app-inside-meeting',
   templateUrl: 'inside-meeting.component.html',
@@ -12,10 +15,11 @@ import * as kurento from 'kurento-client';
 })
 export class InsideMeetingComponent implements OnInit {
   @ViewChild('local') localVideo!: ElementRef;
-  @ViewChild('remote') remoteVideo!: ElementRef;
+  remoteVideo = '';
   userName: string;
   roomId!: string;
   meetingId!: string;
+  participants: { [id: string]: any } = {};
   constructor(
     private kurentoService: KurentoService,
     private jwtService: JwtHelperService,
@@ -70,7 +74,19 @@ export class InsideMeetingComponent implements OnInit {
     this.kurentoService.emit('message', message);
   }
 
-  recieveVideo(userId: string, userName: string) {}
+  recieveVideo(userId: string, userName: string) {
+    let video = document.createElement('video');
+    video.id = userId;
+    video.autoplay = true;
+    this.remoteVideo += video;
+    let user = {
+      id: userId,
+      username: userName,
+      video: video,
+      rtcPeer: null,
+    };
+    this.participants[user.id] = user;
+  }
 
   onExistingParticipants(userId: string, existingUsers: any[]) {}
 

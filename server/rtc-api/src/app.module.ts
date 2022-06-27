@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IoClientModule } from 'nestjs-io-client';
 import { KurentoGateway } from './gateways/kurento.gateway';
+import { KurentoService } from './services/kurento.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -13,18 +14,14 @@ import { KurentoGateway } from './gateways/kurento.gateway';
       entities: [],
     }),
     IoClientModule.forRoot({
-      uri: `${process.env.KURENTO_URL}/kurento`,
+      uri: `${process.env.KURENTO_URL}/`,
       options: {
         port: 8888,
         reconnectionDelayMax: 10000,
-        auth: { token: '123' },
-        query: {
-          foo: 'value',
-        },
       },
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, KurentoGateway],
+  providers: [AppService, KurentoGateway, KurentoService],
 })
 export class AppModule {}
