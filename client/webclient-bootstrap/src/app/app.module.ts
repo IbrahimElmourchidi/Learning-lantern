@@ -13,7 +13,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PlansComponent } from './components/plans/plans.component';
 import { ServiceListComponent } from './components/services/services.component';
-import { VideoComponent } from './components/video/video.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { HttpService } from './shared/services/http.service';
@@ -43,7 +42,6 @@ export function tokenGetter() {
     WelcomeComponent,
     HeaderComponent,
     BannerComponent,
-    VideoComponent,
     ServiceListComponent,
     PlansComponent,
     ContactUsComponent,

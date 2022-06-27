@@ -1,3 +1,4 @@
+import { createInjectableDefinitionMap } from '@angular/compiler/src/render3/partial/injectable';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarComponent } from './compnents/calendar/calendar.component';
@@ -8,6 +9,7 @@ import { ClassListComponent } from './compnents/class-list/class-list.component'
 import { InsideMeetingComponent } from './compnents/inside-meeting/inside-meeting.component';
 import { JionMeetingComponent } from './compnents/join-meeting/join-meeting.component';
 import { UserStatisticsComponent } from './compnents/statistics/user-statistics.component';
+import { TextLessonContainerComponent } from './compnents/text-lesson-container/text-lesson-container.component';
 import { TextLessonComponent } from './compnents/text-lesson/text-lesson.component';
 import { TodoComponent } from './compnents/todo/todo.component';
 
@@ -31,7 +33,7 @@ const classRoutes: Routes = [
     ],
   },
   {
-    path: ':id',
+    path: ':classId',
     component: ClassInsideComponent,
     children: [
       {
@@ -40,7 +42,13 @@ const classRoutes: Routes = [
       },
       {
         path: 'lesson',
-        component: TextLessonComponent,
+        component: TextLessonContainerComponent,
+        children: [
+          {
+            path: ':lessonId',
+            component: TextLessonComponent,
+          },
+        ],
       },
       {
         path: 'stat',

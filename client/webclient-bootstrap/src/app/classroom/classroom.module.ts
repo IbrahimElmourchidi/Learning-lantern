@@ -15,6 +15,9 @@ import { TextLessonComponent } from './compnents/text-lesson/text-lesson.compone
 import { TodoComponent } from './compnents/todo/todo.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
+import { TextLessonContainerComponent } from './compnents/text-lesson-container/text-lesson-container.component';
+
+import { VideoComponentTwo } from './compnents/video/video.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,8 @@ import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
     UserStatisticsComponent,
     InsideMeetingComponent,
     SafeHtmlPipe,
+    TextLessonContainerComponent,
+    VideoComponentTwo,
   ],
   imports: [
     CommonModule,

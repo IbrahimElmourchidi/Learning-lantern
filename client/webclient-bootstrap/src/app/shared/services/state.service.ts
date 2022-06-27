@@ -9,6 +9,8 @@ export interface AppState {
   rooms?: RoomPaginate;
   activeRoom?: RoomI;
   joinedRooms?: RoomI[];
+  editorOn: boolean;
+  activeLesson?: string;
 }
 @Injectable()
 export class StateService {
@@ -16,6 +18,7 @@ export class StateService {
   private state = new BehaviorSubject<AppState>({
     logedIn: false,
     dark: false,
+    editorOn: false,
   });
   currentState = this.state.asObservable();
 

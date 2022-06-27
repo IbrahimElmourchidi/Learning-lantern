@@ -1,0 +1,49 @@
+<div
+  class="bg-header d-flex m-0 align-items-center justify-content-between p-2 shadow-sm"
+>
+  <div class="header w-100 d-flex align-items-center">
+    <button
+      class="btn btn-primary me-4"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#lessonList"
+      aria-controls="lessonList"
+    >
+      <i class="bi bi-list"></i>
+    </button>
+    <h3 class="col-sm-4 p-0 m-0">Lesson Title</h3>
+  </div>
+  <div class="buttons">
+    <button (click)="toggle()" class="btn btn-primary">{{ buttonText }}</button>
+  </div>
+</div>
+<div
+  class="offcanvas offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="lessonList"
+  aria-labelledby="lessonListLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="lessonListLabel">Lesson List</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body p-0 mt-4">
+    <div class="list-group list-group-flush p-0 m-0">
+      <a
+        *ngFor="let i of lessonList"
+        (click)="changeLesson(i.id)"
+        routerLink="./{{ i.id }}"
+        data-bs-dismiss="offcanvas"
+        class="list-group-item list-group-item-action text-uppercase"
+        >{{ i.title }}</a
+      >
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

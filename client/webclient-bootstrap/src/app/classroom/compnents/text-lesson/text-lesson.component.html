@@ -1,5 +1,12 @@
-<editor [init]="tinymceConfig" id="editor" [(ngModel)]="lessonHTML"></editor>
+<editor
+  [init]="tinymceConfig"
+  id="editor"
+  [style.display]="appState.editorOn ? 'block' : 'none'"
+  [(ngModel)]="lessonHTML"
+></editor>
 
-<button (click)="toggle()" class="btn btn-primary">hide</button>
-
-<div [innerHTML]="lessonHTML | safeHtml"></div>
+<div
+  class="p-4"
+  [innerHTML]="lessonHTML | safeHtml"
+  [style.display]="appState.editorOn ? 'none' : 'block'"
+></div>

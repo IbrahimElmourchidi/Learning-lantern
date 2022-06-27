@@ -1,17 +1,46 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AppState, StateService } from 'src/app/shared/services/state.service';
 import tinymce from 'tinymce';
 @Component({
   selector: 'app-textlesson',
   templateUrl: 'text-lesson.component.html',
   styleUrls: ['text-lesson.component.scss'],
 })
-export class TextLessonComponent {
+export class TextLessonComponent implements OnInit {
   @ViewChild('editor') editor!: ElementRef;
+  appState!: AppState;
 
-  isHidden = false;
-  lessonHTML = '';
+  constructor(
+    private appStateService: StateService,
+    private route: ActivatedRoute
+  ) {
+    this.appStateService.currentState.subscribe((data) => {
+      this.appState = data;
+      if (this.appState.activeLesson) {
+        this.getLessonContent(data);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.appStateService.changeState({
+      activeLesson: this.route.snapshot.paramMap.get('lessonId') || '',
+    });
+  }
+  editorHidden = true;
+  lessonHTML = `    
+  
+  <h1 style="text-align: center;"><strong>hello world</strong></h1>
+<p><strong>Chapter1: hello world</strong></p>
+<p><em>Hello world is our first Lesson</em></p>
+<p>&nbsp;</p>
+<h1 style="text-align: left;"><strong>&nbsp;</strong></h1>
+  
+  `;
   tinymceConfig = {
-    menubar: 'favs file edit view insert format tools table help',
+    height: '100%',
+    menubar: 'favs',
     content_style:
       'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     base_url: '/tinymce',
@@ -20,10 +49,7 @@ export class TextLessonComponent {
 
   myEditor: any;
 
-  toggle() {
-    let myEditor = document.querySelector('#editor');
-    if (this.isHidden) myEditor?.setAttribute('style', 'display:block');
-    else myEditor?.setAttribute('style', 'display:none');
-    this.isHidden = !this.isHidden;
+  getLessonContent(data: AppState) {
+    console.log(data.activeLesson);
   }
 }
