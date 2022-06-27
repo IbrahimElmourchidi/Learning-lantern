@@ -13,6 +13,8 @@ import { JionMeetingComponent } from './compnents/join-meeting/join-meeting.comp
 import { UserStatisticsComponent } from './compnents/statistics/user-statistics.component';
 import { TextLessonComponent } from './compnents/text-lesson/text-lesson.component';
 import { TodoComponent } from './compnents/todo/todo.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -27,14 +29,18 @@ import { TodoComponent } from './compnents/todo/todo.component';
     JionMeetingComponent,
     UserStatisticsComponent,
     InsideMeetingComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     CommonModule,
     ClassroomRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    EditorModule,
   ],
   exports: [],
-  providers: [],
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+  ],
 })
 export class ClassroomModule {}

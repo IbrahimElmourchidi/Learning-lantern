@@ -1,1 +1,5 @@
-<p>text ok</p>
+<editor [init]="tinymceConfig" id="editor" [(ngModel)]="lessonHTML"></editor>
+
+<button (click)="toggle()" class="btn btn-primary">hide</button>
+
+<div [innerHTML]="lessonHTML | safeHtml"></div>
