@@ -18,6 +18,7 @@ import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { TextLessonContainerComponent } from './compnents/text-lesson-container/text-lesson-container.component';
 
 import { VideoComponentTwo } from './compnents/video/video.component';
+import { OVService } from './services/ov.service';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { VideoComponentTwo } from './compnents/video/video.component';
   exports: [],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+    OVService,
   ],
 })
 export class ClassroomModule {}

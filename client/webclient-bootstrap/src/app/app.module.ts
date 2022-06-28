@@ -23,7 +23,6 @@ import { PlaceHolderDirective } from './shared/directeives/placeholder.directive
 import { NotifySerivce } from './shared/services/notify.service';
 import { ChatService } from './classroom/services/chat.service';
 import { ChatSocket, RtcSocket } from './shared/sockets/sockets.service';
-import { KurentoService } from './classroom/services/kurento.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -71,7 +70,6 @@ export function tokenGetter() {
     NotifySerivce,
     ChatService,
     ChatSocket,
-    KurentoService,
     RtcSocket,
   ],
   bootstrap: [AppComponent],
