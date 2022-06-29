@@ -8,4 +8,6 @@ export interface PayloadI {
   userFName: string;
   /**@ignore */
   isValidated: boolean;
+  /**@ignore */
+  role: number;
 }

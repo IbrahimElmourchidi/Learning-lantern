@@ -41,6 +41,7 @@ export class AuthService {
       userId: user['Id'],
       userFName: user['FirstName'],
       isValidated: user['IsValidated'],
+      role: user['role'],
     };
   }
 }
