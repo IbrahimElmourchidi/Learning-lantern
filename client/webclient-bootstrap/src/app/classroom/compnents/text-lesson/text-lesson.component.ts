@@ -10,7 +10,7 @@ import tinymce from 'tinymce';
 export class TextLessonComponent implements OnInit {
   @ViewChild('editor') editor!: ElementRef;
   appState!: AppState;
-
+  videoToInsert: string = '';
   constructor(
     private appStateService: StateService,
     private route: ActivatedRoute
@@ -41,6 +41,15 @@ export class TextLessonComponent implements OnInit {
   tinymceConfig = {
     height: '100%',
     menubar: 'favs',
+    toolbar: 'customInsertButton',
+    setup: (editor: any) => {
+      editor.ui.registry.addButton('customInsertButton', {
+        text: 'My Button',
+        onAction: () => {
+          this.openModal();
+        },
+      });
+    },
     content_style:
       'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     base_url: '/tinymce',
@@ -51,5 +60,18 @@ export class TextLessonComponent implements OnInit {
 
   getLessonContent(data: AppState) {
     console.log(data.activeLesson);
+  }
+
+  openModal() {
+    // open modal
+    // get the video id
+    this.addVideo();
+  }
+
+  addVideo() {
+    const editor = tinymce.get('editor');
+    editor.insertContent(
+      ` <iframe style="width:90%; height:380px; border:none" src="/video/${this.videoToInsert}" title="W3Schools Free Online Web Tutorials"></iframe> `
+    );
   }
 }

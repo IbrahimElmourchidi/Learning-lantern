@@ -11,6 +11,7 @@ import { UserStatisticsComponent } from './compnents/statistics/user-statistics.
 import { TextLessonContainerComponent } from './compnents/text-lesson-container/text-lesson-container.component';
 import { TextLessonComponent } from './compnents/text-lesson/text-lesson.component';
 import { TodoComponent } from './compnents/todo/todo.component';
+import { VideoComponent } from './compnents/video/videos.component';
 
 const classRoutes: Routes = [
   {

@@ -5,7 +5,9 @@ import {
   AfterViewInit,
   OnDestroy,
   ViewChild,
+  OnInit,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import videojs from 'video.js';
 import eventjs from 'video.js';
 export interface videoOptions {
@@ -17,25 +19,40 @@ export interface videoOptions {
     type: string;
   }[];
 }
-export interface QuizArray {
+export interface QuizArrayI {
   quizId: string;
   time: number;
 }
+
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.scss'],
 })
-export class VideoComponent implements OnDestroy, AfterViewInit {
+export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
+  vidoeId!: string;
   player!: videojs.Player;
   playing = false;
   interval: any;
-  @Input() quizList!: QuizArray[];
-  @Input() source: string = 'hello';
+  source: string = 'https://vjs.zencdn.net/v/oceans.mp4';
   @ViewChild('target', { static: true }) target!: ElementRef;
   currentIndex = 0;
+  quizList: QuizArrayI[] = [
+    {
+      quizId: '2',
+      time: 8,
+    },
+    {
+      quizId: '5',
+      time: 13,
+    },
+  ];
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.vidoeId = this.route.snapshot.paramMap.get('videoId') || '';
+  }
 
   ngAfterViewInit(): void {
     this.quizList = this.quizList.sort((a, b) => {

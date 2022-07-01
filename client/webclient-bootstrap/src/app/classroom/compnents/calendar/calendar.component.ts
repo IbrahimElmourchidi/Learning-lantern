@@ -7,16 +7,5 @@ import { QuizArrayI } from '../statistics/user-statistics.component';
   styleUrls: ['calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit {
-  quizeArray: QuizArrayI[] = [
-    {
-      quizId: '2',
-      time: 8,
-    },
-    {
-      quizId: '5',
-      time: 13,
-    },
-  ];
-
   ngOnInit() {}
 }

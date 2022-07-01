@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { VideoComponent } from './classroom/compnents/video/videos.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -26,6 +27,10 @@ const routes: Routes = [
     // canActivate: [VerifiedGuard],
     loadChildren: () =>
       import('./classroom/classroom.module').then((m) => m.ClassroomModule),
+  },
+  {
+    path: 'video/:videoId',
+    component: VideoComponent,
   },
   {
     path: '**',
