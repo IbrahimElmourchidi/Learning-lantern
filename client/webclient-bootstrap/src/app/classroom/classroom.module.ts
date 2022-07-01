@@ -19,6 +19,7 @@ import { TextLessonContainerComponent } from './compnents/text-lesson-container/
 
 import { OVService } from './services/ov.service';
 import { VideoComponent } from './compnents/video/videos.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { VideoComponent } from './compnents/video/videos.component';
     ReactiveFormsModule,
     FormsModule,
     EditorModule,
+    NgbModule,
   ],
   exports: [],
   providers: [

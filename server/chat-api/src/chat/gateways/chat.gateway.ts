@@ -42,8 +42,12 @@ export class ChatGateway
   ) {}
 
   async onModuleInit() {
-    await this.connectedUserService.deleteAll();
-    await this.joinedRoomService.deleteAll();
+    try {
+      await this.connectedUserService.deleteAll();
+      await this.joinedRoomService.deleteAll();
+    } catch (error) {
+      console.log(`cannot refresh database`);
+    }
   }
 
   @SubscribeMessage('getRoomList')

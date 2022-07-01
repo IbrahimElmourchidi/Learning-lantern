@@ -19,7 +19,7 @@ COPY package*.json ./
 RUN npm install
 
 #install the angular cli inside the container
-RUN npm install -g @angular/cli@13.2
+RUN npm install -g @angular/cli@13.2.6
 
 COPY . . 
 

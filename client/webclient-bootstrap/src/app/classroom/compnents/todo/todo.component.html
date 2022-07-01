@@ -401,72 +401,65 @@
               formControlName="TaskTitle"
               [value]="activeTask.Title"
             />
-            <ng-container *ngIf="TaskTitle.invalid && TaskTitle.touched">
-              <small *ngIf="TaskTitle.errors?.['required']" class="text-danger">
-                This Field is Required
-              </small>
-              <small
-                *ngIf="TaskTitle.errors?.['minlength']"
-                class="text-danger"
-              >
-                Min length 2
-              </small>
-              <small
-                *ngIf="TaskTitle.errors?.['maxlength']"
-                class="text-danger"
-              >
-                Max Length 30
-              </small>
-              <small *ngIf="TaskTitle.errors?.['invalidName']">
-                <span class="text-danger"
-                  >Please enter a valid name ( a valid name cannot contain
-                  symbols)</span
-                >
-              </small>
-            </ng-container>
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label"
               >Description:</label
             >
-            <input
+            <textarea
               type="text"
               class="form-control"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               formControlName="TaskDescription"
               [value]="activeTask.Title"
-            />
-            <ng-container
-              *ngIf="TaskDescription.invalid && TaskDescription.touched"
-            >
-              <small
-                *ngIf="TaskDescription.errors?.['required']"
-                class="text-danger"
-              >
-                This Field is Required
-              </small>
-              <small
-                *ngIf="TaskDescription.errors?.['minlength']"
-                class="text-danger"
-              >
-                Min length 2
-              </small>
-              <small
-                *ngIf="TaskDescription.errors?.['maxlength']"
-                class="text-danger"
-              >
-                Max Length 30
-              </small>
-              <small *ngIf="TaskDescription.errors?.['invalidName']">
-                <span class="text-danger"
-                  >Please enter a valid name ( a valid name cannot contain
-                  symbols)</span
-                >
-              </small>
-            </ng-container>
+            ></textarea>
           </div>
-          <ngb-datepicker #dp [(ngModel)]="model"></ngb-datepicker>
+          <div class="mb-3">
+            <label for="startDate" class="form-label">StartDate:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="startDate"
+              ngbDatepicker
+              #d="ngbDatepicker"
+              (click)="d.toggle()"
+              style="padding-left: 2rem"
+              [minDate]="today"
+            />
+            <i
+              class="bi bi-calendar-fill text-primary date-icon"
+              (click)="d.toggle()"
+            ></i>
+          </div>
+          <div class="mb-3">
+            <label for="DueDate" class="form-label">Due Date:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="DueDate"
+              ngbDatepicker
+              #d2="ngbDatepicker"
+              (click)="d2.toggle()"
+              style="padding-left: 2rem"
+            />
+            <i
+              class="bi bi-calendar-fill text-primary date-icon"
+              (click)="d2.toggle()"
+            ></i>
+          </div>
+          <div class="form-check form-switch mb-4">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckChecked"
+              formControlName="Important"
+            />
+            <label class="form-check-label" for="flexSwitchCheckChecked"
+              >Important</label
+            ><br />
+          </div>
           <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
             Save
           </button>

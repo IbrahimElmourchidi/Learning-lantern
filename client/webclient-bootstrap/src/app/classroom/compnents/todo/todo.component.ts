@@ -19,6 +19,7 @@ export class TodoComponent {
   model!: NgbDateStruct;
   date!: { year: number; month: number };
   acitveTab = 'My Day';
+  today = this.dateParser();
 
   myDayTasks: Task[] = [
     {
@@ -77,9 +78,10 @@ export class TodoComponent {
   initFromControl() {
     this.TaskTitle = new FormControl('');
     this.TaskDescription = new FormControl('');
-    this.StartDate = new FormControl('');
+    this.StartDate = new FormControl('2014-01-01');
     this.DueDate = new FormControl('');
     this.Completed = new FormControl('');
+    this.Important = new FormControl('');
   }
 
   initFrom() {
@@ -89,10 +91,23 @@ export class TodoComponent {
       StartDate: this.StartDate,
       DueDate: this.DueDate,
       Completed: this.Completed,
+      Important: this.Important,
     });
   }
 
   switchActiveTask(task: Task) {
     this.activeTask = task;
+  }
+
+  dateParser() {
+    const dateObj = new Date();
+    const month = dateObj.getUTCMonth() + 1; //months from 1-12
+    const day = dateObj.getUTCDate();
+    const year = dateObj.getUTCFullYear();
+    return {
+      year,
+      month,
+      day,
+    };
   }
 }

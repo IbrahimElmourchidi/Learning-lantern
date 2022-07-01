@@ -9,6 +9,12 @@
   font-size: 1.1rem;
 }
 
+.date-icon {
+  position: relative;
+  bottom: 32px;
+  left: 10px;
+}
+
 .nav-link.active {
   background: var(--app-card-color) !important;
 }
