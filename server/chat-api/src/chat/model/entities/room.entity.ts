@@ -1,3 +1,4 @@
+import { Meeting } from 'src/rtc/model/entities/meeting.entity';
 import { User } from 'src/user/model/entities/user.entity';
 import {
   Column,
@@ -31,4 +32,7 @@ export class Room implements RoomI {
 
   @OneToMany(() => Message, (message) => message.room)
   messages: Message[];
+
+  @OneToMany(() => Meeting, (meeting) => meeting.room)
+  meetings: Meeting[];
 }

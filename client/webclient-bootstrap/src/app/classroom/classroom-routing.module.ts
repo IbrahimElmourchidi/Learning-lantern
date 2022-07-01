@@ -1,4 +1,3 @@
-import { createInjectableDefinitionMap } from '@angular/compiler/src/render3/partial/injectable';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarComponent } from './compnents/calendar/calendar.component';

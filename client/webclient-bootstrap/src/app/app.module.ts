@@ -23,6 +23,8 @@ import { PlaceHolderDirective } from './shared/directeives/placeholder.directive
 import { NotifySerivce } from './shared/services/notify.service';
 import { ChatService } from './classroom/services/chat.service';
 import { ChatSocket, RtcSocket } from './shared/sockets/sockets.service';
+import { VerifiedGuard } from './shared/guards/verified.guard';
+import { TokenService } from './shared/services/token.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -59,7 +61,6 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        allowedDomains: ['localhost:3000'],
       },
     }),
   ],
@@ -67,10 +68,12 @@ export function tokenGetter() {
     HttpService,
     StateService,
     AuthGuard,
+    VerifiedGuard,
     NotifySerivce,
     ChatService,
     ChatSocket,
     RtcSocket,
+    TokenService,
   ],
   bootstrap: [AppComponent],
 })

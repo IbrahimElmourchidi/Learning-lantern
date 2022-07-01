@@ -1,4 +1,5 @@
-import { OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import { Inject, OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -37,6 +38,7 @@ export class ChatGateway
     private connectedUserService: ConnectedUserService,
     private joinedRoomService: JoinedRoomService,
     private messagesService: MessageService,
+    @Inject('chat_serv') private readonly client: ClientProxy,
   ) {}
 
   async onModuleInit() {
@@ -92,7 +94,11 @@ export class ChatGateway
 
   @SubscribeMessage('createRoom')
   async createRoom(socket: Socket, room: Room) {
-    await this.roomService.createRoom(room, socket.data.user);
+    const roomCreated = await this.roomService.createRoom(
+      room,
+      socket.data.user,
+    );
+    this.client.emit('newRoom', roomCreated.Id);
     this.emitRoom(socket);
   }
 

@@ -2,17 +2,23 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { TokenService } from 'src/app/shared/services/token.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { matchPassword } from 'src/app/shared/validator/confirm-password.validator';
 import { validateName } from 'src/app/shared/validator/name.validator';
 import { environment as env } from 'src/environments/environment';
+export interface ErrorI {
+  ErrorCode: string;
+  Description: string;
+}
 @Component({
   selector: 'app-signup',
   templateUrl: 'signup.component.html',
   styleUrls: ['signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
+  formError!: ErrorI[];
   hide: boolean = true;
   signupForm!: FormGroup;
   userUniversity!: FormControl;
@@ -25,14 +31,15 @@ export class SignupComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpService,
-    private appStateService: StateService
+    private appStateService: StateService,
+    private tokenService: TokenService
   ) {
     this.initFormControls();
     this.createForm();
   }
 
   ngOnInit(): void {
-   this.appStateService.currentState.subscribe(
+    this.appStateService.currentState.subscribe(
       (data) => (this.appState = data)
     );
   }
@@ -51,11 +58,11 @@ export class SignupComponent implements OnInit {
     ]);
     this.userPassword = new FormControl('', [
       Validators.required,
-      Validators.pattern(`^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,30}$`),
+      Validators.pattern(`^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,30}$`),
     ]);
     this.confirmPassword = new FormControl('', [
       Validators.required,
-      Validators.pattern(`^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,30}$`),
+      Validators.pattern(`^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,30}$`),
     ]);
     this.iAgree = new FormControl(null, [Validators.requiredTrue]);
   }
@@ -83,11 +90,10 @@ export class SignupComponent implements OnInit {
     if (!FirstName || !LastName)
       this.userFName.setErrors({ lastName: 'please enter a availd name' });
     let body = {
-      userEmail: this.userEmail.value,
-      userPassword: this.userPassword.value,
-      userFName: FirstName,
-      userLName: LastName,
-      userUniversity: this.userUniversity.value,
+      email: this.userEmail.value,
+      password: this.userPassword.value,
+      firstName: FirstName,
+      LastName: LastName,
     };
 
     if (this.signupForm.invalid) {
@@ -96,17 +102,19 @@ export class SignupComponent implements OnInit {
         this.signupForm.controls[key].markAsTouched();
       });
     } else {
-      this.http.doPost(`${env.authRoot}/create`, body, {}).subscribe(
+      this.http.doPost(`${env.authRoot}signup`, body, {}).subscribe(
         async (res) => {
-          let result = res as { token: string };
-          localStorage.setItem('token', result.token);
-          this.router.navigate(['/auth/email-sent', this.userEmail.value]);
+          let result = res as { Token: string };
+          localStorage.setItem('token', result.Token);
+          this.tokenService.tokenParser(result.Token);
+          this.tokenService.isLoggedIn();
+          this.router.navigate(['/auth/email-sent']);
         },
         (error) => {
-          console.log(error);
+          console.log(error.error);
+          this.formError = error.error;
         }
       );
     }
   }
-  
 }

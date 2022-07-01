@@ -1,0 +1,28 @@
+.search-icon {
+  position: relative;
+  left: -40px;
+  top: 7px;
+}
+
+.nav-link {
+  color: var(--app-theme-text) !important;
+  font-size: 1.1rem;
+}
+
+.nav-link.active {
+  background: var(--app-card-color) !important;
+}
+
+#accordionExample {
+  color: var(--app-theme-text) !important;
+}
+.pointer:hover {
+  background: var(--app-bg-color);
+  // color: var(--app-contrast-text2);
+}
+
+@media all and (min-width: 900px) {
+  #accordionExample {
+    display: none;
+  }
+}

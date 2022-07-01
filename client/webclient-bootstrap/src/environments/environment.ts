@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  authRoot: 'http://0.0.0.0:3000/user',
+  authRoot: 'https://learning-lantern.azurewebsites.net/api/user/',
   chatRoot: 'http://0.0.0.0:3005',
   rtcRoot: 'http://0.0.0.0:3006/rtc/',
 };

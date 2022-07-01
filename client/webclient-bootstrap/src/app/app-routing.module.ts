@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LandingComponent } from './components/landing/landing.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { VerifiedGuard } from './shared/guards/verified.guard';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'class',
+    // canActivate: [VerifiedGuard],
     loadChildren: () =>
       import('./classroom/classroom.module').then((m) => m.ClassroomModule),
   },

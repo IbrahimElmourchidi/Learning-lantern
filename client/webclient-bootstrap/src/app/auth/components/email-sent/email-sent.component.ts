@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { tokenGetter } from 'src/app/app.module';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment as env } from 'src/environments/environment';
 @Component({
@@ -9,33 +10,36 @@ import { environment as env } from 'src/environments/environment';
   styleUrls: ['email-sent.component.scss'],
 })
 export class EmailSentComponent implements OnInit {
-  userEmail = 'hema@gmail.com';
-  private sub: any;
   constructor(
-    private route: ActivatedRoute,
     private http: HttpService,
     private jwtService: JwtHelperService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.sub = this.route.params.subscribe(
-      (params) => (this.userEmail = params['email'])
-    );
-  }
+  ngOnInit(): void {}
 
   resendValidationEmail() {
-    if (!this.jwtService.isTokenExpired()) {
-      this.http.doGet(env.authRoot + '/resend-validation', {}).subscribe(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    } else {
-      this.router.navigate(['/auth/login']);
+    try {
+      if (!this.jwtService.isTokenExpired()) {
+        this.http
+          .doGet(env.authRoot + 'resend-validation', {
+            headers: {
+              authorization: 'bearer ' + tokenGetter(),
+            },
+          })
+          .subscribe(
+            (res) => {
+              console.log(res);
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+      } else {
+        this.router.navigate(['/auth/login']);
+      }
+    } catch (error) {
+      console.log('invalid token');
     }
   }
 }

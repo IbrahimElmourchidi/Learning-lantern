@@ -14,6 +14,7 @@
 
   --app-page-text: #000;
   --app-contrast-text: #fff;
+  --app-contrast-text2: #fff;
   --app-button-text: #000;
   --app-main-color: #673ab7;
   --app-accent-color: #ffd740;
@@ -45,6 +46,8 @@
 
   $body-bg: $app-bg;
   $body-color: $app-text;
+  $accordion-button-color: $app-text;
+  $accordion-button-active-color: $app-text;
 
   --#{$variable-prefix}body-color: #{$body-color};
   --#{$variable-prefix}body-bg: #{$body-bg};
@@ -62,6 +65,7 @@
   --app-page-text: #fff;
   --app-button-text: #000;
   --app-contrast-text: #fff;
+  --app-contrast-text2: #000;
   --app-main-color: #9c27b0;
   --app-accent-color: #69f0ae;
   --app-bg-color: #303030;
@@ -107,6 +111,12 @@
   $form-select-bg: $app-card;
   $form-select-color: $app-text;
   $modal-content-bg: $app-card;
+  $accordion-bg: $app-bg;
+  $accordion-button-color: $app-text;
+  $accordion-button-bg: $app-card;
+  $accordion-button-active-bg: $app-card;
+  $accordion-button-active-color: $app-text;
+
   --#{$variable-prefix}body-color: #{$body-color};
   --#{$variable-prefix}body-bg: #{$body-bg};
 

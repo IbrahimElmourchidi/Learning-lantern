@@ -8,11 +8,11 @@ import { AuthListenerController } from './controllers/auth-listener.controller';
   imports: [
     ClientsModule.register([
       {
-        name: 'auth_serv',
+        name: 'chat_serv',
         transport: Transport.RMQ,
         options: {
           urls: process.env.MQ_URLS.split(' '),
-          queue: process.env.AUTH_QUEUE,
+          queue: process.env.CHAT_QUEUE,
           queueOptions: {
             durable: process.env.MQ_DURABLE,
           },

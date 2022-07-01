@@ -17,8 +17,8 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { TextLessonContainerComponent } from './compnents/text-lesson-container/text-lesson-container.component';
 
-import { VideoComponentTwo } from './compnents/video/video.component';
 import { OVService } from './services/ov.service';
+import { VideoComponent } from './compnents/video/videos.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { OVService } from './services/ov.service';
     InsideMeetingComponent,
     SafeHtmlPipe,
     TextLessonContainerComponent,
-    VideoComponentTwo,
+    VideoComponent,
   ],
   imports: [
     CommonModule,

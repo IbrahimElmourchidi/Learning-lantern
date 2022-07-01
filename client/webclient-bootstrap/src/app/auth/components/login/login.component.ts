@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChatService } from 'src/app/classroom/services/chat.service';
+import { ErrorI } from 'src/app/shared/interfaces/error.interface';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 
@@ -12,6 +13,7 @@ import { environment as env } from 'src/environments/environment';
   styleUrls: ['login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  formError!: ErrorI[];
   hide: boolean = true;
   appState!: AppState;
   loginForm!: FormGroup;
@@ -59,14 +61,14 @@ export class LoginComponent implements OnInit {
       });
     } else {
       let body_ = {
-        userEmail: this.userEmail.value,
-        userPassword: this.userPassword.value,
-        userUniversity: this.userUniversity.value,
+        email: this.userEmail.value,
+        password: this.userPassword.value,
+        university: this.userUniversity.value,
       };
-      this.http.doPost(`${env.authRoot}/login`, body_, {}).subscribe(
+      this.http.doPost(`${env.authRoot}login`, body_, {}).subscribe(
         (res: any) => {
-          let result = res as { token: string };
-          localStorage.setItem('token', result.token);
+          let result = res as { Token: string };
+          localStorage.setItem('token', result.Token);
           this.state.changeState({
             logedIn: true,
           });
@@ -74,7 +76,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/']);
         },
         (error: any) => {
-          console.log(error);
+          this.formError = error.error;
         }
       );
     }

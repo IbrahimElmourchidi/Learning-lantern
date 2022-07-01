@@ -21,8 +21,8 @@ const authRoutes: Routes = [
         component: SignupComponent,
       },
       {
-        path: 'email-sent/:email',
-        canActivate: [AuthGuard],
+        path: 'email-sent',
+        // canActivate: [AuthGuard],
         component: EmailSentComponent,
       },
       {

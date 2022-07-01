@@ -1,9 +1,9 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   Input,
-  OnInit,
+  AfterViewInit,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import videojs from 'video.js';
@@ -17,32 +17,31 @@ export interface videoOptions {
     type: string;
   }[];
 }
-
 export interface QuizArray {
   quizId: string;
   time: number;
 }
 @Component({
   selector: 'app-video',
-  templateUrl: 'video.component.html',
-  styleUrls: ['video.component.scss'],
+  templateUrl: './video.component.html',
+  styleUrls: ['./video.component.scss'],
 })
-export class VideoComponent implements AfterViewInit {
+export class VideoComponent implements OnDestroy, AfterViewInit {
   player!: videojs.Player;
   currentIndex = 0;
   interval: any;
   @Input() quizList!: QuizArray[];
   @Input() source: string = 'hello';
-  @Input() time: number = 5;
 
-  @ViewChild('target', { static: true }) target!: ElementRef;
+  @ViewChild('target', { static: true })
+  target!: ElementRef;
   constructor(private elementRef: ElementRef) {}
-
   ngAfterViewInit(): void {
     this.createVideoObject();
     // this.interval = setInterval(() => {
     //   this.goCheckAll();
     // }, 1000);
+    this.player_pause();
   }
 
   checkTime(time: number, id: string) {
@@ -50,7 +49,7 @@ export class VideoComponent implements AfterViewInit {
       this.player.pause();
       this.quizList = this.quizList.filter((el) => el.quizId !== id);
       this.currentIndex++;
-      console.log(`quiz ${id}`);
+      alert(`quiz ${id}`);
     }
   }
 
@@ -61,7 +60,11 @@ export class VideoComponent implements AfterViewInit {
     if (this.currentIndex === this.quizList.length)
       clearInterval(this.interval);
   }
-
+  player_pause() {
+    this.interval = setInterval(() => {
+      this.goCheckAll();
+    }, 1000);
+  }
   createVideoObject() {
     let options: videoOptions = {
       fluid: true,
@@ -78,5 +81,11 @@ export class VideoComponent implements AfterViewInit {
     eventjs.on(this.target.nativeElement, 'start', () => {
       console.log('video started');
     });
+  }
+
+  ngOnDestroy() {
+    if (this.player) {
+      this.player.dispose();
+    }
   }
 }

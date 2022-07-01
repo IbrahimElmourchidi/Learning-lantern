@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  authRoot: 'https://learning-lantern-auth-api.herokuapp.com/user',
-  chatRoot: 'http://0.0.0.0:3005',
-  rtcRoot: 'http://0.0.0.0:3006',
+  // authRoot: 'https://learning-lantern-auth-api.herokuapp.com/user',
+  authRoot: 'https://learning-lantern.azurewebsites.net/api/user/',
+  chatRoot: 'https://learning-lantern-chat-api.herokuapp.com/',
+  rtcRoot: 'https://learning-lantern-chat-api.herokuapp.com/rtc/',
 };

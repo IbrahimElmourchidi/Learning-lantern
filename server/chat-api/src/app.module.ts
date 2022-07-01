@@ -7,6 +7,8 @@ import { ChatModule } from './chat/chat.module';
 import { ConnectedUser } from './chat/model/entities/connected-user.entity';
 import { JoinedRoom } from './chat/model/entities/joined-room.entity';
 import { Message } from './chat/model/entities/message.entity';
+import { RtcModule } from './rtc/rtc.module';
+import { Meeting } from './rtc/model/entities/meeting.entity';
 
 @Module({
   imports: [
@@ -14,10 +16,10 @@ import { Message } from './chat/model/entities/message.entity';
       type: 'postgres',
       url: process.env.DB_URL,
       synchronize: process.env.DB_SYNC == '1',
-      entities: [User, Room, ConnectedUser, JoinedRoom, Message],
+      entities: [User, Room, ConnectedUser, JoinedRoom, Message, Meeting],
     }),
     MQClientModule,
-    ChatModule,
+    RtcModule,
   ],
   exports: [],
   providers: [],

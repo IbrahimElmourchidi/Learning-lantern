@@ -1,4 +1,14 @@
 <div class="row justify-content-center p-4">
+  <div class="errors" *ngIf="formError">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngFor="let error of formError"
+    >
+      {{ error.Description }}!
+    </div>
+  </div>
+
   <div class="card col-sm-6 m-4 text-center shadow p-4">
     <div class="card-title pt-4">
       <h4 class="text-uppercase">signup</h4>

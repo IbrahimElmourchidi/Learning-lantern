@@ -45,41 +45,15 @@ services:
       PORT: 3005
       DB_URL: 'postgres://user:password@postgres:5432/chat'
       DB_SYNC: 1
-      JWT_SECRET: 'isafe'
-      MQ_URLS: 'amqp://myuser:mypassword@RabbitMQ:5672/'
-      MQ_DURABLE: 'false'
+      JWT_SECRET: 'nDzMuunoP6JbalKjeyccXU3xUeMrQsVN'
+      MQ_URLS: 'amqps://anjnybcr:eENEQlY_XOfWRsgzp_lI54bqwSWafbDH@rattlesnake.rmq.cloudamqp.com/anjnybcr'
+      MQ_DURABLE: 'true'
       AUTH_QUEUE: 'auth'
+      CHAT_QUEUE: 'chat'
     ports:
       - 3005:3005
     links:
       - RabbitMQ
-  rtc-api:
-    build:
-      dockerfile: dockerfile
-      context: ./server/rtc-api
-      target: development
-    volumes:
-      - ./server/rtc-api:/usr/rtc/src
-      - /usr/rtc/src/node_modules
-    command: npm run start:dev
-    depends_on:
-      - postgres
-      - openvidu
-    environment:
-      NODE_ENV: dev
-      PORT: 3006
-      DB_URL: 'postgres://user:password@postgres:5432/chat'
-      OV_URL: 'https://openvidu:4443'
-      OPENVIDU_SECRET: MY_SECRET
-      DB_SYNC: 1
-      JWT_SECRET: 'isafe'
-      MQ_URLS: 'amqp://myuser:mypassword@RabbitMQ:5672/'
-      MQ_DURABLE: 'false'
-      AUTH_QUEUE: 'auth'
-    ports:
-      - 3006:3006
-    links:
-      - openvidu
   web-client:
     build:
       dockerfile: dockerfile

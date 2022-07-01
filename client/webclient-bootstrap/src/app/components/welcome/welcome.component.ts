@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { QuizArray } from '../video/video.component';
 
 @Component({
   selector: 'app-welcome',

@@ -1,1 +1,478 @@
-todo works
+<div class="container-fluid p-0">
+  <div class="bg-header m-0 align-items-center row p-2 shadow-sm">
+    <h3 class="col-sm-4">Todo List</h3>
+    <form class="d-flex col-sm-4 col-md-3 ms-auto p-0" role="search">
+      <input
+        class="form-control ms-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        #searchInput
+      />
+      <i
+        class="bi bi-search search-icon pointer"
+        (click)="searchInput.focus()"
+      ></i>
+    </form>
+  </div>
+</div>
+
+<div>
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          id="collapseBtn"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+          aria-expanded="false"
+          aria-controls="collapseTwo"
+        >
+          {{ acitveTab }}
+        </button>
+      </h2>
+      <div
+        id="collapseTwo"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingTwo"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item w-100" role="presentation">
+              <button
+                class="nav-link mobile-link w-100"
+                [class.active]="acitveTab === 'My Day'"
+                id="myday-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#myday-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="myday-tab-pane"
+                aria-selected="true"
+                (click)="collapseIt('My Day')"
+              >
+                <i class="bi bi-hourglass-split"></i>
+                My Day
+              </button>
+            </li>
+            <li class="nav-item w-100" role="presentation">
+              <button
+                [class.active]="acitveTab === 'All Tasks'"
+                class="nav-link w-100"
+                id="all-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#all-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="all-tab-pane"
+                aria-selected="false"
+                (click)="collapseIt('All Tasks')"
+              >
+                <i class="bi bi-grid-fill"></i>
+                All Tasks
+              </button>
+            </li>
+            <li class="nav-item w-100" role="presentation">
+              <button
+                class="nav-link w-100"
+                [class.active]="acitveTab === 'Important'"
+                id="important-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#important-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="important-tab-pane"
+                aria-selected="false"
+                (click)="collapseIt('Important')"
+              >
+                <i class="bi bi-star-fill"></i>
+                Important
+              </button>
+            </li>
+            <li class="nav-item w-100" role="presentation">
+              <button
+                class="nav-link w-100"
+                [class.active]="acitveTab === 'Completed'"
+                id="completed-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#completed-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="completed-tab-pane"
+                aria-selected="false"
+                (click)="collapseIt('Completed')"
+              >
+                <i class="bi bi-check2-all"></i>
+                Completed
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul class="nav nav-tabs desk" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        [class.active]="acitveTab === 'My Day'"
+        (click)="collapseIt('My Day')"
+        id="myday-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#myday-tab-pane"
+        type="button"
+        role="tab"
+        aria-controls="myday-tab-pane"
+        aria-selected="true"
+      >
+        <i class="bi bi-hourglass-split"></i>
+        My Day
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        [class.active]="acitveTab === 'All Tasks'"
+        (click)="collapseIt('All Tasks')"
+        id="all-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#all-tab-pane"
+        type="button"
+        role="tab"
+        aria-controls="all-tab-pane"
+        aria-selected="false"
+      >
+        <i class="bi bi-grid-fill"></i>
+        All Tasks
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        [class.active]="acitveTab === 'Important'"
+        (click)="collapseIt('Important')"
+        id="important-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#important-tab-pane"
+        type="button"
+        role="tab"
+        aria-controls="important-tab-pane"
+        aria-selected="false"
+      >
+        <i class="bi bi-star-fill"></i>
+        Important
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="completed-tab"
+        [class.active]="acitveTab === 'Completed'"
+        (click)="collapseIt('Completed')"
+        data-bs-toggle="tab"
+        data-bs-target="#completed-tab-pane"
+        type="button"
+        role="tab"
+        aria-controls="completed-tab-pane"
+        aria-selected="false"
+      >
+        <i class="bi bi-check2-all"></i>
+        Completed
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div
+      class="tab-pane fade show active task-container mt-4"
+      id="myday-tab-pane"
+      role="tabpanel"
+      aria-labelledby="myday-tab"
+      tabindex="0"
+    >
+      <ng-container *ngFor="let task of myDayTasks; let i = index">
+        <div
+          class="card mx-4 my-2 pointer"
+          *ngIf="!task.Completed"
+          (click)="switchActiveTask(task)"
+        >
+          <div
+            class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
+          >
+            <div class="task-title w-50">
+              <div>
+                <i
+                  class="bi bi-star-fill me-2 text-secondary"
+                  *ngIf="task.Important"
+                ></i>
+                <span
+                  data-bs-toggle="modal"
+                  data-bs-target="#taskManagerModal"
+                  >{{ task.Title }}</span
+                >
+              </div>
+            </div>
+            <div
+              class="control-btns m-0 p-0 w-50 d-flex justify-content-end"
+              style="z-index: 10"
+            >
+              <button class="btn" title="edit">
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+              <button class="btn btn-danger ms-2">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+              <button class="btn btn-success ms-2">Done</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div
+      class="tab-pane fade task-container mt-4"
+      id="all-tab-pane"
+      role="tabpanel"
+      aria-labelledby="all-tab"
+      tabindex="0"
+    >
+      <ng-container *ngFor="let task of myDayTasks; let i = index">
+        <div
+          class="card mx-4 my-2 pointer"
+          *ngIf="!task.Completed"
+          (click)="switchActiveTask(task)"
+        >
+          <div
+            class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
+          >
+            <div class="task-title w-50">
+              <div>
+                <i
+                  class="bi bi-star-fill me-2 text-secondary"
+                  *ngIf="task.Important"
+                ></i>
+                <span
+                  data-bs-toggle="modal"
+                  data-bs-target="#taskManagerModal"
+                  >{{ task.Title }}</span
+                >
+              </div>
+            </div>
+            <div
+              class="control-btns m-0 p-0 d-flex justify-content-end w-50"
+              style="z-index: 10"
+            >
+              <button class="btn" title="edit">
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+              <button class="btn btn-danger ms-2">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+              <button class="btn btn-success ms-2">Done</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div
+      class="tab-pane fade task-container mt-4"
+      id="important-tab-pane"
+      role="tabpanel"
+      aria-labelledby="important-tab"
+      tabindex="0"
+    >
+      <ng-container *ngFor="let task of myDayTasks; let i = index">
+        <div
+          class="card mx-4 my-2 pointer"
+          *ngIf="!task.Completed && task.Important"
+          (click)="switchActiveTask(task)"
+        >
+          <div
+            class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
+          >
+            <div class="task-title w-50">
+              <div>
+                <i
+                  class="bi bi-star-fill me-2 text-secondary"
+                  *ngIf="task.Important"
+                ></i>
+                <span
+                  data-bs-toggle="modal"
+                  data-bs-target="#taskManagerModal"
+                  >{{ task.Title }}</span
+                >
+              </div>
+            </div>
+            <div
+              class="control-btns m-0 p-0 w-50 d-flex justify-content-end"
+              style="z-index: 10"
+            >
+              <button class="btn" title="edit">
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+              <button class="btn btn-danger ms-2">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+              <button class="btn btn-success ms-2">Done</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div
+      class="tab-pane fade task-container mt-4"
+      id="completed-tab-pane"
+      role="tabpanel"
+      aria-labelledby="completed-tab"
+      tabindex="0"
+    >
+      <ng-container *ngFor="let task of myDayTasks; let i = index">
+        <div
+          class="card mx-4 my-2 pointer"
+          *ngIf="task.Completed"
+          (click)="switchActiveTask(task)"
+        >
+          <div
+            class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
+          >
+            <div class="task-title w-50">
+              <div>
+                <button class="btn p-2" style="z-index: 10">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+                <i
+                  class="bi bi-star-fill ms-3 text-secondary"
+                  *ngIf="task.Important"
+                ></i>
+                <span
+                  data-bs-toggle="modal"
+                  data-bs-target="#taskManagerModal"
+                  >{{ task.Title }}</span
+                >
+              </div>
+            </div>
+            <div
+              class="control-btns w-50 m-0 p-0 d-flex justify-content-end"
+              style="z-index: 10"
+            >
+              <button class="btn" title="edit">
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+              <button class="btn btn-danger ms-2">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+              <button class="btn btn-success ms-2">Done</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<!-- task modal start here -->
+<div
+  class="modal fade"
+  id="taskManagerModal"
+  tabindex="-1"
+  aria-labelledby="taskManagerModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Task</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="taskFrom" (ngSubmit)="(5 + 5)">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Title:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              formControlName="TaskTitle"
+              [value]="activeTask.Title"
+            />
+            <ng-container *ngIf="TaskTitle.invalid && TaskTitle.touched">
+              <small *ngIf="TaskTitle.errors?.['required']" class="text-danger">
+                This Field is Required
+              </small>
+              <small
+                *ngIf="TaskTitle.errors?.['minlength']"
+                class="text-danger"
+              >
+                Min length 2
+              </small>
+              <small
+                *ngIf="TaskTitle.errors?.['maxlength']"
+                class="text-danger"
+              >
+                Max Length 30
+              </small>
+              <small *ngIf="TaskTitle.errors?.['invalidName']">
+                <span class="text-danger"
+                  >Please enter a valid name ( a valid name cannot contain
+                  symbols)</span
+                >
+              </small>
+            </ng-container>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+              >Description:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              formControlName="TaskDescription"
+              [value]="activeTask.Title"
+            />
+            <ng-container
+              *ngIf="TaskDescription.invalid && TaskDescription.touched"
+            >
+              <small
+                *ngIf="TaskDescription.errors?.['required']"
+                class="text-danger"
+              >
+                This Field is Required
+              </small>
+              <small
+                *ngIf="TaskDescription.errors?.['minlength']"
+                class="text-danger"
+              >
+                Min length 2
+              </small>
+              <small
+                *ngIf="TaskDescription.errors?.['maxlength']"
+                class="text-danger"
+              >
+                Max Length 30
+              </small>
+              <small *ngIf="TaskDescription.errors?.['invalidName']">
+                <span class="text-danger"
+                  >Please enter a valid name ( a valid name cannot contain
+                  symbols)</span
+                >
+              </small>
+            </ng-container>
+          </div>
+          <ngb-datepicker #dp [(ngModel)]="model"></ngb-datepicker>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- task modal ends here -->
