@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QuizArrayI } from '../statistics/user-statistics.component';
 
 @Component({
@@ -6,7 +6,7 @@ import { QuizArrayI } from '../statistics/user-statistics.component';
   templateUrl: 'calendar.component.html',
   styleUrls: ['calendar.component.scss'],
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
   quizeArray: QuizArrayI[] = [
     {
       quizId: '2',
@@ -17,4 +17,6 @@ export class CalendarComponent {
       time: 13,
     },
   ];
+
+  ngOnInit() {}
 }

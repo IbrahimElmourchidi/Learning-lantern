@@ -28,42 +28,40 @@ export interface QuizArray {
 })
 export class VideoComponent implements OnDestroy, AfterViewInit {
   player!: videojs.Player;
-  currentIndex = 0;
+  playing = false;
   interval: any;
   @Input() quizList!: QuizArray[];
   @Input() source: string = 'hello';
+  @ViewChild('target', { static: true }) target!: ElementRef;
+  currentIndex = 0;
 
-  @ViewChild('target', { static: true })
-  target!: ElementRef;
-  constructor(private elementRef: ElementRef) {}
+  constructor() {}
+
   ngAfterViewInit(): void {
+    this.quizList = this.quizList.sort((a, b) => {
+      return a.time - b.time;
+    });
     this.createVideoObject();
-    // this.interval = setInterval(() => {
-    //   this.goCheckAll();
-    // }, 1000);
-    this.player_pause();
-  }
-
-  checkTime(time: number, id: string) {
-    if (Math.floor(this.player.currentTime()) == time) {
-      this.player.pause();
-      this.quizList = this.quizList.filter((el) => el.quizId !== id);
-      this.currentIndex++;
-      alert(`quiz ${id}`);
-    }
   }
 
   goCheckAll() {
-    for (let i of this.quizList) {
-      this.checkTime(i.time, i.quizId);
+    if (
+      Math.floor(this.player.currentTime()) ===
+      this.quizList[this.currentIndex]?.time
+    ) {
+      this.player.pause();
+      console.log(this.quizList[this.currentIndex].quizId);
+      this.currentIndex++;
     }
-    if (this.currentIndex === this.quizList.length)
-      clearInterval(this.interval);
   }
-  player_pause() {
+
+  startInterval() {
     this.interval = setInterval(() => {
-      this.goCheckAll();
-    }, 1000);
+      if (this.playing) {
+        console.log('interval working');
+        this.goCheckAll();
+      }
+    }, 500);
   }
   createVideoObject() {
     let options: videoOptions = {
@@ -77,15 +75,35 @@ export class VideoComponent implements OnDestroy, AfterViewInit {
         },
       ],
     };
+
     this.player = videojs(this.target.nativeElement, options, () => {});
-    eventjs.on(this.target.nativeElement, 'start', () => {
-      console.log('video started');
+
+    this.player.on(this.target.nativeElement, 'play', () => {
+      this.playing = true;
     });
+
+    this.player.on(this.target.nativeElement, 'pause', () => {
+      this.playing = false;
+    });
+
+    this.player.on(this.target.nativeElement, 'seeked', () => {
+      this.computeCurrentIndex();
+    });
+
+    this.startInterval();
+  }
+
+  computeCurrentIndex() {
+    const index = this.quizList.findIndex((object) => {
+      return object.time > Math.floor(this.player.currentTime());
+    });
+    this.currentIndex = index == -1 ? this.quizList.length : index;
   }
 
   ngOnDestroy() {
     if (this.player) {
       this.player.dispose();
     }
+    clearInterval(this.interval);
   }
 }
