@@ -21,7 +21,7 @@ export class ChatSocket extends Socket {
 export class RtcSocket extends Socket {
   constructor() {
     super({
-      url: env.rtcRoot,
+      url: env.chatRoot,
       options: {
         extraHeaders: {
           Authorization: tokenGetter() as string,
