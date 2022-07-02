@@ -10,6 +10,7 @@ export interface AppState {
   joinedRooms?: RoomI[];
   editorOn: boolean;
   activeLesson?: string;
+  newVideoId?: string;
 }
 @Injectable()
 export class StateService {

@@ -1,8 +1,9 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { HttpClient } from '@angular/common/http';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 // import {lessonList} from '../text-lesson/text-lesson.component'
 
 @Component({
@@ -12,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TextLessonContainerComponent implements OnInit {
   // @Input() lessonList!: lessonList;
+  uploadedVideoId = '';
   editorHidden = true;
   buttonText = 'Edit';
   fileName = '';
@@ -19,34 +21,20 @@ export class TextLessonContainerComponent implements OnInit {
     { id: 1, title: 'hello1' },
     { id: 2, title: 'hello2' },
   ];
-  
+
+  uploadFrom!: FormGroup;
+  File!: FormControl;
 
   constructor(
     private appStateService: StateService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private http: HttpService,
-    private https: HttpClient
-  ) {}
-  // start upload file 
-  onFileSelected(event: any) {
+    private http: HttpService
+  ) {
+    this.File = new FormControl();
+    this.uploadFrom = new FormGroup({ File: this.File });
+  }
 
-    const file:File = event.target.files[0];
-
-    if (file) {
-
-        this.fileName = file.name;
-
-        const formData = new FormData();
-
-        formData.append("thumbnail", file);
-
-        const upload$ = this.https.post("/api/thumbnail-upload", formData);
-
-        upload$.subscribe();
-    }
-}
-//end uplod file
   ngOnInit() {
     this.router.navigate([this.lessonList[0].id], {
       relativeTo: this.activatedRoute,
@@ -73,7 +61,7 @@ export class TextLessonContainerComponent implements OnInit {
     });
   }
 
-  // getLessonContent(data: AppState) {  
+  // getLessonContent(data: AppState) {
   //   let body = {
   //   htmlValue: String,
   //   title: String,
@@ -89,4 +77,28 @@ export class TextLessonContainerComponent implements OnInit {
   //   console.log(res);
   // });
   // }
+
+  onSubmit() {
+    console.log(this.File.value);
+    const file = this.File.value;
+    const formData = new FormData();
+    formData.append('thumbnail', file);
+    if (this.uploadFrom.valid) {
+      this.http.doPost('url', this.uploadFrom.controls, {}).subscribe(
+        (res) => {
+          console.log(res);
+          const result = res as string;
+          this.uploadedVideoId = result;
+          this.sendVideoId(result);
+        },
+        (err) => {}
+      );
+    }
+  }
+
+  sendVideoId(id: string) {
+    this.appStateService.changeState({
+      newVideoId: id,
+    });
+  }
 }

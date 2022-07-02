@@ -21,7 +21,7 @@ export class TextLessonComponent implements OnInit {
   appState!: AppState;
   videoToInsert: string = '';
   htmlValue: any;
-  lessonId:any;
+  lessonId: any;
   constructor(
     private appStateService: StateService,
     private route: ActivatedRoute,
@@ -32,16 +32,18 @@ export class TextLessonComponent implements OnInit {
       if (this.appState.activeLesson) {
         this.getLessonContent(data);
       }
+      if (this.appState.newVideoId) {
+        this.addVideo(this.appState.newVideoId);
+      }
     });
   }
 
-
   ngOnInit(): void {
-    this.lessonId=this.route.snapshot.paramMap.get('lessonId') || '';
+    this.lessonId = this.route.snapshot.paramMap.get('lessonId') || '';
     this.appStateService.changeState({
-      activeLesson:this.lessonId ,
+      activeLesson: this.lessonId,
     });
-  //  this.get_editor_content();
+    //  this.get_editor_content();
   }
   editorHidden = true;
   lessonHTML = `    
@@ -56,72 +58,43 @@ export class TextLessonComponent implements OnInit {
     height: '100%',
     menubar: 'favs',
     toolbar: 'customInsertButton',
-    setup: (editor: any) => {
-      editor.ui.registry.addButton('customInsertButton', {
-        text: 'My Button',
-        onAction: () => {
-          this.openModal();
-        },
-      });
-    },
     content_style:
       'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     base_url: '/tinymce',
     suffix: '.min',
   };
   get_editor_content() {
-
-    console.log(this.htmlValue) ;
+    console.log(this.htmlValue);
   }
-
 
   myEditor: any;
 
-  getLessonContent(data: AppState) {  
+  getLessonContent(data: AppState) {
     let body = {
-    id:Number,
-    htmlValue: String,
-    title: String,
-    classroomId: String,
-  };
-  return this.http.doPost(``, body, {}).subscribe((res) => {
-    let result = res as {
-      id: number;
-      resHtml: string;
-      title: string;
-      classroomId: string;
+      id: Number,
+      htmlValue: String,
+      title: String,
+      classroomId: String,
     };
-    console.log(res);
-  });
-  }
-  // params:any;
-  // Set_editor_content() {
-  //   this.http.doGet(${env.authRoot}/getlesson?Id=${this.lessonId}&token=${encodeURIComponent(this.param.token)}, {params}
-  //   ){
-  //     let res: lessonList[] = [
-  //       {
-  //         id: 1,
-  //         htmlValue: ``,
-  //         title: '',
-  //         classroomId: "",
-  //       },
-  //     ];
-
-  //   }
-    
-  // }
-
-  openModal() {
-    // open modal
-    // modalService.open()
-    // get the video id
-    this.addVideo();
+    return this.http.doPost(``, body, {}).subscribe((res) => {
+      let result = res as {
+        id: number;
+        resHtml: string;
+        title: string;
+        classroomId: string;
+      };
+      console.log(res);
+    });
   }
 
-  addVideo() {
+  addVideo(id: string) {
+    console.log('lets add new video ', id);
     const editor = tinymce.get('editor');
     editor.insertContent(
-      ` <iframe style="width:90%; height:380px; border:none" src="/video/${this.videoToInsert}" title="W3Schools Free Online Web Tutorials"></iframe> `
+      ` <iframe style="width:90%; height:380px; border:none" src="/video/${id}" title="W3Schools Free Online Web Tutorials"></iframe> `
     );
+    this.appStateService.changeState({
+      newVideoId: '',
+    });
   }
 }

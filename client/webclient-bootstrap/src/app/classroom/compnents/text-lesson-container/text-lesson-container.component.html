@@ -13,20 +13,15 @@
     </button>
     <h3 class="col-sm-4 p-0 m-0">Lesson Title</h3>
   </div>
-  <div class="buttons">
+  <div class="buttons p-0 m-0">
     <button (click)="toggle()" class="btn btn-primary">{{ buttonText }}</button>
-    <input type="file" class="file-input"
-          (change)="onFileSelected($event)" #fileUpload>
-
-    <div class="file-upload">
-
-      {{fileName || "No file uploaded yet."}}
-
-        <button mat-mini-fab color="primary" class="upload-btn"
-          (click)="fileUpload.click()">
-          <i class="bi bi-arrow-up-square-fill"></i>
-        </button>
-    </div>
+    <button
+      data-bs-toggle="modal"
+      data-bs-target="#UploadModal"
+      class="btn btn-primary ms-4"
+    >
+      Video
+    </button>
   </div>
 </div>
 <div
@@ -59,3 +54,34 @@
   </div>
 </div>
 <router-outlet></router-outlet>
+
+<!-- modal Start -->
+<div
+  class="modal fade"
+  id="UploadModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Video</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="uploadFrom" (ngSubmit)="onSubmit()">
+          <input type="file" name="video" formControlName="File" id="video" />
+          <button class="btn btn-primary" type="submit">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal end -->
