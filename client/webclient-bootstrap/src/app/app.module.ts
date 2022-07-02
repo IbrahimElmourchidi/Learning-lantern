@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JwtModule } from '@auth0/angular-jwt';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BannerComponent } from './components/banner/banner.component';
@@ -76,5 +75,6 @@ export function tokenGetter() {
     TokenService,
   ],
   bootstrap: [AppComponent],
+  // entryComponents[vi]
 })
 export class AppModule {}
