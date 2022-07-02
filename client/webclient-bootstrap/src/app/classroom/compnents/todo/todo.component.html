@@ -1,19 +1,16 @@
 <div class="container-fluid p-0">
-  <div class="bg-header m-0 align-items-center row p-2 shadow-sm">
+  <div
+    class="bg-header row m-0 align-items-center justify-content-between p-2 shadow-sm"
+  >
     <h3 class="col-sm-4">Todo List</h3>
-    <form class="d-flex col-sm-4 col-md-3 ms-auto p-0" role="search">
-      <input
-        class="form-control ms-2"
-        type="search"
-        placeholder="Search"
-        aria-label="Search"
-        #searchInput
-      />
-      <i
-        class="bi bi-search search-icon pointer"
-        (click)="searchInput.focus()"
-      ></i>
-    </form>
+    <button
+      class="btn btn-primary col-sm-2"
+      data-bs-toggle="modal"
+      data-bs-target="#taskManagerModal"
+      (click)="create = true"
+    >
+      Create Task
+    </button>
   </div>
 </div>
 
@@ -192,11 +189,11 @@
       aria-labelledby="myday-tab"
       tabindex="0"
     >
-      <ng-container *ngFor="let task of myDayTasks; let i = index">
+      <ng-container *ngFor="let task of myDayTasks | keyvalue">
         <div
           class="card mx-4 my-2 pointer"
-          *ngIf="!task.Completed"
-          (click)="switchActiveTask(task)"
+          *ngIf="!task.value.Completed && task.value.MyDay"
+          (click)="setActiveTask(task.value)"
         >
           <div
             class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
@@ -205,12 +202,13 @@
               <div>
                 <i
                   class="bi bi-star-fill me-2 text-secondary"
-                  *ngIf="task.Important"
+                  *ngIf="task.value.Important"
                 ></i>
                 <span
                   data-bs-toggle="modal"
+                  (click)="setActiveTask(task.value)"
                   data-bs-target="#taskManagerModal"
-                  >{{ task.Title }}</span
+                  >{{ task.value.Title }}</span
                 >
               </div>
             </div>
@@ -221,10 +219,18 @@
               <button class="btn" title="edit">
                 <i class="bi bi-pencil-fill"></i>
               </button>
-              <button class="btn btn-danger ms-2">
+              <button
+                class="btn btn-danger ms-2"
+                (click)="deleteTask(task.value)"
+              >
                 <i class="bi bi-trash-fill"></i>
               </button>
-              <button class="btn btn-success ms-2">Done</button>
+              <button
+                class="btn btn-success ms-2"
+                (click)="completeTask(task.value)"
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>
@@ -237,11 +243,11 @@
       aria-labelledby="all-tab"
       tabindex="0"
     >
-      <ng-container *ngFor="let task of myDayTasks; let i = index">
+      <ng-container *ngFor="let task of myDayTasks | keyvalue">
         <div
           class="card mx-4 my-2 pointer"
-          *ngIf="!task.Completed"
-          (click)="switchActiveTask(task)"
+          *ngIf="!task.value.Completed"
+          (click)="setActiveTask(task.value)"
         >
           <div
             class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
@@ -250,12 +256,13 @@
               <div>
                 <i
                   class="bi bi-star-fill me-2 text-secondary"
-                  *ngIf="task.Important"
+                  *ngIf="task.value.Important"
                 ></i>
                 <span
                   data-bs-toggle="modal"
                   data-bs-target="#taskManagerModal"
-                  >{{ task.Title }}</span
+                  (click)="setActiveTask(task.value)"
+                  >{{ task.value.Title }}</span
                 >
               </div>
             </div>
@@ -266,10 +273,18 @@
               <button class="btn" title="edit">
                 <i class="bi bi-pencil-fill"></i>
               </button>
-              <button class="btn btn-danger ms-2">
+              <button
+                class="btn btn-danger ms-2"
+                (click)="deleteTask(task.value)"
+              >
                 <i class="bi bi-trash-fill"></i>
               </button>
-              <button class="btn btn-success ms-2">Done</button>
+              <button
+                class="btn btn-success ms-2"
+                (click)="completeTask(task.value)"
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>
@@ -282,11 +297,11 @@
       aria-labelledby="important-tab"
       tabindex="0"
     >
-      <ng-container *ngFor="let task of myDayTasks; let i = index">
+      <ng-container *ngFor="let task of myDayTasks | keyvalue">
         <div
           class="card mx-4 my-2 pointer"
-          *ngIf="!task.Completed && task.Important"
-          (click)="switchActiveTask(task)"
+          *ngIf="!task.value.Completed && task.value.Important"
+          (click)="setActiveTask(task.value)"
         >
           <div
             class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
@@ -295,12 +310,13 @@
               <div>
                 <i
                   class="bi bi-star-fill me-2 text-secondary"
-                  *ngIf="task.Important"
+                  *ngIf="task.value.Important"
                 ></i>
                 <span
                   data-bs-toggle="modal"
                   data-bs-target="#taskManagerModal"
-                  >{{ task.Title }}</span
+                  (click)="setActiveTask(task.value)"
+                  >{{ task.value.Title }}</span
                 >
               </div>
             </div>
@@ -311,10 +327,18 @@
               <button class="btn" title="edit">
                 <i class="bi bi-pencil-fill"></i>
               </button>
-              <button class="btn btn-danger ms-2">
+              <button
+                class="btn btn-danger ms-2"
+                (click)="deleteTask(task.value)"
+              >
                 <i class="bi bi-trash-fill"></i>
               </button>
-              <button class="btn btn-success ms-2">Done</button>
+              <button
+                class="btn btn-success ms-2"
+                (click)="completeTask(task.value)"
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>
@@ -327,11 +351,11 @@
       aria-labelledby="completed-tab"
       tabindex="0"
     >
-      <ng-container *ngFor="let task of myDayTasks; let i = index">
+      <ng-container *ngFor="let task of myDayTasks | keyvalue">
         <div
           class="card mx-4 my-2 pointer"
-          *ngIf="task.Completed"
-          (click)="switchActiveTask(task)"
+          *ngIf="task.value.Completed"
+          (click)="setActiveTask(task.value)"
         >
           <div
             class="card-body py-2 d-flex w-100 align-items-center justify-content-between"
@@ -343,12 +367,13 @@
                 </button>
                 <i
                   class="bi bi-star-fill ms-3 text-secondary"
-                  *ngIf="task.Important"
+                  *ngIf="task.value.Important"
                 ></i>
                 <span
                   data-bs-toggle="modal"
                   data-bs-target="#taskManagerModal"
-                  >{{ task.Title }}</span
+                  (click)="setActiveTask(task.value)"
+                  >{{ task.value.Title }}</span
                 >
               </div>
             </div>
@@ -359,10 +384,18 @@
               <button class="btn" title="edit">
                 <i class="bi bi-pencil-fill"></i>
               </button>
-              <button class="btn btn-danger ms-2">
+              <button
+                class="btn btn-danger ms-2"
+                (click)="deleteTask(task.value)"
+              >
                 <i class="bi bi-trash-fill"></i>
               </button>
-              <button class="btn btn-success ms-2">Done</button>
+              <button
+                class="btn btn-success ms-2"
+                (click)="completeTask(task.value)"
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>
@@ -390,7 +423,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="taskFrom" (ngSubmit)="(5 + 5)">
+        <form [formGroup]="taskFrom" (ngSubmit)="onSubmit()">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Title:</label>
             <input
@@ -399,7 +432,8 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               formControlName="TaskTitle"
-              [value]="activeTask.Title"
+              [value]="TaskTitle"
+              (change)="this.changes = true"
             />
           </div>
           <div class="mb-3">
@@ -412,7 +446,8 @@
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               formControlName="TaskDescription"
-              [value]="activeTask.Title"
+              [value]="TaskTitle"
+              (change)="this.changes = true"
             ></textarea>
           </div>
           <div class="mb-3">
@@ -423,13 +458,15 @@
               id="startDate"
               ngbDatepicker
               #d="ngbDatepicker"
-              (click)="d.toggle()"
+              (click)="d.toggle(); this.changes = true"
               style="padding-left: 2rem"
               [minDate]="today"
+              (change)="this.changes = true"
+              formControlName="StartDate"
             />
             <i
               class="bi bi-calendar-fill text-primary date-icon"
-              (click)="d.toggle()"
+              (click)="d.toggle(); this.changes = true"
             ></i>
           </div>
           <div class="mb-3">
@@ -440,12 +477,14 @@
               id="DueDate"
               ngbDatepicker
               #d2="ngbDatepicker"
-              (click)="d2.toggle()"
+              (click)="d2.toggle(); this.changes = true"
               style="padding-left: 2rem"
+              (change)="this.changes = true"
+              formControlName="DueDate"
             />
             <i
               class="bi bi-calendar-fill text-primary date-icon"
-              (click)="d2.toggle()"
+              (click)="d2.toggle(); this.changes = true"
             ></i>
           </div>
           <div class="form-check form-switch mb-4">
@@ -455,6 +494,7 @@
               role="switch"
               id="flexSwitchCheckChecked"
               formControlName="Important"
+              (change)="this.changes = true"
             />
             <label class="form-check-label" for="flexSwitchCheckChecked"
               >Important</label

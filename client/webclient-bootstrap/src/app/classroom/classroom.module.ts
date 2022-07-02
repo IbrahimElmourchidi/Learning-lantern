@@ -20,13 +20,13 @@ import { TextLessonContainerComponent } from './compnents/text-lesson-container/
 import { OVService } from './services/ov.service';
 import { VideoComponent } from './compnents/video/videos.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
     ClassContainerComponent,
     ClassHeaderComponent,
     ClassListComponent,
-    CalendarComponent,
     TodoComponent,
     ClassInsideComponent,
     ChatComponent,

@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   authRoot: 'https://learning-lantern.azurewebsites.net/api/user/',
-  chatRoot: 'https://learning-lantern-chat-api.herokuapp.com/',
+  todoRoot: 'https://learning-lantern.azurewebsites.net/api/v1/Tasks',
+  // chatRoot: 'https://learning-lantern-chat-api.herokuapp.com/',
+  chatRoot: 'http://0.0.0.0:3005',
 };
 
 /*

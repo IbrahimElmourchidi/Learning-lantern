@@ -17,16 +17,16 @@ export class ChatSocket extends Socket {
   }
 }
 
-@Injectable()
-export class RtcSocket extends Socket {
-  constructor() {
-    super({
-      url: env.chatRoot,
-      options: {
-        extraHeaders: {
-          Authorization: tokenGetter() as string,
-        },
-      },
-    });
-  }
-}
+// @Injectable()
+// export class RtcSocket extends Socket {
+//   constructor() {
+//     super({
+//       url: env.chatRoot,
+//       options: {
+//         extraHeaders: {
+//           Authorization: tokenGetter() as string,
+//         },
+//       },
+//     });
+//   }
+// }

@@ -2,7 +2,6 @@ import { ConnectedUser } from 'src/chat/model/entities/connected-user.entity';
 import { JoinedRoom } from 'src/chat/model/entities/joined-room.entity';
 import { Message } from 'src/chat/model/entities/message.entity';
 import { Room } from 'src/chat/model/entities/room.entity';
-import { Meeting } from 'src/rtc/model/entities/meeting.entity';
 import { Entity, PrimaryColumn, Column, ManyToMany, OneToMany } from 'typeorm';
 
 @Entity()
@@ -12,9 +11,9 @@ export class User {
 
   @Column({
     nullable: false,
-    default: 4,
+    default: 'Student',
   })
-  Role: number;
+  Role: string;
 
   @Column({
     nullable: false,
@@ -39,11 +38,6 @@ export class User {
 
   @ManyToMany(() => Room, (room) => room.users, { onDelete: 'CASCADE' })
   rooms: Room[];
-
-  @ManyToMany(() => Meeting, (meeting) => meeting.users, {
-    onDelete: 'CASCADE',
-  })
-  meetings: Meeting[];
 
   @OneToMany(() => JoinedRoom, (joinedRoom) => joinedRoom.room)
   joinedRooms: JoinedRoom[];

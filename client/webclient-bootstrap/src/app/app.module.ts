@@ -22,10 +22,17 @@ import { AlertComponent } from './shared/components/alert/alert.component';
 import { PlaceHolderDirective } from './shared/directeives/placeholder.directive';
 import { NotifySerivce } from './shared/services/notify.service';
 import { ChatService } from './classroom/services/chat.service';
-import { ChatSocket, RtcSocket } from './shared/sockets/sockets.service';
+import { ChatSocket } from './shared/sockets/sockets.service';
 import { VerifiedGuard } from './shared/guards/verified.guard';
 import { TokenService } from './shared/services/token.service';
+import { CalendarComponent } from './classroom/compnents/calendar/calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 
+FullCalendarModule.registerPlugins([
+  // register FullCalendar plugins
+  dayGridPlugin,
+]);
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -43,6 +50,7 @@ export function tokenGetter() {
     WelcomeComponent,
     HeaderComponent,
     BannerComponent,
+    CalendarComponent,
     ServiceListComponent,
     PlansComponent,
     ContactUsComponent,
@@ -54,6 +62,7 @@ export function tokenGetter() {
     PlaceHolderDirective,
   ],
   imports: [
+    FullCalendarModule,
     BrowserModule,
     AppRoutingModule,
     NgbModule,
@@ -61,6 +70,12 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter,
+        allowedDomains: [
+          'learning-lantern.azurewebsites.net',
+          'learning-lantern-chat-api.herokuapp.com',
+          '0.0.0.0:3005',
+        ],
+        authScheme: 'Bearer ', // Default value
       },
     }),
   ],
@@ -72,7 +87,7 @@ export function tokenGetter() {
     NotifySerivce,
     ChatService,
     ChatSocket,
-    RtcSocket,
+
     TokenService,
   ],
   bootstrap: [AppComponent],

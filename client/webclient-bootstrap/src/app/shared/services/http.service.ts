@@ -14,6 +14,10 @@ export class HttpService {
     return this.http.post(`${url}`, body, options);
   }
 
+  doPut(url: string, body: {}, options: {}) {
+    return this.http.put(url, body, options);
+  }
+
   doPatch(url: string, options: {}) {
     return this.http.patch(`${url}`, options);
   }

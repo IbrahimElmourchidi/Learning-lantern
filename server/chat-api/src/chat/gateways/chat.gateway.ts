@@ -7,6 +7,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import { RMQService } from 'nestjs-rmq';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/services/auth.service';
 import { PageI } from 'src/shared/interfaces/page.interface';
@@ -22,7 +23,7 @@ import { RoomService } from '../services/room.service';
 import { allowedHosts } from './allowed-hosts';
 
 @WebSocketGateway({
-  cors: { origin: allowedHosts },
+  cors: { origin: '*' },
 })
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
@@ -37,8 +38,8 @@ export class ChatGateway
     private roomService: RoomService,
     private connectedUserService: ConnectedUserService,
     private joinedRoomService: JoinedRoomService,
-    private messagesService: MessageService,
-    @Inject('chat_serv') private readonly client: ClientProxy,
+    private messagesService: MessageService, // @Inject('chat_serv') private readonly client: ClientProxy,
+    private readonly rmqService: RMQService,
   ) {}
 
   async onModuleInit() {
@@ -92,17 +93,36 @@ export class ChatGateway
   }
 
   private disconnect(socket: Socket) {
+    console.log('sorry you need to disconnect');
     socket.emit('error', new UnauthorizedException());
     socket.disconnect();
   }
 
   @SubscribeMessage('createRoom')
   async createRoom(socket: Socket, room: Room) {
+    console.log('lets create room', room);
     const roomCreated = await this.roomService.createRoom(
       room,
       socket.data.user,
     );
-    this.client.emit('newRoom', roomCreated.Id);
+    try {
+      this.rmqService
+        .send(
+          'newRoom',
+          { ClassId: roomCreated.Id },
+          {
+            deliveryMode: 2,
+          },
+        )
+        .then((res) => {
+          console.log('sent to rabbit ok');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log('rabbit error');
+    }
     this.emitRoom(socket);
   }
 
@@ -174,24 +194,4 @@ export class ChatGateway
       this.server.to(user.SocketId).emit('newMessage', createMessage);
     }
   }
-
-  // kurento start here
-  // @SubscribeMessage('kurentoStart')
-  // async startMediaPipeLine(socket: Socket, data: any) {
-  //   console.log('kurento start request');
-  //   this.kurenotService.createMediaPipeLine(socket, data);
-  // }
-
-  // @SubscribeMessage('kurentoStop')
-  // async stopMediaPipeLine(socket: Socket, data: any) {
-  //   console.log('kurento srop request');
-  //   this.kurenotService.stop(socket);
-  // }
-
-  // @SubscribeMessage('kurentoOnIceCandidate')
-  // async getCandidate(socket: Socket, data: any) {
-  //   console.log('kurento ice request');
-  //   this.kurenotService.onIceCandidate(socket, data);
-  // }
-  //kurento ends here
 }

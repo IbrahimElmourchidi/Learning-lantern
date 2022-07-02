@@ -24,7 +24,15 @@ export class UserService {
     try {
       this.userRepo.save(user);
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('Database Error');
+    }
+  }
+
+  async deleteUser(Id: string) {
+    try {
+      this.userRepo.delete(Id);
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
     }
   }
 }

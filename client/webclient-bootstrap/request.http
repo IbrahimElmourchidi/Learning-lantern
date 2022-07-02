@@ -10,3 +10,12 @@ Content-Type: application/json
 
 ###
 Get https://learning-lantern.azurewebsites.net/api/user//validate-email?userId=ebbbcf8d-9107-4092-a73c-f55d2a8a0633&token=CfDJ8Enuiy0fIOFDi0MGzR8nA1Kfa153xSKtgfFlzzzw2YBQKEPSiBKgUBdZ5xhDAT%2FK%2BbV0NnnifjQtW2bJejQzb%2FPzMJiPxV27hlMxq8R32nWcfFs8utQOvcPZrCJdkGz2%2FCOX5ZP0wOKkttdIXRDjjt5CWN98VyIFPnjmAlsduA6zA9mFK3GR8dfm7LySWEgZYlpGBR3GMzMWpB7O%2BiMTc7A%2FTrt7Z3%2FckNPoNrbeNzFd%2Fx46bLbcxkp4b1%2F4aoQ2Hw%3D%3D
+
+
+
+###
+POST https://learning-lantern.azurewebsites.net/api/v1/Tasks/
+Content-Type: application/json
+Authorization: 
+
+{"title":"hello2","description":"kdfkldjfd","startDate":"2022-07-02T22:00:00.000Z","dueDate":"2022-07-16T22:00:00.000Z","important":true,"completed":false}

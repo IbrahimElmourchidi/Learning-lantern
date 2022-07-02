@@ -5,6 +5,7 @@ import { ChatService } from 'src/app/classroom/services/chat.service';
 import { ErrorI } from 'src/app/shared/interfaces/error.interface';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
+import { TokenService } from 'src/app/shared/services/token.service';
 
 import { environment as env } from 'src/environments/environment';
 @Component({
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpService,
-    private state: StateService
+    private state: StateService,
+    private tokenService: TokenService
   ) {
     this.initFormControls();
     this.createForm();
@@ -69,6 +71,8 @@ export class LoginComponent implements OnInit {
         (res: any) => {
           let result = res as { Token: string };
           localStorage.setItem('token', result.Token);
+          this.tokenService.isLoggedIn();
+          this.tokenService.tokenParser(result.Token);
           this.state.changeState({
             logedIn: true,
           });

@@ -1,6 +1,6 @@
 export interface UserI {
   Id: string;
-  Role: number;
+  Role: string;
   FirstName: string;
   LastName: string;
 }

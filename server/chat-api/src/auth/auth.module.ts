@@ -10,7 +10,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
+      // secret: Buffer.from(encodeURI(process.env.JWT_SECRET), 'utf8'),
       secret: process.env.JWT_SECRET,
+      verifyOptions: {},
     }),
   ],
   providers: [JwtStrategy, JwtGuard, AuthService],

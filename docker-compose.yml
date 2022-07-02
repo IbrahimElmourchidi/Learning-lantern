@@ -19,6 +19,10 @@ services:
       DB_SYNC: 1
       JWT_SECRET: 'nDzMuunoP6JbalKjeyccXU3xUeMrQsVN'
       MQ_URLS: 'amqps://anjnybcr:eENEQlY_XOfWRsgzp_lI54bqwSWafbDH@rattlesnake.rmq.cloudamqp.com/anjnybcr'
+      RMQP_USER: anjnybcr
+      AMQP_EXCHANGE: LearningLantern
+      RMQP_PASS: eENEQlY_XOfWRsgzp_lI54bqwSWafbDH
+      RMQP_HOST: rattlesnake.rmq.cloudamqp.com
       MQ_DURABLE: 'true'
       AUTH_QUEUE: 'auth'
       CHAT_QUEUE: 'chat'

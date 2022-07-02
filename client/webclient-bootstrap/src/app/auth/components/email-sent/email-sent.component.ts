@@ -21,20 +21,14 @@ export class EmailSentComponent implements OnInit {
   resendValidationEmail() {
     try {
       if (!this.jwtService.isTokenExpired()) {
-        this.http
-          .doGet(env.authRoot + 'resend-validation', {
-            headers: {
-              authorization: 'bearer ' + tokenGetter(),
-            },
-          })
-          .subscribe(
-            (res) => {
-              console.log(res);
-            },
-            (err) => {
-              console.log(err);
-            }
-          );
+        this.http.doGet(env.authRoot + 'resend-validation', {}).subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       } else {
         this.router.navigate(['/auth/login']);
       }

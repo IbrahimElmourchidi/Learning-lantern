@@ -6,16 +6,16 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const authListener = app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: process.env.MQ_URLS.split(' '),
-      queue: process.env.AUTH_QUEUE,
-      queueOptions: {
-        durable: process.env.MQ_DURABLE,
-      },
-    },
-  });
+  // const authListener = app.connectMicroservice({
+  //   transport: Transport.RMQ,
+  //   options: {
+  //     urls: process.env.MQ_URLS.split(' '),
+  //     queue: process.env.AUTH_QUEUE,
+  //     queueOptions: {
+  //       durable: process.env.MQ_DURABLE,
+  //     },
+  //   },
+  // });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

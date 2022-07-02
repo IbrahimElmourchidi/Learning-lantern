@@ -40,6 +40,7 @@
     "kurento-client": "^6.16.0",
     "kurento-utils": "^6.16.0",
     "nestjs-io-client": "^0.1.0",
+    "nestjs-rmq": "^2.7.2",
     "nestjs-typeorm-paginate": "^4.0.1",
     "npm": "^8.13.0",
     "passport-jwt": "^4.0.0",
