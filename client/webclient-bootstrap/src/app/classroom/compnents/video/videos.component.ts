@@ -9,10 +9,9 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import videojs from 'video.js';
-import eventjs from 'video.js';
+import { HttpService } from 'src/app/shared/services/http.service';
+// import eventjs from 'video.js';
 export interface videoOptions {
-  fluid: boolean;
-  aspectRatio: string;
   autoplay: boolean;
   sources: {
     src: string;
@@ -48,7 +47,7 @@ export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
     },
   ];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private http: HttpService) {}
 
   ngOnInit(): void {
     this.vidoeId = this.route.snapshot.paramMap.get('videoId') || '';
@@ -82,9 +81,7 @@ export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
   }
   createVideoObject() {
     let options: videoOptions = {
-      fluid: true,
       autoplay: false,
-      aspectRatio: '19:6',
       sources: [
         {
           src: this.source,
@@ -123,4 +120,24 @@ export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
     }
     clearInterval(this.interval);
   }
+
+  ////http func 
+  // getVideo() {  
+  //   let body = {
+  //     autoplay: Boolean,
+  //     sources:[] {
+  //       src: String,
+  //       type: String,
+  //     }[],
+  // };
+  // return this.http.doPost(``, body, {}).subscribe((res) => {
+  //   let result = res as {
+  //     id: number;
+  //     resHtml: string;
+  //     title: string;
+  //     classroomId: string;
+  //   };
+  //   console.log(res);
+  // });
+  // }
 }

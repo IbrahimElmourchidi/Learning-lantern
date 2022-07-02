@@ -9,3 +9,9 @@ ul li a {
 ul li a:hover {
   color: var(--app-accent-color);
 }
+.buttons{
+  display: flex;
+}
+.file-input {
+  display:none;
+}

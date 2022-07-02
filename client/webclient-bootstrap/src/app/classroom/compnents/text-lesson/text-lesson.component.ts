@@ -2,6 +2,15 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import tinymce from 'tinymce';
+import { HttpService } from 'src/app/shared/services/http.service';
+import { environment as env } from 'src/environments/environment';
+// import { ModalService } from '../_modal';
+export interface lessonList {
+  id: number;
+  htmlValue: string;
+  title: string;
+  classroomId: string;
+}
 @Component({
   selector: 'app-textlesson',
   templateUrl: 'text-lesson.component.html',
@@ -11,9 +20,12 @@ export class TextLessonComponent implements OnInit {
   @ViewChild('editor') editor!: ElementRef;
   appState!: AppState;
   videoToInsert: string = '';
+  htmlValue: any;
+  lessonId:any;
   constructor(
     private appStateService: StateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private http: HttpService
   ) {
     this.appStateService.currentState.subscribe((data) => {
       this.appState = data;
@@ -23,14 +35,16 @@ export class TextLessonComponent implements OnInit {
     });
   }
 
+
   ngOnInit(): void {
+    this.lessonId=this.route.snapshot.paramMap.get('lessonId') || '';
     this.appStateService.changeState({
-      activeLesson: this.route.snapshot.paramMap.get('lessonId') || '',
+      activeLesson:this.lessonId ,
     });
+  //  this.get_editor_content();
   }
   editorHidden = true;
   lessonHTML = `    
-  
   <h1 style="text-align: center;"><strong>hello world</strong></h1>
 <p><strong>Chapter1: hello world</strong></p>
 <p><em>Hello world is our first Lesson</em></p>
@@ -55,15 +69,51 @@ export class TextLessonComponent implements OnInit {
     base_url: '/tinymce',
     suffix: '.min',
   };
+  get_editor_content() {
+
+    console.log(this.htmlValue) ;
+  }
+
 
   myEditor: any;
 
-  getLessonContent(data: AppState) {
-    console.log(data.activeLesson);
+  getLessonContent(data: AppState) {  
+    let body = {
+    id:Number,
+    htmlValue: String,
+    title: String,
+    classroomId: String,
+  };
+  return this.http.doPost(``, body, {}).subscribe((res) => {
+    let result = res as {
+      id: number;
+      resHtml: string;
+      title: string;
+      classroomId: string;
+    };
+    console.log(res);
+  });
   }
+  // params:any;
+  // Set_editor_content() {
+  //   this.http.doGet(${env.authRoot}/getlesson?Id=${this.lessonId}&token=${encodeURIComponent(this.param.token)}, {params}
+  //   ){
+  //     let res: lessonList[] = [
+  //       {
+  //         id: 1,
+  //         htmlValue: ``,
+  //         title: '',
+  //         classroomId: "",
+  //       },
+  //     ];
+
+  //   }
+    
+  // }
 
   openModal() {
     // open modal
+    // modalService.open()
     // get the video id
     this.addVideo();
   }

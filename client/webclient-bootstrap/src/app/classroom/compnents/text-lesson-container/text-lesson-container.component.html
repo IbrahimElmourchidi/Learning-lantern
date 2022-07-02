@@ -15,6 +15,18 @@
   </div>
   <div class="buttons">
     <button (click)="toggle()" class="btn btn-primary">{{ buttonText }}</button>
+    <input type="file" class="file-input"
+          (change)="onFileSelected($event)" #fileUpload>
+
+    <div class="file-upload">
+
+      {{fileName || "No file uploaded yet."}}
+
+        <button mat-mini-fab color="primary" class="upload-btn"
+          (click)="fileUpload.click()">
+          <i class="bi bi-arrow-up-square-fill"></i>
+        </button>
+    </div>
   </div>
 </div>
 <div
