@@ -10,7 +10,6 @@ import { Message } from './model/entities/message.entity';
 import { Room } from './model/entities/room.entity';
 import { ConnectedUserService } from './services/connected-user.service';
 import { JoinedRoomService } from './services/joined-room.service';
-import { ListenService } from '../MQClient/listen.service';
 
 import { MessageService } from './services/message.service';
 import { RoomService } from './services/room.service';

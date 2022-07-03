@@ -1,4 +1,4 @@
-import { Inject, OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import { OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import {
   OnGatewayConnection,
@@ -7,7 +7,6 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { AmqpConnectionManager } from 'amqp-connection-manager';
 
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/services/auth.service';
@@ -22,6 +21,8 @@ import { JoinedRoomService } from '../services/joined-room.service';
 import { MessageService } from '../services/message.service';
 import { RoomService } from '../services/room.service';
 import { allowedHosts } from './allowed-hosts';
+import { UserI } from 'src/user/model/interfaces/user.interface';
+import { ListenerHelperService } from 'src/MQClient/listen-helper.service';
 
 @WebSocketGateway({
   cors: { origin: allowedHosts },
@@ -40,6 +41,7 @@ export class ChatGateway
     private connectedUserService: ConnectedUserService,
     private joinedRoomService: JoinedRoomService,
     private amqpConnection: AmqpConnection,
+    private listenHelper: ListenerHelperService,
     private messagesService: MessageService, // @Inject('chat_serv') private readonly client: ClientProxy, // private readonly rmqService: RMQService,
   ) {}
 
@@ -53,8 +55,8 @@ export class ChatGateway
   }
 
   @SubscribeMessage('getRoomList')
-  handleMessage(socket: Socket, payload: any) {
-    this.emitRoom(socket);
+  handleMessage(socket: Socket, payload: { page: number }) {
+    this.emitRoom(socket, payload.page);
   }
 
   // @UseGuards(JwtGuard)
@@ -65,7 +67,8 @@ export class ChatGateway
       let veri = await this.authService.verifyJWT(
         socket.handshake.headers.authorization,
       );
-      const user = await this.userService.getUserById(veri.userId);
+      const payload: UserI = this.listenHelper.userParser(veri);
+      const user = await this.userService.getUserById(payload.Id);
       if (!user) {
         this.disconnect(socket);
       } else {
@@ -101,29 +104,17 @@ export class ChatGateway
 
   @SubscribeMessage('createRoom')
   async createRoom(socket: Socket, room: Room) {
-    console.log('roomCreation');
-
     const roomCreated = await this.roomService.createRoom(
       room,
       socket.data.user,
     );
-    // try {
-    //   this.client.send('newRoom', {
-    //     ClassId: roomCreated.Id,
-    //     UserId: socket.data.user.Id,
-    //   });
-    // } catch (error) {
-    //   console.log('rabbit error');
-    // }
-    this.amqpConnection.publish(
-      'LearningLantern',
-      'newRoom',
-      {
-        ClassId: roomCreated.Id,
-        UserId: socket.data.user.Id,
-      },
-      {},
-    );
+    const rabbitMsg = {
+      ClassId: roomCreated.Id,
+      UserId: socket.data.user.Id,
+    };
+    console.log(rabbitMsg);
+    this.amqpConnection.publish('LearningLantern', 'newRoom', rabbitMsg, {});
+    this.emitRoom(socket);
   }
 
   @SubscribeMessage('roomPaginate')
@@ -138,29 +129,26 @@ export class ChatGateway
 
   @SubscribeMessage('joinRoom')
   async joinRoom(socket: Socket, roomId: string) {
+    console.log('lets join room: ', roomId);
     await this.roomService.joinRoom(roomId, socket.data.user);
-    // this.client.send('joinRoom', {
-    //   UserId: socket.data.user.Id,
-    //   ClassId: roomId,
-    // });
-    this.amqpConnection.publish(
-      'LearningLantern',
-      'joinRoom',
-      {
-        ClassId: roomId,
-        UserId: socket.data.user.Id,
-      },
-      {},
-    );
+    const rabbitMsg = {
+      ClassId: roomId,
+      UserId: socket.data.user.Id,
+    };
+    console.log(rabbitMsg);
     this.emitRoom(socket);
+    this.amqpConnection.publish('LearningLantern', 'joinRoom', rabbitMsg, {});
   }
 
-  async emitRoom(socket: Socket) {
+  async emitRoom(socket: Socket, page = 1) {
+    console.log('lets send user rooms');
     const user = socket.data.user;
+    console.log(user);
     const rooms = await this.roomService.getRoomsForUser(user.Id, {
       page: 1,
       limit: 10,
     });
+    console.log(rooms);
     socket.emit('rooms', rooms);
   }
 

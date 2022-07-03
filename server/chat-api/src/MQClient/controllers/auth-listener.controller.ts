@@ -37,16 +37,16 @@ export class AuthListenerController {
   //   return 1;
   // }
 
-  @MessagePattern('LearningLantern.UserEvent')
-  newUser(@Payload() data, @Ctx() context: RmqContext) {
-    console.log(data);
-  }
+  // @MessagePattern('LearningLantern.UserEvent')
+  // newUser(@Payload() data, @Ctx() context: RmqContext) {
+  //   console.log(data);
+  // }
 
-  @MessagePattern('DeleteUserEvent')
-  deleteUser(@Payload() data, @Ctx() context: RmqContext) {
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    console.log(data);
-    channel.ack(originalMsg);
-  }
+  // @MessagePattern('DeleteUserEvent')
+  // deleteUser(@Payload() data, @Ctx() context: RmqContext) {
+  //   const channel = context.getChannelRef();
+  //   const originalMsg = context.getMessage();
+  //   console.log(data);
+  //   channel.ack(originalMsg);
+  // }
 }

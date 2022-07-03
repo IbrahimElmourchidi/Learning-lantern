@@ -38,10 +38,12 @@ export class AuthService {
    */
   private generatePayload(user: Partial<User>): PayloadI {
     return {
-      userId: user['Id'],
-      userFName: user['FirstName'],
-      isValidated: user['IsValidated'],
-      role: user['role'],
+      sub: user['Id'],
+      FirstName: user['FirstName'],
+      LastName: user['LastName'],
+      EmailConfirmed: user['IsValidated'],
+      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role':
+        user['role'],
     };
   }
 }

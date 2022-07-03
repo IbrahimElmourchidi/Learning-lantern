@@ -1,5 +1,6 @@
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
+import { User } from 'src/user/model/entities/user.entity';
 import { UserService } from 'src/user/services/user.service';
 
 @Injectable()
@@ -11,10 +12,13 @@ export class ListenService {
     routingKey: 'UserEvent',
     queue: 'auth',
   })
-  public async newUser(data: {}) {
+  public async newUser(data: User) {
     console.log(data);
-    // const user: User = data;
-    // this.userService.createUser(user);
+    try {
+      this.userService.createUser(data);
+    } catch (error) {
+      console.log('invalid rabbit data');
+    }
     return {
       response: 42,
     };
@@ -25,11 +29,17 @@ export class ListenService {
     routingKey: 'DeleteUserEvent',
     queue: 'auth',
   })
-  public async deleteUser(data: {}) {
-    console.log(data);
-    // this.userService.deleteUser(JSON.parse(Id.content.toString()));
+  public async deleteUser(userId: string) {
+    console.log(userId);
+    this.userService.deleteUser(userId);
     return {
       response: 42,
     };
   }
 }
+
+// {
+//   Id: '44758929-e782-4c99-ba34-d98a62a896b2',
+//   FirstName: 'hema',
+//   LastName: 'mohamed'
+// }
