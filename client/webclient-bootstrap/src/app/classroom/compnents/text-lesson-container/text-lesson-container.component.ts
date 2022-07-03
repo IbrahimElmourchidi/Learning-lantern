@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { HttpClient } from '@angular/common/http';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 // import {lessonList} from '../text-lesson/text-lesson.component'
 
 @Component({
@@ -24,11 +24,16 @@ export class TextLessonContainerComponent implements OnInit {
 
   uploadFrom!: FormGroup;
   File!: FormControl;
-
-  quizList = new FormGroup({
-    quizTime: new FormControl(),
-    quizeId: new FormControl(),
+  myArray: FormGroup[] = [];
+  readyArray = new FormGroup({
+    quizId: new FormControl(''),
+    time: new FormControl(''),
   });
+  quizList = new FormArray(this.myArray);
+
+  addNewQuizField() {
+    this.quizList.push(this.readyArray);
+  }
 
   constructor(
     private appStateService: StateService,

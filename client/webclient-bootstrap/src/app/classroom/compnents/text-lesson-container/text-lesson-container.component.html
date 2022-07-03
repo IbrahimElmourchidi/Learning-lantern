@@ -72,32 +72,47 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
-        >
-      </button>
+        ></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="uploadFrom" (ngSubmit)="onSubmit()">
-          <h5 class="modal-title" > Add Video</h5>
-          <hr>
+          <h5 class="modal-title">Add Video</h5>
+          <hr />
           <input type="file" name="video" formControlName="File" id="video" />
           <button class="btn btn-primary" type="submit">Upload</button>
-          <br>
-          <form [formGroup]="quizList">
-            <h5 class="modal-title" > Add Quiz</h5>
-            <hr> 
-                <label for="quiz">Quize Time</label>  
-            <input  data-role="timepicker"  data-distance="1" type="time" name="quiz" formControlName=" quizTime"  id="quiz" />
-            
-            <br>
-            <label for="quizId">Quize ID</label> 
-            <input  type="number" name="quizId" formControlName="quizeId" id="quizId" />
-            <button class="btn btn-primary" type="submit">Add</button>
+          <br />
+          <form formArrayName="quizList">
+            <h5 class="modal-title">Add Quiz</h5>
+            <ng-container
+              *ngFor="let quizFrom of quizList.controls; let i = index"
+            >
+              <form formGroupName="i" class="d-flex">
+                <input
+                  type="text"
+                  formControlName="quizId"
+                  placeholder="quizId"
+                  class="m-2 col-sm-5"
+                />
+                <input
+                  type="text"
+                  formControlName="time"
+                  placeholder="time"
+                  class="m-2 col-sm-5"
+                />
+              </form>
+            </ng-container>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="addNewQuizField()"
+            >
+              Add
+            </button>
           </form>
-          
-
         </form>
       </div>
     </div>
+    {{ quizList.value | json }}
   </div>
 </div>
 
