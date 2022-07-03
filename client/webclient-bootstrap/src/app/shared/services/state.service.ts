@@ -11,6 +11,7 @@ export interface AppState {
   editorOn: boolean;
   activeLesson?: string;
   newVideoId?: string;
+  videoToDelete?: string;
 }
 @Injectable()
 export class StateService {

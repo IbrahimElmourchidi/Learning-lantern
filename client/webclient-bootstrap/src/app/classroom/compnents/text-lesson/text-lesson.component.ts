@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import tinymce from 'tinymce';
@@ -16,8 +22,9 @@ export interface lessonList {
   templateUrl: 'text-lesson.component.html',
   styleUrls: ['text-lesson.component.scss'],
 })
-export class TextLessonComponent implements OnInit {
+export class TextLessonComponent implements OnInit, AfterViewInit {
   @ViewChild('editor') editor!: ElementRef;
+
   appState!: AppState;
   videoToInsert: string = '';
   htmlValue: any;
@@ -35,7 +42,14 @@ export class TextLessonComponent implements OnInit {
       if (this.appState.newVideoId) {
         this.addVideo(this.appState.newVideoId);
       }
+      if (this.appState.videoToDelete) {
+        console.log(this.appState.videoToDelete);
+        this.deleteVideoFrame(data.videoToDelete || '');
+      }
     });
+  }
+  ngAfterViewInit(): void {
+    document.getElementById('mustRemove')?.remove();
   }
 
   ngOnInit(): void {
@@ -47,7 +61,7 @@ export class TextLessonComponent implements OnInit {
   }
   editorHidden = true;
   lessonHTML = `    
-  <h1 style="text-align: center;"><strong>hello world</strong></h1>
+  <h1  id='mustRemove' style="text-align: center;"><strong>hello world</strong></h1>
 <p><strong>Chapter1: hello world</strong></p>
 <p><em>Hello world is our first Lesson</em></p>
 <p>&nbsp;</p>
@@ -55,14 +69,29 @@ export class TextLessonComponent implements OnInit {
   
   `;
   tinymceConfig = {
+    menubar: 'edit view  format tools table help',
+    plugins: [
+      'autolink',
+      'lists',
+      'link',
+      'image',
+      'charmap',
+      'searchreplace',
+      'visualblocks',
+      'table',
+      'wordcount',
+    ],
     height: '100%',
-    menubar: 'favs',
-    toolbar: 'customInsertButton',
+    toolbar:
+      'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
+      'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+      'forecolor backcolor emoticons | help',
     content_style:
       'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     base_url: '/tinymce',
     suffix: '.min',
   };
+
   get_editor_content() {
     console.log(this.htmlValue);
   }
@@ -91,10 +120,21 @@ export class TextLessonComponent implements OnInit {
     console.log('lets add new video ', id);
     const editor = tinymce.get('editor');
     editor.insertContent(
-      ` <iframe style="width:90%; height:380px; border:none" src="/video/${id}" title="W3Schools Free Online Web Tutorials"></iframe> `
+      // TODO: change the 123 to the video id
+
+      ` <div id="123">
+      <iframe style="width:90%; height:380px; border:none"  src="/video/${id}" title="W3Schools Free Online Web Tutorials"></iframe>
+      </div> `
     );
     this.appStateService.changeState({
       newVideoId: '',
+    });
+  }
+
+  deleteVideoFrame(id: string) {
+    document.querySelector(`#${id}`)?.remove();
+    this.appStateService.changeState({
+      videoToDelete: '',
     });
   }
 }

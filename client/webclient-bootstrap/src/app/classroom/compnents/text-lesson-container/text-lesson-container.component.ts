@@ -107,7 +107,9 @@ export class TextLessonContainerComponent implements OnInit {
           this.uploadedVideoId = result;
           this.sendVideoId(result);
         },
-        (err) => {}
+        (err) => {
+          this.sendVideoId('321');
+        }
       );
     }
   }

@@ -1,10 +1,54 @@
-<video
-  id="my_video_1"
-  class="video-js vjs-theme-fantasy vjs-default-skin vjs-big-play-centered"
-  #target
-  controls
-  data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
-  style="height: 100%; width: 100%"
+<div class="d-flex">
+  <video
+    id="my_video_1"
+    class="video-js vjs-theme-fantasy vjs-default-skin vjs-big-play-centered"
+    #target
+    controls
+    data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
+    style="height: 100%; width: 100%"
+  >
+    Your browser does not support HTML video.
+  </video>
+  <div>
+    <button class="btn btn-danger ms-2" (click)="deleteVideo()">
+      <i class="bi bi-trash-fill"></i>
+    </button>
+    <button
+      class="btn btn-success ms-2"
+      (click)="(+1)"
+      data-bs-toggle="modal"
+      data-bs-target="#EditVideoModal"
+    >
+      <i class="bi bi-pencil-fill"></i>
+    </button>
+  </div>
+</div>
+
+<!-- video edit modal start here -->
+
+<div
+  class="modal fade"
+  id="EditVideoModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
 >
-  Your browser does not support HTML video.
-</video>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Video</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>this is the modal body</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal end -->

@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import videojs from 'video.js';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { AppState, StateService } from 'src/app/shared/services/state.service';
 // import eventjs from 'video.js';
 export interface videoOptions {
   autoplay: boolean;
@@ -29,7 +30,7 @@ export interface QuizArrayI {
   styleUrls: ['./video.component.scss'],
 })
 export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
-  vidoeId!: string;
+  vidoeId: string = '123';
   player!: videojs.Player;
   playing = false;
   interval: any;
@@ -47,7 +48,16 @@ export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
     },
   ];
 
-  constructor(private route: ActivatedRoute, private http: HttpService) {}
+  appState!: AppState;
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpService,
+    private appStateService: StateService
+  ) {
+    this.appStateService.currentState.subscribe(
+      (state) => (this.appState = state)
+    );
+  }
 
   ngOnInit(): void {
     this.vidoeId = this.route.snapshot.paramMap.get('videoId') || '';
@@ -121,8 +131,8 @@ export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
     clearInterval(this.interval);
   }
 
-  ////http func 
-  // getVideo() {  
+  ////http func
+  // getVideo() {
   //   let body = {
   //     autoplay: Boolean,
   //     sources:[] {
@@ -140,4 +150,11 @@ export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
   //   console.log(res);
   // });
   // }
+
+  deleteVideo() {
+    console.log('delete video with id', this.vidoeId);
+    this.appStateService.changeState({
+      videoToDelete: this.vidoeId,
+    });
+  }
 }
