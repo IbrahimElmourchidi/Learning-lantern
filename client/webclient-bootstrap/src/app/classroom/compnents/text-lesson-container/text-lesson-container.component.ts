@@ -1,10 +1,9 @@
+import { lessonList } from './../text-lesson/text-lesson.component';
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { HttpClient } from '@angular/common/http';
-import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-// import {lessonList} from '../text-lesson/text-lesson.component'
+import { FormControl, FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-lesson-container',
@@ -12,19 +11,22 @@ import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
   styleUrls: ['text-lesson-container.component.scss'],
 })
 export class TextLessonContainerComponent implements OnInit {
-  // @Input() lessonList!: lessonList;
   uploadedVideoId = '';
   editorHidden = true;
   buttonText = 'Edit';
   fileName = '';
-  lessonList = [
-    { id: 1, title: 'hello1' },
-    { id: 2, title: 'hello2' },
-  ];
+
+   lessonList: {
+    id:string;
+    title:string;
+  }[]= [];
 
   uploadFrom!: FormGroup;
   File!: FormControl;
   quizList = new FormArray([]);
+
+  lessonFrom!: FormGroup;
+  title!: FormControl;
 
   addNewQuizField() {
     this.quizList.push(
@@ -46,6 +48,8 @@ export class TextLessonContainerComponent implements OnInit {
       File: this.File,
       quizList: this.quizList,
     });
+    this.title=new FormControl();
+    this.lessonFrom=new FormGroup({title:this.title});
   }
 
   ngOnInit() {
@@ -68,29 +72,24 @@ export class TextLessonContainerComponent implements OnInit {
     this.editorHidden = !this.editorHidden;
   }
 
-  changeLesson(id: any) {
-    this.appStateService.changeState({
-      activeLesson: id,
-    });
-  }
+// Function get lesson content
+// getLessonContent(data: AppState) {
+//   let body = {
+//   htmlValue: '',
+//   title: this.title,
+//   classroomId:''
+// };
+// return this.http.doPost(``, body, {}).subscribe((res) => {
+//   let result = res as {
+//     htmlValue: string;
+//     title: string;
+//     classroomId: string;
+//   };
+//   console.log(res);
+// });
+// }
 
-  // getLessonContent(data: AppState) {
-  //   let body = {
-  //   htmlValue: String,
-  //   title: String,
-  //   classroomId: String,
-  // };
-  // return this.http.doPost(``, body, {}).subscribe((res) => {
-  //   let result = res as {
-  //     id: number;
-  //     resHtml: string;
-  //     title: string;
-  //     classroomId: string;
-  //   };
-  //   console.log(res);
-  // });
-  // }
-
+  //Video Post
   onSubmit() {
     console.log(this.File.value);
     const file = this.File.value;
@@ -113,10 +112,38 @@ export class TextLessonContainerComponent implements OnInit {
       );
     }
   }
-
   sendVideoId(id: string) {
     this.appStateService.changeState({
       newVideoId: id,
+    });
+  }
+
+// Lesson Post
+  onSubmitlesson(){
+    console.log(this.title.value);
+    const title = this.title.value;
+    const formData = new FormData();
+    formData.append('title', title);
+    if (this.lessonFrom.valid) {
+      this.http.doPost('url', formData, {}).subscribe(
+        (res) => {
+          console.log(res);
+          const result = res as {
+            id:string,
+            title:string
+          };
+          this.lessonList.push(result);
+        },
+        (err) => {
+         this.changeLesson('12');
+        }
+      );
+    }
+
+  }
+  changeLesson(id: string) {
+    this.appStateService.changeState({
+      activeLesson: id,
     });
   }
 }
