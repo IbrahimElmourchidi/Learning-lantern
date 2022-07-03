@@ -1,5 +1,5 @@
 import { Inject, OnModuleInit, UnauthorizedException } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,7 +7,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { RMQService } from 'nestjs-rmq';
+import { AmqpConnectionManager } from 'amqp-connection-manager';
+
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/services/auth.service';
 import { PageI } from 'src/shared/interfaces/page.interface';
@@ -23,7 +24,7 @@ import { RoomService } from '../services/room.service';
 import { allowedHosts } from './allowed-hosts';
 
 @WebSocketGateway({
-  cors: { origin: '*' },
+  cors: { origin: allowedHosts },
 })
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
@@ -38,8 +39,8 @@ export class ChatGateway
     private roomService: RoomService,
     private connectedUserService: ConnectedUserService,
     private joinedRoomService: JoinedRoomService,
-    private messagesService: MessageService, // @Inject('chat_serv') private readonly client: ClientProxy,
-    private readonly rmqService: RMQService,
+    private amqpConnection: AmqpConnection,
+    private messagesService: MessageService, // @Inject('chat_serv') private readonly client: ClientProxy, // private readonly rmqService: RMQService,
   ) {}
 
   async onModuleInit() {
@@ -100,30 +101,29 @@ export class ChatGateway
 
   @SubscribeMessage('createRoom')
   async createRoom(socket: Socket, room: Room) {
-    console.log('lets create room', room);
+    console.log('roomCreation');
+
     const roomCreated = await this.roomService.createRoom(
       room,
       socket.data.user,
     );
-    try {
-      this.rmqService
-        .send(
-          'newRoom',
-          { ClassId: roomCreated.Id },
-          {
-            deliveryMode: 2,
-          },
-        )
-        .then((res) => {
-          console.log('sent to rabbit ok');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      console.log('rabbit error');
-    }
-    this.emitRoom(socket);
+    // try {
+    //   this.client.send('newRoom', {
+    //     ClassId: roomCreated.Id,
+    //     UserId: socket.data.user.Id,
+    //   });
+    // } catch (error) {
+    //   console.log('rabbit error');
+    // }
+    this.amqpConnection.publish(
+      'LearningLantern',
+      'newRoom',
+      {
+        ClassId: roomCreated.Id,
+        UserId: socket.data.user.Id,
+      },
+      {},
+    );
   }
 
   @SubscribeMessage('roomPaginate')
@@ -139,6 +139,19 @@ export class ChatGateway
   @SubscribeMessage('joinRoom')
   async joinRoom(socket: Socket, roomId: string) {
     await this.roomService.joinRoom(roomId, socket.data.user);
+    // this.client.send('joinRoom', {
+    //   UserId: socket.data.user.Id,
+    //   ClassId: roomId,
+    // });
+    this.amqpConnection.publish(
+      'LearningLantern',
+      'joinRoom',
+      {
+        ClassId: roomId,
+        UserId: socket.data.user.Id,
+      },
+      {},
+    );
     this.emitRoom(socket);
   }
 
@@ -164,8 +177,6 @@ export class ChatGateway
 
   @SubscribeMessage('enterRoom')
   async enterRoom(socket: Socket, room: RoomI) {
-    console.log(`room ${room.Name} entered`);
-
     await this.joinedRoomService.create({
       SocketId: socket.id,
       user: socket.data.user,

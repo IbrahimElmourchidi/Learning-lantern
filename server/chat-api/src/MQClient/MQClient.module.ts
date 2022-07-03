@@ -4,7 +4,8 @@ import { RMQModule } from 'nestjs-rmq';
 import { RMQ_PROTOCOL } from 'nestjs-rmq/dist/constants';
 import { UserModule } from 'src/user/user.module';
 import { AuthListenerController } from './controllers/auth-listener.controller';
-
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { ListenService } from './listen.service';
 @Module({
   controllers: [AuthListenerController],
   imports: [
@@ -14,33 +15,45 @@ import { AuthListenerController } from './controllers/auth-listener.controller';
     //     transport: Transport.RMQ,
     //     options: {
     //       urls: process.env.MQ_URLS.split(' '),
-    //       queue: process.env.CHAT_QUEUE,
+    //       queue: 'auth',
     //       queueOptions: {
-    //         durable: process.env.MQ_DURABLE,
+    //         durable: true,
     //       },
     //     },
     //   },
     // ]),
-    RMQModule.forRoot({
-      serviceName: 'auth',
-      queueName: 'auth',
-      exchangeName: 'LearningLantern',
-      isExchangeDurable: false,
-      isQueueDurable: true,
-      assertExchangeType: 'direct',
-      connections: [
+    // RMQModule.forRoot({
+    //   serviceName: 'auth',
+    //   exchangeName: 'LearningLantern',
+    //   isExchangeDurable: false,
+    //   queueOptions: {
+    //     durable: true,
+    //   },
+    //   assertExchangeType: 'fanout',
+    //   connections: [
+    //     {
+    //       protocol: RMQ_PROTOCOL.AMQP,
+    //       port: 5672,
+    //       vhost: 'anjnybcr',
+    //       login: 'anjnybcr',
+    //       password: 'eENEQlY_XOfWRsgzp_lI54bqwSWafbDH',
+    //       host: 'rattlesnake.rmq.cloudamqp.com',
+    //     },
+    //   ],
+    // }),
+    UserModule,
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      exchanges: [
         {
-          protocol: RMQ_PROTOCOL.AMQP,
-          port: 5672,
-          vhost: 'anjnybcr',
-          login: 'anjnybcr',
-          password: 'eENEQlY_XOfWRsgzp_lI54bqwSWafbDH',
-          host: 'rattlesnake.rmq.cloudamqp.com',
+          name: 'LearningLantern',
+          type: 'direct',
         },
       ],
+      uri: 'amqps://anjnybcr:eENEQlY_XOfWRsgzp_lI54bqwSWafbDH@rattlesnake.rmq.cloudamqp.com/anjnybcr',
+      enableControllerDiscovery: true,
     }),
-    UserModule,
   ],
-  exports: [],
+  providers: [ListenService],
+  exports: [RabbitMQModule],
 })
 export class MQClientModule {}

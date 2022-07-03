@@ -82,9 +82,11 @@ export class TextLessonContainerComponent implements OnInit {
     console.log(this.File.value);
     const file = this.File.value;
     const formData = new FormData();
-    formData.append('thumbnail', file);
+    formData.append('File', file);
+    // formData.append('quizList', this.QuizList);
+
     if (this.uploadFrom.valid) {
-      this.http.doPost('url', this.uploadFrom.controls, {}).subscribe(
+      this.http.doPost('url', formData, {}).subscribe(
         (res) => {
           console.log(res);
           const result = res as string;

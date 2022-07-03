@@ -69,11 +69,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        allowedDomains: [
-          'learning-lantern.azurewebsites.net',
-          'learning-lantern-chat-api.herokuapp.com',
-          '0.0.0.0:3005',
-        ],
+        allowedDomains: ['learning-lantern.azurewebsites.net'],
         authScheme: 'Bearer ', // Default value
       },
     }),

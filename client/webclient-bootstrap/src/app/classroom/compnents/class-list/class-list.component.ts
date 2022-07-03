@@ -90,7 +90,6 @@ export class ClassListComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(30),
-      validateName,
     ]);
     this.createForm();
   }

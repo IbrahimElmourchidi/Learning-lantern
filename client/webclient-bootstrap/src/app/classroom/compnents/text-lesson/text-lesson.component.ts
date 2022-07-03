@@ -4,7 +4,7 @@ import { AppState, StateService } from 'src/app/shared/services/state.service';
 import tinymce from 'tinymce';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment as env } from 'src/environments/environment';
-// import { ModalService } from '../_modal';
+
 export interface lessonList {
   id: number;
   htmlValue: string;

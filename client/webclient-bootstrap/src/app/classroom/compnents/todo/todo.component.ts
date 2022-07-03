@@ -176,7 +176,8 @@ export class TodoComponent implements OnInit {
   deleteTask(task: Task) {
     this.http.doDelete(env.todoRoot + '/' + task.Id, {}).subscribe(
       (res) => {
-        console.log(res);
+        const result = res as string;
+        delete this.myDayTasks[result];
       },
       (err) => {
         console.log(err);
@@ -186,7 +187,7 @@ export class TodoComponent implements OnInit {
 
   completeTask(task: Task) {
     task.Completed = true;
-    this.http.doPut(env.todoRoot + '/' + this.TaskId.value, task, {}).subscribe(
+    this.http.doPut(env.todoRoot + '/' + task.Id, task, {}).subscribe(
       (res) => {
         const result = res as Task;
         this.myDayTasks[result.Id] = result;
@@ -194,6 +195,7 @@ export class TodoComponent implements OnInit {
         console.log(res);
       },
       (err) => {
+        task.Completed = false;
         console.log(err);
       }
     );
