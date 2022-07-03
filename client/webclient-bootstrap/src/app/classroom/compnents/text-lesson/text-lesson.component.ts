@@ -100,14 +100,13 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
 
   getLessonContent(data: AppState) {
     let body = {
-      id: Number,
       htmlValue: String,
       title: String,
       classroomId: String,
     };
     return this.http.doPost(``, body, {}).subscribe((res) => {
       let result = res as {
-        id: number;
+        id: string;
         resHtml: string;
         title: string;
         classroomId: string;
