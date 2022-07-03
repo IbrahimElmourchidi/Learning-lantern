@@ -72,12 +72,29 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
-        ></button>
+        >
+      </button>
       </div>
       <div class="modal-body">
         <form [formGroup]="uploadFrom" (ngSubmit)="onSubmit()">
+          <h5 class="modal-title" > Add Video</h5>
+          <hr>
           <input type="file" name="video" formControlName="File" id="video" />
           <button class="btn btn-primary" type="submit">Upload</button>
+          <br>
+          <form [formGroup]="quizList">
+            <h5 class="modal-title" > Add Quiz</h5>
+            <hr> 
+                <label for="quiz">Quize Time</label>  
+            <input  data-role="timepicker"  data-distance="1" type="time" name="quiz" formControlName=" quizTime"  id="quiz" />
+            
+            <br>
+            <label for="quizId">Quize ID</label> 
+            <input  type="number" name="quizId" formControlName="quizeId" id="quizId" />
+            <button class="btn btn-primary" type="submit">Add</button>
+          </form>
+          
+
         </form>
       </div>
     </div>
