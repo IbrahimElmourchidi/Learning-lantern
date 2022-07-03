@@ -86,7 +86,7 @@
             <ng-container
               *ngFor="let quizFrom of quizList.controls; let i = index"
             >
-              <form formGroupName="i" class="d-flex">
+              <form [formGroupName]="i" class="d-flex">
                 <input
                   type="text"
                   formControlName="quizId"

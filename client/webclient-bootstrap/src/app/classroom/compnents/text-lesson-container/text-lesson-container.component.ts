@@ -24,15 +24,15 @@ export class TextLessonContainerComponent implements OnInit {
 
   uploadFrom!: FormGroup;
   File!: FormControl;
-  myArray: FormGroup[] = [];
-  readyArray = new FormGroup({
-    quizId: new FormControl(''),
-    time: new FormControl(''),
-  });
-  quizList = new FormArray(this.myArray);
+  quizList = new FormArray([]);
 
   addNewQuizField() {
-    this.quizList.push(this.readyArray);
+    this.quizList.push(
+      new FormGroup({
+        quizId: new FormControl(''),
+        time: new FormControl(''),
+      })
+    );
   }
 
   constructor(
