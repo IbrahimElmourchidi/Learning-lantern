@@ -64,8 +64,8 @@ export class ChatService {
     return this.socket.fromEvent<RoomPaginate>('rooms');
   }
 
-  getRoomList() {
-    return this.socket.emit('getRoomList');
+  getRoomList(page: number) {
+    return this.socket.emit('getRoomList', { page });
   }
 
   createRoom(str: string) {

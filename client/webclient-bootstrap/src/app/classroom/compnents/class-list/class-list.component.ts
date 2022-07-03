@@ -31,6 +31,7 @@ export class ClassListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getRoom = this.chatService.getRooms().subscribe((data) => {
+      console.log('recieved room list');
       this.appState.rooms = data;
       this.enterRooms();
     });
