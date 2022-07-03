@@ -24,6 +24,12 @@ export class TextLessonContainerComponent implements OnInit {
 
   uploadFrom!: FormGroup;
   File!: FormControl;
+  
+  quizList=new FormGroup({
+    quizTime:new FormControl(),
+  quizeId:new FormControl()
+  });
+  
 
   constructor(
     private appStateService: StateService,
@@ -32,7 +38,7 @@ export class TextLessonContainerComponent implements OnInit {
     private http: HttpService
   ) {
     this.File = new FormControl();
-    this.uploadFrom = new FormGroup({ File: this.File });
+    this.uploadFrom = new FormGroup({ File: this.File, quizList:this.quizList });
   }
 
   ngOnInit() {
@@ -81,20 +87,24 @@ export class TextLessonContainerComponent implements OnInit {
   onSubmit() {
     console.log(this.File.value);
     const file = this.File.value;
+    const QuizList = this.quizList.value;
     const formData = new FormData();
-    formData.append('thumbnail', file);
+    formData.append('File', file);
+    formData.append('quizList',QuizList);
     if (this.uploadFrom.valid) {
-      this.http.doPost('url', this.uploadFrom.controls, {}).subscribe(
+      this.http.doPost('url', formData, {}).subscribe(
         (res) => {
           console.log(res);
           const result = res as string;
           this.uploadedVideoId = result;
           this.sendVideoId(result);
         },
-        (err) => {}
+        (err) => {
+        }
       );
     }
   }
+
 
   sendVideoId(id: string) {
     this.appStateService.changeState({
