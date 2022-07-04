@@ -49,12 +49,12 @@ export class ChatGateway
   ) {}
 
   async onModuleInit() {
-    try {
-      await this.connectedUserService.deleteAll();
-      await this.joinedRoomService.deleteAll();
-    } catch (error) {
-      console.log(`cannot clear database`);
-    }
+    // try {
+    //   await this.connectedUserService.deleteAll();
+    //   await this.joinedRoomService.deleteAll();
+    // } catch (error) {
+    //   console.log(`cannot clear database`);
+    // }
   }
 
   @SubscribeMessage('getRoomList')

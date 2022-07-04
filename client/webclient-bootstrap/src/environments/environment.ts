@@ -7,7 +7,8 @@ export const environment = {
   authRoot: 'https://learning-lantern.azurewebsites.net/api/user/',
   todoRoot: 'https://learning-lantern.azurewebsites.net/api/v1/Tasks',
   calendarRoot: 'https://learning-lantern.azurewebsites.net/api/Calendar',
-  chatRoot: 'https://learning-lantern-chat-api.herokuapp.com/',
+  // chatRoot: 'https://learning-lantern-chat-api.herokuapp.com/',
+  chatRoot: 'http://0.0.0.0:3005',
 };
 
 /*

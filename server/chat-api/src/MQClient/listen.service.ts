@@ -13,6 +13,7 @@ export class ListenService {
     queue: 'auth',
   })
   public async newUser(data: User) {
+    console.log(data);
     try {
       this.userService.createUser(data);
     } catch (error) {

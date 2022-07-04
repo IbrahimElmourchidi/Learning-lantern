@@ -13,8 +13,8 @@ import { RtcModule } from './rtc/rtc.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DB_URL,
-      synchronize: process.env.DB_SYNC == '1',
+      url: 'postgres://svrhhoelaskgnb:a5e4ab9186c622679b6b5aa96fe55190fe8f1162500b1822a66378fd9808fb5d@ec2-3-218-171-44.compute-1.amazonaws.com:5432/dajv2oct01sbce?sslmode=require',
+      synchronize: process.env.DB_SYNC == 'true',
       entities: [User, Room, ConnectedUser, JoinedRoom, Message],
     }),
     MQClientModule,
