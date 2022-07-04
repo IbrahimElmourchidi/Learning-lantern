@@ -6,6 +6,7 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
 import { environment as env } from 'src/environments/environment';
 
+
 export interface LessonInList {
   id: string;
   title: string;
@@ -90,21 +91,6 @@ export class TextLessonContainerComponent implements OnInit {
       });
     }
     this.editorHidden = !this.editorHidden;
-  }
-
-  // Function get lesson content
-  getLessonContent(data: AppState) {
-    let body = {
-      htmlValue: '',
-      title: this.title,
-    };
-    return this.http.doPost(``, body, {}).subscribe((res) => {
-      let result = res as {
-        htmlValue: string;
-        title: string;
-      };
-      console.log(res);
-    });
   }
 
   //Video Post
