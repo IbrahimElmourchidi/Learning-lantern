@@ -13,7 +13,6 @@ import { HttpService } from 'src/app/shared/services/http.service';
 export interface lessonList {
   id: string;
   htmlValue: string;
-  title: string;
 }
 @Component({
   selector: 'app-textlesson',
@@ -112,8 +111,7 @@ SetlessonContent(data: AppState){
     }
       let body = {
         id:this.lessonId,
-        htmlValue: this.lessonHTML,
-        title:this.title,
+        htmlValue: this.lessonHTML
       };
       return this.http.doPost('learning-lantern.azurewebsites.net/api/v1/TextLesson', body, {}).subscribe( (res) => {
         console.log(res);

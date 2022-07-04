@@ -61,7 +61,7 @@ export class TextLessonContainerComponent implements OnInit {
     // this.router.navigate([this.lessonList[0].id], {
     //   relativeTo: this.activatedRoute,
     // });
-    this.http.doGet('learning-lantern.azurewebsites.net/api/v1/TextLesson/Classroom' + `/${this.classId}`, {}).subscribe(
+    this.http.doGet('learning-lantern.azurewebsites.net/api/v1/TextLesson/Classroom/' + `${this.classId}`, {}).subscribe(
       (res) => {
         const result = res as LessonInList[];
         this.lessonList = result;
@@ -129,8 +129,9 @@ export class TextLessonContainerComponent implements OnInit {
   onSubmitlesson() {
     console.log(this.title.value);
     const title = this.title.value;
+    const classId = this.classId;
     if (this.lessonFrom.valid) {
-      this.http.doPost('https://learning-lantern.azurewebsites.net/api/v1/TextLesson'+`/${title}`, {}, {}).subscribe(
+      this.http.doPost('https://learning-lantern.azurewebsites.net/api/v1/TextLesson/'+`${title}`+'/Classroom/'+`${classId}`, {}, {}).subscribe(
         (res) => {
           console.log(res);
           const result = res as LessonInList;
