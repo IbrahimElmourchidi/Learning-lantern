@@ -13,7 +13,6 @@ export class ListenService {
     queue: 'auth',
   })
   public async newUser(data: User) {
-    console.log(data);
     try {
       this.userService.createUser(data);
     } catch (error) {
@@ -30,7 +29,6 @@ export class ListenService {
     queue: 'auth',
   })
   public async deleteUser(userId: string) {
-    console.log(userId);
     this.userService.deleteUser(userId);
     return {
       response: 42,

@@ -5,6 +5,7 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
+import { Socket } from 'socket.io';
 import { User } from 'src/user/model/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Room } from '../model/entities/room.entity';
@@ -16,13 +17,21 @@ export class RoomService {
 
   async createRoom(room: Room, creator: User): Promise<Room> {
     const newRoom = await this.addCreatorToRoom(room, creator);
-    return this.roomRepo.save(newRoom);
+    try {
+      return this.roomRepo.save(newRoom);
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
 
   async joinRoom(roomId: string, user: User): Promise<Room> {
     let room = await this.getRoomById(roomId);
     room = await this.addCreatorToRoom(room, user);
-    return this.roomRepo.save(room);
+    try {
+      return this.roomRepo.save(room);
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
   async addCreatorToRoom(room: RoomI, creator: User): Promise<RoomI> {
     room.users.push(creator);
@@ -30,7 +39,11 @@ export class RoomService {
   }
 
   async getRoomById(Id: string): Promise<RoomI> {
-    return this.roomRepo.findOne({ where: { Id }, relations: ['users'] });
+    try {
+      return this.roomRepo.findOne({ where: { Id }, relations: ['users'] });
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
 
   async findRoomById(Id: string): Promise<Room> {
@@ -54,6 +67,10 @@ export class RoomService {
       .where('user.Id = :Id', { Id })
       .leftJoinAndSelect('room.users', 'all_users')
       .orderBy('room.Name', 'ASC');
-    return paginate(query, options);
+    try {
+      return paginate(query, options);
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
 }

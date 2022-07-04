@@ -1,4 +1,4 @@
-import { OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import { OnModuleInit, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import {
   OnGatewayConnection,
@@ -23,6 +23,9 @@ import { RoomService } from '../services/room.service';
 import { allowedHosts } from './allowed-hosts';
 import { UserI } from 'src/user/model/interfaces/user.interface';
 import { ListenerHelperService } from 'src/MQClient/listen-helper.service';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { Roles } from 'src/auth/model/decorators/roles.decorator';
+import { RoleGuard } from 'src/auth/guards/role.guard';
 
 @WebSocketGateway({
   cors: { origin: allowedHosts },
@@ -50,7 +53,7 @@ export class ChatGateway
       await this.connectedUserService.deleteAll();
       await this.joinedRoomService.deleteAll();
     } catch (error) {
-      console.log(`cannot refresh database`);
+      console.log(`cannot clear database`);
     }
   }
 
@@ -59,7 +62,7 @@ export class ChatGateway
     this.emitRoom(socket, payload.page);
   }
 
-  // @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   async handleConnection(socket: Socket, ...args: any[]) {
     console.log('connection request recieved');
     // verify the jwt
@@ -74,6 +77,7 @@ export class ChatGateway
       } else {
         // add user data to the socket object
         socket.data.user = user;
+        console.log(user);
 
         // save connection to database
         await this.connectedUserService.create({
@@ -112,7 +116,6 @@ export class ChatGateway
       ClassId: roomCreated.Id,
       UserId: socket.data.user.Id,
     };
-    console.log(rabbitMsg);
     this.amqpConnection.publish('LearningLantern', 'newRoom', rabbitMsg, {});
     this.emitRoom(socket);
   }
@@ -135,20 +138,18 @@ export class ChatGateway
       ClassId: roomId,
       UserId: socket.data.user.Id,
     };
-    console.log(rabbitMsg);
+
     this.emitRoom(socket);
     this.amqpConnection.publish('LearningLantern', 'joinRoom', rabbitMsg, {});
   }
 
   async emitRoom(socket: Socket, page = 1) {
-    console.log('lets send user rooms');
     const user = socket.data.user;
-    console.log(user);
+
     const rooms = await this.roomService.getRoomsForUser(user.Id, {
       page: 1,
       limit: 10,
     });
-    console.log(rooms);
     socket.emit('rooms', rooms);
   }
 
@@ -171,7 +172,7 @@ export class ChatGateway
       room,
     });
   }
-  OnDestroy;
+
   @SubscribeMessage('leaveRoom')
   async leaveRoom(socket: Socket) {
     await this.joinedRoomService.deleteBySocketId(socket.id);

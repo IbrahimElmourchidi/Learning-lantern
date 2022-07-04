@@ -22,6 +22,12 @@ export class Room implements RoomI {
   })
   Name: string;
 
+  @Column({
+    nullable: true,
+    length: 300,
+  })
+  Description: string;
+
   @ManyToMany(() => User)
   @JoinTable()
   users: User[];

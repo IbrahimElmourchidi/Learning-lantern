@@ -18,7 +18,9 @@ export class ClassListComponent implements OnInit, OnDestroy {
   createRoomForm!: FormGroup;
   joinRoomForm!: FormGroup;
   roomName!: FormControl;
+  roomDes!: FormControl;
   roomId!: FormControl;
+  roomImg!: FormControl;
   notifySerive!: Subscription;
   getRoom!: Subscription;
   newRoom!: Subscription;
@@ -75,6 +77,7 @@ export class ClassListComponent implements OnInit, OnDestroy {
   createForm() {
     this.createRoomForm = new FormGroup({
       roomName: this.roomName,
+      roomDes: this.roomDes,
     });
     this.joinRoomForm = new FormGroup({
       roomId: this.roomId,
@@ -92,6 +95,8 @@ export class ClassListComponent implements OnInit, OnDestroy {
       Validators.minLength(2),
       Validators.maxLength(30),
     ]);
+    this.roomDes = new FormControl('', [Validators.maxLength(290)]);
+    this.roomImg = new FormControl('', [Validators.maxLength(290)]);
     this.createForm();
   }
   setActiveRoom(index: number) {

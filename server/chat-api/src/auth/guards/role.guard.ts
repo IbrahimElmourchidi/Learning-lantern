@@ -22,14 +22,15 @@ export class RoleGuard implements CanActivate {
    * @returns
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const roles = this.reflector.get<number[]>('roles', context.getHandler());
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
     if (!roles) {
       return true;
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
+    console.log(user);
     const dbUser = await this.userService.getUserById(user['userId']);
-    return this.matchRoles(roles, 1);
+    return this.matchRoles(roles, 'Student');
   }
 
   /**
@@ -38,7 +39,7 @@ export class RoleGuard implements CanActivate {
    * @param role
    * @returns
    */
-  private matchRoles(rolesList: number[], role: number): boolean {
+  private matchRoles(rolesList: string[], role: string): boolean {
     return rolesList.includes(role);
   }
 }

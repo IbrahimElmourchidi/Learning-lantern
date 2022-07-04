@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserI } from 'src/user/model/interfaces/user.interface';
 import { Repository } from 'typeorm';
@@ -14,18 +14,38 @@ export class JoinedRoomService {
   ) {}
 
   async create(joinedRoom: JoinedRoomI): Promise<JoinedRoomI> {
-    return this.joinedRoomRepo.save(joinedRoom);
+    try {
+      return this.joinedRoomRepo.save(joinedRoom);
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
   async findByUser(user: UserI): Promise<JoinedRoomI[]> {
-    return this.joinedRoomRepo.find({ where: { user } });
+    try {
+      return this.joinedRoomRepo.find({ where: { user } });
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
   async findByRoom(room: RoomI): Promise<JoinedRoomI[]> {
-    return this.joinedRoomRepo.find({ where: { room } });
+    try {
+      return this.joinedRoomRepo.find({ where: { room } });
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
   async deleteBySocketId(SocketId: string) {
-    return this.joinedRoomRepo.delete({ SocketId });
+    try {
+      return this.joinedRoomRepo.delete({ SocketId });
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
   async deleteAll() {
-    await this.joinedRoomRepo.createQueryBuilder().delete().execute();
+    try {
+      await this.joinedRoomRepo.createQueryBuilder().delete().execute();
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
 }

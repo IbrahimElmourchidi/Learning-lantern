@@ -1,6 +1,6 @@
-export const enum RolesEnum {
-  super = 1,
-  admin,
-  instructor,
-  student,
+export enum RoleEnum {
+  Admin = 'Admin',
+  Instructor = 'Instructor',
+  UniversityAdmin = 'UniversityAdmin',
+  Student = 'Student',
 }

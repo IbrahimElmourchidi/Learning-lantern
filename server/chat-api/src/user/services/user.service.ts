@@ -17,7 +17,11 @@ export class UserService {
    * @returns Promise with the user object found in the database
    */
   async getUserById(Id: string): Promise<User> {
-    return this.userRepo.findOne({ where: { Id } });
+    try {
+      return this.userRepo.findOne({ where: { Id } });
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
 
   async createUser(user: UserI) {

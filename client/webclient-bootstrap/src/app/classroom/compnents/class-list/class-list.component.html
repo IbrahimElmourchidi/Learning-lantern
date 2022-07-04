@@ -81,13 +81,11 @@
       <div class="modal-body">
         <form [formGroup]="createRoomForm" (ngSubmit)="createRoom()">
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label"
-              >Room Name:</label
-            >
+            <label for="roomName" class="form-label">Room Name:</label>
             <input
               type="text"
               class="form-control"
-              id="exampleInputEmail1"
+              id="roomName"
               aria-describedby="emailHelp"
               formControlName="roomName"
             />
@@ -106,6 +104,34 @@
                   >Please enter a valid name ( a valid name cannot contain
                   symbols)</span
                 >
+              </small>
+            </ng-container>
+          </div>
+          <div class="mb-3">
+            <label for="roomDes" class="form-label">Description:</label>
+            <textarea
+              class="form-control"
+              id="roomDes"
+              formControlName="roomDes"
+            ></textarea>
+            <ng-container *ngIf="roomDes.invalid && roomDes.touched">
+              <small *ngIf="roomDes.errors?.['maxlength']" class="text-danger">
+                Max Length 290
+              </small>
+            </ng-container>
+          </div>
+          <div class="mb-3">
+            <label for="roomImg" class="form-label">Image:</label>
+            <input
+              class="form-control"
+              id="roomImg"
+              type="file"
+              formControlName="roomImg"
+              accept="image/*"
+            />
+            <ng-container *ngIf="roomImg.invalid && roomName.touched">
+              <small *ngIf="roomImg.errors?.['maxlength']" class="text-danger">
+                Max Length 290
               </small>
             </ng-container>
           </div>

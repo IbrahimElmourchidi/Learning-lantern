@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   IPaginationOptions,
@@ -19,7 +19,11 @@ export class MessageService {
 
   async create(message: MessageI, user: UserI) {
     message.user = user;
-    return this.messageRepo.save(this.messageRepo.create(message));
+    try {
+      return this.messageRepo.save(this.messageRepo.create(message));
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
 
   async findMessagesFromRoom(
@@ -33,6 +37,10 @@ export class MessageService {
       .leftJoinAndSelect('message.user', 'user')
       .orderBy('message.created_at', 'DESC');
 
-    return paginate(query, options);
+    try {
+      return paginate(query, options);
+    } catch (error) {
+      throw new InternalServerErrorException('Database Error');
+    }
   }
 }
