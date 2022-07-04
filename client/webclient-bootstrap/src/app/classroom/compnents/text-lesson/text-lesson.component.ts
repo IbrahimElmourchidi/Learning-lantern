@@ -93,7 +93,7 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
   };
 
 SetlessonContent(data: AppState){
-  return this.http.doGet('learning-lantern.azurewebsites.net/api/v1/TextLesson'+`/${this.lessonId}`,{}).subscribe(
+  return this.http.doGet('learning-lantern.azurewebsites.net/api/v1/TextLesson/'+`${this.lessonId}`,{}).subscribe(
     (res) =>{
       console.log(res);
       const result=res as string;

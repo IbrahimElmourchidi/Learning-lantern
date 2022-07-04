@@ -9,6 +9,7 @@ import { environment as env } from 'src/environments/environment';
 export interface LessonInList {
   id: string;
   title: string;
+  classroomId:string;
 }
 
 @Component({
