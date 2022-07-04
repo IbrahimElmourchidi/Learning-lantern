@@ -9,7 +9,7 @@ import { environment as env } from 'src/environments/environment';
 export interface LessonInList {
   Id: string;
   Title: string;
-  classroomId: string;
+  HtmlBody: string;
 }
 
 @Component({
@@ -65,6 +65,7 @@ export class TextLessonContainerComponent implements OnInit {
     // this.router.navigate([this.lessonList[0].id], {
     //   relativeTo: this.activatedRoute,
     // });
+
     this.http
       .doGet(env.classRoot + '/Classroom/' + `${this.classId}`, {})
       .subscribe(
@@ -75,6 +76,9 @@ export class TextLessonContainerComponent implements OnInit {
           if (result.length) {
             this.router.navigate([result[0].Id], {
               relativeTo: this.route,
+            });
+            this.appStateService.changeState({
+              lessonChange: true,
             });
           }
         },
@@ -94,6 +98,7 @@ export class TextLessonContainerComponent implements OnInit {
       this.buttonText = 'Edit';
       this.appStateService.changeState({
         editorOn: false,
+        editorClosed: true,
       });
     }
     this.editorHidden = !this.editorHidden;
@@ -139,30 +144,25 @@ export class TextLessonContainerComponent implements OnInit {
     const classId = this.classId;
     if (this.lessonFrom.valid) {
       this.closeLessonModlaBtn.nativeElement.click();
-      this.http
-        .doPost(
-          'https://learning-lantern.azurewebsites.net/api/v1/TextLesson/' +
-            `${title}` +
-            '/Classroom/' +
-            `${classId}`,
-          {},
-          {}
-        )
-        .subscribe(
-          (res) => {
-            console.log(res);
-            const result = res as LessonInList;
-            this.lessonList.push(result);
-          },
-          (err) => {
-            this.changeLesson('12');
-          }
-        );
+      let body = {
+        Title: title,
+        ClassroomId: classId,
+      };
+      this.http.doPost(env.classRoot, body, {}).subscribe(
+        (res) => {
+          console.log(res);
+          const result = res as LessonInList;
+          this.lessonList.push(result);
+        },
+        (err) => {
+          this.changeLesson('12');
+        }
+      );
     }
   }
   changeLesson(id: string) {
     this.appStateService.changeState({
-      activeLesson: id,
+      lessonChange: true,
     });
   }
 

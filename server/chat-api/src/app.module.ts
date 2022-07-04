@@ -14,7 +14,7 @@ import { RtcModule } from './rtc/rtc.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DB_URL,
-      synchronize: true,
+      synchronize: process.env.DB_SYNC == 'true',
       entities: [User, Room, ConnectedUser, JoinedRoom, Message],
     }),
     MQClientModule,

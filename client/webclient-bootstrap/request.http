@@ -19,3 +19,17 @@ Content-Type: application/json
 Authorization: 
 
 {"title":"hello2","description":"kdfkldjfd","startDate":"2022-07-02T22:00:00.000Z","dueDate":"2022-07-16T22:00:00.000Z","important":true,"completed":false}
+
+
+###
+PUT https://learning-lantern.azurewebsites.net/api/v1/TextLesson
+Content-Type: application/json
+
+{
+    "HtmlBody":"hello 22",
+    "Id":"1"
+}
+
+
+###
+GET https://learning-lantern.azurewebsites.net/api/v1/TextLesson/1

@@ -90,12 +90,13 @@
               </li>
               <li>
                 <a
-                  routerLink="/"
+                  href="/"
+                  (click)="logmeout()"
                   data-bs-dismiss="offcanvas"
                   class="dropdown-item"
                 >
-                  <i class="bi bi-gear-fill"></i>
-                  Settings
+                  <i class="bi bi-box-arrow-left"></i>
+                  Logout
                 </a>
               </li>
             </ul>
@@ -193,12 +194,13 @@
           Classroom
         </a>
         <a
-          routerLink="/"
+          href="/"
+          (click)="logmeout()"
           data-bs-dismiss="offcanvas"
           class="list-group-item list-group-item-action text-uppercase"
         >
-          <i class="bi bi-gear-fill"></i>
-          Settings
+          <i class="bi bi-box-arrow-left"></i>
+          Logout
         </a>
       </div>
       <a

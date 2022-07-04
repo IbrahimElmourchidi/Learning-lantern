@@ -1,33 +1,33 @@
 version: '3.4'
 
 services:
-  chat-api:
-    build:
-      dockerfile: dockerfile
-      context: ./server/chat-api
-      target: development
-    volumes:
-      - ./server/chat-api:/usr/chat/src
-      - /usr/chat/src/node_modules
-    command: npm run start:dev
-    depends_on:
-      - postgres
-    environment:
-      NODE_ENV: dev
-      PORT: 3005
-      DB_URL: 'postgres://user:password@postgres:5432/chat'
-      DB_SYNC: 1
-      JWT_SECRET: 'nDzMuunoP6JbalKjeyccXU3xUeMrQsVN'
-      MQ_URLS: 'amqps://anjnybcr:eENEQlY_XOfWRsgzp_lI54bqwSWafbDH@rattlesnake.rmq.cloudamqp.com/anjnybcr'
-      RMQP_USER: anjnybcr
-      AMQP_EXCHANGE: LearningLantern
-      RMQP_PASS: eENEQlY_XOfWRsgzp_lI54bqwSWafbDH
-      RMQP_HOST: rattlesnake.rmq.cloudamqp.com
-      MQ_DURABLE: 'true'
-      AUTH_QUEUE: 'auth'
-      CHAT_QUEUE: 'chat'
-    ports:
-      - 3005:3005
+  # chat-api:
+  #   build:
+  #     dockerfile: dockerfile
+  #     context: ./server/chat-api
+  #     target: development
+  #   volumes:
+  #     - ./server/chat-api:/usr/chat/src
+  #     - /usr/chat/src/node_modules
+  #   command: npm run start:dev
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     NODE_ENV: dev
+  #     PORT: 3005
+  #     DB_URL: 'postgres://user:password@postgres:5432/chat'
+  #     DB_SYNC: 1
+  #     JWT_SECRET: 'nDzMuunoP6JbalKjeyccXU3xUeMrQsVN'
+  #     MQ_URLS: 'amqps://anjnybcr:eENEQlY_XOfWRsgzp_lI54bqwSWafbDH@rattlesnake.rmq.cloudamqp.com/anjnybcr'
+  #     RMQP_USER: anjnybcr
+  #     AMQP_EXCHANGE: LearningLantern
+  #     RMQP_PASS: eENEQlY_XOfWRsgzp_lI54bqwSWafbDH
+  #     RMQP_HOST: rattlesnake.rmq.cloudamqp.com
+  #     MQ_DURABLE: 'true'
+  #     AUTH_QUEUE: 'auth'
+  #     CHAT_QUEUE: 'chat'
+  #   ports:
+  #     - 3005:3005
   web-client:
     build:
       dockerfile: dockerfile

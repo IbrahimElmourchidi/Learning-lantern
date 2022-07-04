@@ -39,4 +39,8 @@ export class HeaderComponent implements OnInit {
       .getElementById(str)
       ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  logmeout() {
+    localStorage.removeItem('token');
+  }
 }

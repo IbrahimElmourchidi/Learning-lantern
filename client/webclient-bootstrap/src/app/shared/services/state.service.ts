@@ -9,7 +9,9 @@ export interface AppState {
   activeRoom?: RoomI;
   joinedRooms?: RoomI[];
   editorOn: boolean;
+  editorClosed: boolean;
   activeLesson?: string;
+  lessonChange: boolean;
   newVideoId?: string;
   videoToDelete?: string;
 }
@@ -20,6 +22,8 @@ export class StateService {
     logedIn: false,
     dark: false,
     editorOn: false,
+    editorClosed: false,
+    lessonChange: false,
   });
   currentState = this.state.asObservable();
 

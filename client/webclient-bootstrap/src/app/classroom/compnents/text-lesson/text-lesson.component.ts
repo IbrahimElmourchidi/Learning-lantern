@@ -5,11 +5,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import tinymce from 'tinymce';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment as env } from 'src/environments/environment';
+import { LessonInList } from '../text-lesson-container/text-lesson-container.component';
 export interface lessonList {
   id: string;
   htmlValue: string;
@@ -30,7 +31,8 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
   constructor(
     private appStateService: StateService,
     private route: ActivatedRoute,
-    private http: HttpService
+    private http: HttpService,
+    private router: Router
   ) {}
   ngAfterViewInit(): void {
     document.getElementById('mustRemove')?.remove();
@@ -38,15 +40,9 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.lessonId = this.route.snapshot.paramMap.get('lessonId') || '';
-    this.appStateService.changeState({
-      activeLesson: this.lessonId,
-    });
     //  this.get_editor_content();
     this.appStateService.currentState.subscribe((data) => {
       this.appState = data;
-      if (this.appState.activeLesson) {
-        this.SetlessonContent(data);
-      }
       if (this.appState.newVideoId) {
         this.addVideo(this.appState.newVideoId);
       }
@@ -54,18 +50,18 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
         console.log(this.appState.videoToDelete);
         this.deleteVideoFrame(data.videoToDelete || '');
       }
-      if (!this.appState.editorOn) {
-        console.log(this.firstTime);
-        if (this.firstTime) {
-          this.firstTime = false;
-        } else {
-          console.log('here');
-          this.SetlessonContent(data);
-        }
+      if (this.appState.editorClosed) {
+        console.log('lets save lesson');
+        this.getLessonContent(data);
+      }
+      if (this.appState.lessonChange) {
+        setTimeout(() => {
+          this.SetlessonContent();
+        }, 1000);
       }
     });
   }
-  firstTime = true;
+
   editorHidden = true;
   lessonHTML = ``;
   tinymceConfig = {
@@ -92,32 +88,38 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     suffix: '.min',
   };
 
-  SetlessonContent(data: AppState) {
-    return this.http.doGet(env.classRoot + `/${this.lessonId}`, {}).subscribe(
+  SetlessonContent() {
+    let class_route = this.router.url.split('/');
+    console.log(class_route);
+    let lesson = class_route[class_route.length - 1];
+    console.log(lesson);
+    this.http.doGet(env.classRoot + `/${lesson}`, {}).subscribe(
       (res) => {
         console.log(res);
-        const result = res as string;
-        this.lessonHTML = result;
+        const result = res as LessonInList;
+        this.lessonHTML = result.HtmlBody;
       },
       (err) => {
         console.log(err.error);
       }
     );
+    this.appStateService.changeState({
+      lessonChange: false,
+    });
   }
 
   getLessonContent(data: AppState) {
-    if (this.firstTime) {
-      return;
-    }
     let body = {
-      id: this.lessonId,
-      htmlValue: this.lessonHTML,
+      Id: this.lessonId,
+      HtmlBody: this.lessonHTML,
     };
-    return this.http.doPost(env.classRoot, body, {}).subscribe(
+    this.appStateService.changeState({
+      editorClosed: false,
+    });
+    return this.http.doPut(env.classRoot, body, {}).subscribe(
       (res) => {
         console.log(res);
         const result = res as string;
-        this.lessonHTML = result;
       },
       (err) => {
         console.log(err.error);

@@ -21,9 +21,7 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  app.enableCors({
-    origin: '*',
-  });
+  app.enableCors();
   await app.startAllMicroservices();
   const port = process.env.PORT || 3001;
   app.listen(port, () => console.log(`chat-api listening on port ${port}`));

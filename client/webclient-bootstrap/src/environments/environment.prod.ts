@@ -5,4 +5,5 @@ export const environment = {
   chatRoot: 'https://learning-lantern-chat-api.herokuapp.com/',
   calendarRoot: 'https://learning-lantern.azurewebsites.net/api/Calendar',
   todoRoot: 'https://learning-lantern.azurewebsites.net/api/v1/Tasks',
+  classRoot: 'https://learning-lantern.azurewebsites.net/api/v1/TextLesson',
 };
