@@ -1,4 +1,17 @@
 <div
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  *ngIf="errorMsg"
+>
+  {{ errorMsg }}
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="errorMsg = ''"
+  ></button>
+</div>
+<div
   class="bg-header d-flex m-0 align-items-center justify-content-between p-2 shadow-sm"
 >
   <div class="header w-100 d-flex align-items-center">
