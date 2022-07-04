@@ -1,5 +1,5 @@
 import { lessonList } from './../text-lesson/text-lesson.component';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { HttpService } from 'src/app/shared/services/http.service';
@@ -7,9 +7,9 @@ import { FormControl, FormGroup, FormArray } from '@angular/forms';
 import { environment as env } from 'src/environments/environment';
 
 export interface LessonInList {
-  id: string;
-  title: string;
-  classroomId:string;
+  Id: string;
+  Title: string;
+  classroomId: string;
 }
 
 @Component({
@@ -18,6 +18,7 @@ export interface LessonInList {
   styleUrls: ['text-lesson-container.component.scss'],
 })
 export class TextLessonContainerComponent implements OnInit {
+  @ViewChild('closeLessonModlaBtn') closeLessonModlaBtn!: ElementRef;
   uploadedVideoId = '';
   editorHidden = true;
   buttonText = 'Edit';
@@ -54,7 +55,9 @@ export class TextLessonContainerComponent implements OnInit {
     });
     this.title = new FormControl();
     this.lessonFrom = new FormGroup({ title: this.title });
-    this.classId = this.route.snapshot.paramMap.get('classId') || '';
+    this.route.parent?.params.subscribe((params) => {
+      this.classId = params['classId'];
+    });
   }
 
   ngOnInit() {
@@ -62,21 +65,24 @@ export class TextLessonContainerComponent implements OnInit {
     // this.router.navigate([this.lessonList[0].id], {
     //   relativeTo: this.activatedRoute,
     // });
-    this.http.doGet('learning-lantern.azurewebsites.net/api/v1/TextLesson/Classroom/' + `${this.classId}`, {}).subscribe(
-      (res) => {
-        const result = res as LessonInList[];
-        this.lessonList = result;
-        if (result.length) {
-          this.router.navigate([result[0].id], {
-            relativeTo: this.route,
-          });
+    this.http
+      .doGet(env.classRoot + '/Classroom/' + `${this.classId}`, {})
+      .subscribe(
+        (res) => {
+          console.log('starting', res);
+          const result = res as LessonInList[];
+          this.lessonList = result;
+          if (result.length) {
+            this.router.navigate([result[0].Id], {
+              relativeTo: this.route,
+            });
+          }
+        },
+        (err) => {
+          console.log(err);
+          this.errorMsg = err.message;
         }
-      },
-      (err) => {
-        console.log(err);
-        this.errorMsg = err.message;
-      }
-    );
+      );
   }
   toggle() {
     if (this.editorHidden) {
@@ -132,16 +138,26 @@ export class TextLessonContainerComponent implements OnInit {
     const title = this.title.value;
     const classId = this.classId;
     if (this.lessonFrom.valid) {
-      this.http.doPost('https://learning-lantern.azurewebsites.net/api/v1/TextLesson/'+`${title}`+'/Classroom/'+`${classId}`, {}, {}).subscribe(
-        (res) => {
-          console.log(res);
-          const result = res as LessonInList;
-          this.lessonList.push(result);
-        },
-        (err) => {
-          this.changeLesson('12');
-        }
-      );
+      this.closeLessonModlaBtn.nativeElement.click();
+      this.http
+        .doPost(
+          'https://learning-lantern.azurewebsites.net/api/v1/TextLesson/' +
+            `${title}` +
+            '/Classroom/' +
+            `${classId}`,
+          {},
+          {}
+        )
+        .subscribe(
+          (res) => {
+            console.log(res);
+            const result = res as LessonInList;
+            this.lessonList.push(result);
+          },
+          (err) => {
+            this.changeLesson('12');
+          }
+        );
     }
   }
   changeLesson(id: string) {

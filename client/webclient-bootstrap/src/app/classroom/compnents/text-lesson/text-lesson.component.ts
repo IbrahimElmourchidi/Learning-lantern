@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import tinymce from 'tinymce';
 import { HttpService } from 'src/app/shared/services/http.service';
-
+import { environment as env } from 'src/environments/environment';
 export interface lessonList {
   id: string;
   htmlValue: string;
@@ -26,34 +26,12 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
   videoToInsert: string = '';
   htmlValue: any;
   lessonId: any;
-  title:string = '';
+  title: string = '';
   constructor(
     private appStateService: StateService,
     private route: ActivatedRoute,
     private http: HttpService
-  ) {
-    this.appStateService.currentState.subscribe((data) => {
-      this.appState = data;
-      if (this.appState.activeLesson) {
-        this.getLessonContent(data);
-      }
-      if (this.appState.newVideoId) {
-        this.addVideo(this.appState.newVideoId);
-      }
-      if (this.appState.videoToDelete) {
-        console.log(this.appState.videoToDelete);
-        this.deleteVideoFrame(data.videoToDelete || '');
-      }
-      if(!this.appState.editorOn){
-        if(this.firstTime){
-          this.firstTime=false;
-        }
-        else{
-          this.getLessonContent(data);
-        }
-      }
-    });
-  }
+  ) {}
   ngAfterViewInit(): void {
     document.getElementById('mustRemove')?.remove();
   }
@@ -64,8 +42,30 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
       activeLesson: this.lessonId,
     });
     //  this.get_editor_content();
+    this.appStateService.currentState.subscribe((data) => {
+      this.appState = data;
+      if (this.appState.activeLesson) {
+        this.SetlessonContent(data);
+      }
+      if (this.appState.newVideoId) {
+        this.addVideo(this.appState.newVideoId);
+      }
+      if (this.appState.videoToDelete) {
+        console.log(this.appState.videoToDelete);
+        this.deleteVideoFrame(data.videoToDelete || '');
+      }
+      if (!this.appState.editorOn) {
+        console.log(this.firstTime);
+        if (this.firstTime) {
+          this.firstTime = false;
+        } else {
+          console.log('here');
+          this.SetlessonContent(data);
+        }
+      }
+    });
   }
-  firstTime=true;
+  firstTime = true;
   editorHidden = true;
   lessonHTML = ``;
   tinymceConfig = {
@@ -92,38 +92,38 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     suffix: '.min',
   };
 
-SetlessonContent(data: AppState){
-  return this.http.doGet('learning-lantern.azurewebsites.net/api/v1/TextLesson/'+`${this.lessonId}`,{}).subscribe(
-    (res) =>{
-      console.log(res);
-      const result=res as string;
-      this.lessonHTML=result;
-  },
-  (err) =>{
-    console.log(err.error);
-    
-  });
-}
-
-  getLessonContent(data: AppState) {
-    if(this.firstTime){
-      return
-    }
-      let body = {
-        id:this.lessonId,
-        htmlValue: this.lessonHTML
-      };
-      return this.http.doPost('learning-lantern.azurewebsites.net/api/v1/TextLesson', body, {}).subscribe( (res) => {
+  SetlessonContent(data: AppState) {
+    return this.http.doGet(env.classRoot + `/${this.lessonId}`, {}).subscribe(
+      (res) => {
         console.log(res);
         const result = res as string;
-        this.lessonHTML=result;
+        this.lessonHTML = result;
       },
       (err) => {
         console.log(err.error);
       }
     );
+  }
 
-}
+  getLessonContent(data: AppState) {
+    if (this.firstTime) {
+      return;
+    }
+    let body = {
+      id: this.lessonId,
+      htmlValue: this.lessonHTML,
+    };
+    return this.http.doPost(env.classRoot, body, {}).subscribe(
+      (res) => {
+        console.log(res);
+        const result = res as string;
+        this.lessonHTML = result;
+      },
+      (err) => {
+        console.log(err.error);
+      }
+    );
+  }
 
   addVideo(id: string) {
     console.log('lets add new video ', id);
@@ -139,17 +139,17 @@ SetlessonContent(data: AppState){
       newVideoId: '',
     });
   }
-deleteVideo(){
-  return this.http.doDelete('',{}).subscribe(
-    (res) => {
-      const result = res as string;
-      this.videoToInsert=result;
-    },
-    (err) => {
-      this.deleteVideoFrame('12345');
-    }
-  );
-}
+  deleteVideo() {
+    return this.http.doDelete('', {}).subscribe(
+      (res) => {
+        const result = res as string;
+        this.videoToInsert = result;
+      },
+      (err) => {
+        this.deleteVideoFrame('12345');
+      }
+    );
+  }
   deleteVideoFrame(id: string) {
     document.querySelector(`#${id}`)?.remove();
     this.appStateService.changeState({

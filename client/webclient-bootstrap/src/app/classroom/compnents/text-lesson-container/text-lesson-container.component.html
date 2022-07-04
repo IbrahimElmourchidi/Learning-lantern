@@ -1,90 +1,172 @@
-<div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMsg">
-    {{ errorMsg }}
-    <button type="button" class="btn-close" aria-label="Close" (click)="errorMsg = ''"></button>
+<div
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  *ngIf="errorMsg"
+>
+  {{ errorMsg }}
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="errorMsg = ''"
+  ></button>
 </div>
-<div class="bg-header d-flex m-0 align-items-center justify-content-between p-2 shadow-sm">
-    <div class="header w-100 d-flex align-items-center">
-        <button class="btn btn-primary me-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#lessonList" aria-controls="lessonList">
+<div
+  class="bg-header d-flex m-0 align-items-center justify-content-between p-2 shadow-sm"
+>
+  <div class="header w-100 d-flex align-items-center">
+    <button
+      class="btn btn-primary me-4"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#lessonList"
+      aria-controls="lessonList"
+    >
       <i class="bi bi-list"></i>
     </button>
-        <h3 class="col-sm-4 p-0 m-0">Lesson Title</h3>
-    </div>
-    <div class="buttons p-0 m-0">
-        <button (click)="toggle()" class="btn btn-primary">{{ buttonText }}</button>
-        <button data-bs-toggle="modal" data-bs-target="#UploadModal" class="btn btn-primary ms-4">
+    <h3 class="col-sm-4 p-0 m-0">Lesson Title</h3>
+  </div>
+  <div class="buttons p-0 m-0">
+    <button (click)="toggle()" class="btn btn-primary">{{ buttonText }}</button>
+    <button
+      data-bs-toggle="modal"
+      data-bs-target="#UploadModal"
+      class="btn btn-primary ms-4"
+    >
       Video
     </button>
-    </div>
+  </div>
 </div>
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="lessonList" aria-labelledby="lessonListLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="lessonListLabel">Lesson List</h5>
-        <button data-bs-toggle="modal" data-bs-target="#LessonModal" class="btn btn-primary ms-4">
+<div
+  class="offcanvas offcanvas-start"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="lessonList"
+  aria-labelledby="lessonListLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="lessonListLabel">Lesson List</h5>
+    <button
+      data-bs-toggle="modal"
+      data-bs-target="#LessonModal"
+      class="btn btn-primary ms-4"
+    >
       Add Lesson
     </button>
-    </div>
-    <div class="offcanvas-body p-0 mt-4">
-        <div class="list-group list-group-flush p-0 m-0">
-            <a *ngFor="let i of lessonList" (click)="changeLesson(i.id)" routerLink="./{{ i.id }}" data-bs-dismiss="offcanvas" class="list-group-item list-group-item-action text-uppercase">
-        {{ i.title }}
+  </div>
+  <div class="offcanvas-body p-0 mt-4">
+    <div class="list-group list-group-flush p-0 m-0">
+      <a
+        *ngFor="let i of lessonList"
+        (click)="changeLesson(i.Id)"
+        routerLink="./{{ i.Id }}"
+        data-bs-dismiss="offcanvas"
+        class="list-group-item list-group-item-action text-uppercase"
+      >
+        {{ i.Title }}
       </a>
-        </div>
     </div>
+  </div>
 </div>
 <router-outlet></router-outlet>
 
 <!--Video Modal Start -->
-<div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Upload Video</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form [formGroup]="uploadFrom" (ngSubmit)="onSubmit()">
-                    <h5 class="modal-title">Add Video</h5>
-                    <hr />
+<div
+  class="modal fade"
+  id="UploadModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Video</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="uploadFrom" (ngSubmit)="onSubmit()">
+          <h5 class="modal-title">Add Video</h5>
+          <hr />
 
-                    <input type="file" (change)="onFileSelected($event)" #fileUpload />
-                    <button class="btn btn-primary" type="submit">Upload</button>
-                    <br />
-                    <form formArrayName="quizList">
-                        <h5 class="modal-title">Add Quiz</h5>
-                        <ng-container *ngFor="let quizFrom of quizList.controls; let i = index">
-                            <form [formGroupName]="i" class="d-flex">
-                                <input type="text" formControlName="quizId" placeholder="quizId" class="m-2 col-sm-5" />
-                                <input type="text" formControlName="time" placeholder="time" class="m-2 col-sm-5" />
-                            </form>
-                        </ng-container>
-                        <button class="btn btn-primary" type="submit" (click)="addNewQuizField()">
+          <input type="file" (change)="onFileSelected($event)" #fileUpload />
+          <button class="btn btn-primary" type="submit">Upload</button>
+          <br />
+          <form formArrayName="quizList">
+            <h5 class="modal-title">Add Quiz</h5>
+            <ng-container
+              *ngFor="let quizFrom of quizList.controls; let i = index"
+            >
+              <form [formGroupName]="i" class="d-flex">
+                <input
+                  type="text"
+                  formControlName="quizId"
+                  placeholder="quizId"
+                  class="m-2 col-sm-5"
+                />
+                <input
+                  type="text"
+                  formControlName="time"
+                  placeholder="time"
+                  class="m-2 col-sm-5"
+                />
+              </form>
+            </ng-container>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="addNewQuizField()"
+            >
               Add
             </button>
-                    </form>
-                </form>
-            </div>
-        </div>
-        {{ quizList.value | json }}
+          </form>
+        </form>
+      </div>
     </div>
+    {{ quizList.value | json }}
+  </div>
 </div>
 
 <!-- Video Modal End -->
 <!-- Lesson Modal Start -->
-<div class="modal fade" id="LessonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form [formGroup]="lessonFrom" (ngSubmit)="onSubmitlesson()">
-                    <input type="text" placeholder="Enter Lesson Title" class="m-2 col-sm-5" formControlName="title" />
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
-            </div>
-            <div class="modal-footer"></div>
-        </div>
+<div
+  class="modal fade"
+  id="LessonModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          #closeLessonModlaBtn
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="lessonFrom" (ngSubmit)="onSubmitlesson()">
+          <input
+            type="text"
+            placeholder="Enter Lesson Title"
+            class="m-2 col-sm-5"
+            formControlName="title"
+          />
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+      <div class="modal-footer"></div>
     </div>
+  </div>
 </div>
 <!-- Lesson Modal End -->
