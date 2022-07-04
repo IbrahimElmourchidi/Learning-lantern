@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NotifySerivce } from 'src/app/shared/services/notify.service';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 
 @Component({
@@ -10,10 +12,15 @@ export class ClassInsideComponent implements OnInit {
   active = 'chat';
   appState!: AppState;
   title!: string;
-
-  constructor(private appStateService: StateService) {}
+  classId!: string;
+  constructor(
+    private appStateService: StateService,
+    private notify: NotifySerivce,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this.classId = this.route.snapshot.paramMap.get('classId') || '';
     this.appStateService.currentState.subscribe((data) => {
       this.appState = data;
       this.title = this.appState.activeRoom?.Name || 'Class Title';
@@ -37,5 +44,13 @@ export class ClassInsideComponent implements OnInit {
     root?.classList.add('light');
     localStorage.setItem('view-mode', 'light');
     this.appStateService.changeState({ dark: false });
+  }
+
+  copyClassId() {
+    navigator.clipboard.writeText(this.classId);
+    this.notify.changeNotify({
+      header: 'Class Id copied',
+      time: 3000,
+    });
   }
 }

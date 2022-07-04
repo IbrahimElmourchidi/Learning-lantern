@@ -68,9 +68,10 @@ export class ChatService {
     return this.socket.emit('getRoomList', { page });
   }
 
-  createRoom(str: string) {
+  createRoom(name: string, des: string) {
     const room: RoomI = {
-      Name: str,
+      Name: name,
+      Description: des,
       users: [],
     };
     this.socket.emit('createRoom', room);

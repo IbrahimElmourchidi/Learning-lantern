@@ -33,6 +33,12 @@
   margin: auto;
 }
 
+.attach {
+  position: relative;
+  right: 35px;
+  top: 7px;
+}
+
 @media all and (max-width: 900px) {
   .send {
     width: 94%;

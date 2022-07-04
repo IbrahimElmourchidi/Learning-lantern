@@ -115,24 +115,19 @@ export class TextLessonContainerComponent implements OnInit {
     const formData = new FormData();
     formData.append('File', file);
     formData.append('QuizList', QuizList);
+    console.log(formData.getAll('File'));
     if (this.uploadFrom.valid) {
-      this.http
-        .doPost(
-          'https://learning-lantern.azurewebsites.net/api/v1/Video',
-          formData,
-          {}
-        )
-        .subscribe(
-          (res) => {
-            console.log(res);
-            const result = res as string;
-            this.uploadedVideoId = result;
-            this.sendVideoId(result);
-          },
-          (err) => {
-            this.sendVideoId('321');
-          }
-        );
+      this.http.doPost('url', formData, {}).subscribe(
+        (res) => {
+          console.log(res);
+          const result = res as string;
+          this.uploadedVideoId = result;
+          this.sendVideoId(result);
+        },
+        (err) => {
+          this.sendVideoId('321');
+        }
+      );
     }
   }
   sendVideoId(id: string) {

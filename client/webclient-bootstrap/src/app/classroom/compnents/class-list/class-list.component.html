@@ -37,22 +37,22 @@
   </div>
   <div class="row grid w-100 align-items-center justify-content-center p-4">
     <div
-      class="card shadow-sm col-sm-4 m-4"
-      style="width: 18rem"
+      class="card shadow-sm col-sm-4 m-4 room-card"
       *ngFor="let room of appState.rooms?.items; let i = index"
     >
       <!-- <img src="..." class="card-img-top" alt="..." /> -->
-      <div class="card-body d-flex flex-column text-center">
-        <h5 class="card-title">{{ room.Name }}</h5>
-        <p class="card-text">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum,
-          culpa?
+      <div
+        class="card-body d-flex flex-column text-center d-flex flex-column justify-content-around"
+      >
+        <h5 class="card-title text-uppercase">{{ room.Name }}</h5>
+        <p class="card-text" title="{{ room.Description }}">
+          {{ room.Description | truncate: [40, "..."] }}
         </p>
         <a
           routerLink="/class/{{ room.Id }}/chat"
           class="btn btn-primary"
           (click)="setActiveRoom(i)"
-          >Go somewhere</a
+          >Enter Classroom</a
         >
       </div>
     </div>
@@ -76,6 +76,7 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          #closeCreateModalBtn
         ></button>
       </div>
       <div class="modal-body">
@@ -120,24 +121,8 @@
               </small>
             </ng-container>
           </div>
-          <div class="mb-3">
-            <label for="roomImg" class="form-label">Image:</label>
-            <input
-              class="form-control"
-              id="roomImg"
-              type="file"
-              formControlName="roomImg"
-              accept="image/*"
-            />
-            <ng-container *ngIf="roomImg.invalid && roomName.touched">
-              <small *ngIf="roomImg.errors?.['maxlength']" class="text-danger">
-                Max Length 290
-              </small>
-            </ng-container>
-          </div>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-            Create
-          </button>
+
+          <button type="submit" class="btn btn-primary">Create</button>
         </form>
       </div>
     </div>

@@ -1,4 +1,11 @@
-import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -13,6 +20,7 @@ import { ChatService } from '../../services/chat.service';
   styleUrls: ['class-list.component.scss'],
 })
 export class ClassListComponent implements OnInit, OnDestroy {
+  @ViewChild('closeCreateModalBtn') closeCreateModalBtn!: ElementRef;
   appState!: AppState;
   flag = false;
   createRoomForm!: FormGroup;
@@ -20,7 +28,6 @@ export class ClassListComponent implements OnInit, OnDestroy {
   roomName!: FormControl;
   roomDes!: FormControl;
   roomId!: FormControl;
-  roomImg!: FormControl;
   notifySerive!: Subscription;
   getRoom!: Subscription;
   newRoom!: Subscription;
@@ -59,7 +66,8 @@ export class ClassListComponent implements OnInit, OnDestroy {
         this.createRoomForm.controls[key].markAsTouched();
       });
     } else {
-      this.chatService.createRoom(this.roomName.value);
+      this.chatService.createRoom(this.roomName.value, this.roomDes.value);
+      this.closeCreateModal();
     }
   }
 
@@ -96,7 +104,6 @@ export class ClassListComponent implements OnInit, OnDestroy {
       Validators.maxLength(30),
     ]);
     this.roomDes = new FormControl('', [Validators.maxLength(290)]);
-    this.roomImg = new FormControl('', [Validators.maxLength(290)]);
     this.createForm();
   }
   setActiveRoom(index: number) {
@@ -115,5 +122,9 @@ export class ClassListComponent implements OnInit, OnDestroy {
     for (let sub of this.shouldDestroy) {
       sub.unsubscribe();
     }
+  }
+
+  closeCreateModal() {
+    this.closeCreateModalBtn.nativeElement.click();
   }
 }

@@ -14,7 +14,58 @@
     aria-label="Send Message"
     [formControl]="userMessage"
   />
+  <button
+    type="button"
+    class="btn btn-primary mx-2"
+    data-bs-toggle="modal"
+    data-bs-target="#addImageModal"
+  >
+    <i class="bi bi-paperclip"></i>
+  </button>
+
   <button class="btn btn-secondary" type="submit" (click)="sendMessage()">
     <i class="bi bi-send-fill"></i>
   </button>
 </form>
+
+<!-- add image modal start here -->
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="addImageModal"
+  tabindex="-1"
+  aria-labelledby="addImageModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addImageModalLabel">Send Image</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="Image" class="form-label">Image :</label>
+          <input type="file" class="form-control" id="Image" accept="image/*" />
+        </div>
+        <div class="mb-3">
+          <label for="yourMessage" class="form-label">Message :</label>
+          <textarea
+            type="text"
+            class="form-control"
+            id="yourMessage"
+            accept="image/*"
+          ></textarea>
+        </div>
+        <button class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- add image modal ends here -->
+</div>

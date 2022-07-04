@@ -21,6 +21,7 @@ import { OVService } from './services/ov.service';
 import { VideoComponent } from './compnents/video/videos.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JwtModule } from '@auth0/angular-jwt';
+import { TruncatePipe } from '../shared/pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     UserStatisticsComponent,
     InsideMeetingComponent,
     SafeHtmlPipe,
+    TruncatePipe,
     TextLessonContainerComponent,
     VideoComponent,
   ],

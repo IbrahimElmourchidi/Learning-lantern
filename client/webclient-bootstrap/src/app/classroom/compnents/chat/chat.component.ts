@@ -7,10 +7,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, map, Observable, startWith, tap } from 'rxjs';
 import { MessagePaginateI } from 'src/app/shared/interfaces/message.interface';
 import { RoomI } from 'src/app/shared/interfaces/room.interface';
+import { NotifySerivce } from 'src/app/shared/services/notify.service';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { ChatService } from '../../services/chat.service';
 
@@ -21,7 +22,9 @@ import { ChatService } from '../../services/chat.service';
 })
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
+  @ViewChild('closeImageAddModalBtn') closeImageAddModalBtn!: ElementRef;
   chatRoom!: RoomI;
+
   messages$!: Observable<MessagePaginateI>;
   appState!: AppState;
   userMessage: FormControl = new FormControl(null, [Validators.required]);
@@ -31,6 +34,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private chatService: ChatService,
     private appStateService: StateService,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
@@ -92,4 +96,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
+
+  closeImageAddModal() {}
 }
