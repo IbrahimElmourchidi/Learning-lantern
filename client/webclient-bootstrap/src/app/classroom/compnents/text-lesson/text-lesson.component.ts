@@ -44,6 +44,14 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
         console.log(this.appState.videoToDelete);
         this.deleteVideoFrame(data.videoToDelete || '');
       }
+      if(!this.appState.editorOn){
+        if(this.firstTime){
+          this.firstTime=false;
+        }
+        else{
+          this.getLessonContent(data);
+        }
+      }
     });
   }
   ngAfterViewInit(): void {
@@ -57,6 +65,7 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     });
     //  this.get_editor_content();
   }
+  firstTime=true;
   editorHidden = true;
   lessonHTML = ``;
   tinymceConfig = {
@@ -83,10 +92,6 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     suffix: '.min',
   };
 
-  get_editor_content() {
-    console.log(this.htmlValue);
-  }
-
 SetlessonContent(){
   return this.http.doGet(``,{}).subscribe(
     (res) =>{
@@ -99,21 +104,27 @@ SetlessonContent(){
     
   });
 }
-  myEditor: any;
 
   getLessonContent(data: AppState) {
-    let body = {
-      htmlValue: String,
-    };
-    return this.http.doPost(``, body, {}).subscribe((res) => {
-      let result = res as {
-        id: string;
-        resHtml: string;
-        title: string;
+    if(this.firstTime){
+      return
+    }
+      let body = {
+        id:String,
+        htmlValue: String,
+        title:String,
       };
-      console.log(res);
-    });
-  }
+      return this.http.doPost(``, body, {}).subscribe( (res) => {
+        console.log(res);
+        const result = res as lessonList;
+      },
+      (err) => {
+        console.log(err.error);
+      }
+    );
+
+}
+
 
 
 
