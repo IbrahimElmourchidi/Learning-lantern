@@ -1,12 +1,27 @@
-<ul class="messages-container d-flex flex-column m-0" #scrollMe>
-  <li class="other" *ngFor="let message of (messages$ | async)?.items">
+<ul class="messages-container d-flex flex-column m-0 p-4" #scrollMe>
+  <li
+    *ngFor="let message of (messages$ | async)?.items"
+    [class.self]="message.user?.Id === userId"
+    [class.other]="message.user?.Id !== userId"
+  >
     <small>{{ message.user?.FirstName }}</small>
-    <p>
+    <br />
+    <button class="btn btn-secondary" *ngIf="message.file">
+      <a
+        *ngIf="message.file"
+        href="http://localhost:3005/file/{{ message.file }}"
+        target="_blank"
+        style="color: var(--app-text-color); text-decoration: none"
+      >
+        {{ message.file | truncate: [10, "..."] }}
+      </a>
+    </button>
+    <p [style.text-align]="message.user?.Id === userId ? 'left' : 'right'">
       {{ message.text }}
     </p>
   </li>
 </ul>
-<form class="d-flex mx-3 my-2 send" [formGroup]="sendMessageFrom">
+<form class="d-flex mx-3 my-2 send" [formGroup]="sendMessageForm">
   <input
     class="form-control me-2"
     type="text-area"
@@ -40,29 +55,43 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addImageModalLabel">Send Image</h5>
+        <h5 class="modal-title" id="addImageModalLabel">Send File</h5>
         <button
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          #closeModalBtn
         ></button>
       </div>
       <div class="modal-body">
-        <div class="mb-3">
-          <label for="Image" class="form-label">Image :</label>
-          <input type="file" class="form-control" id="Image" accept="image/*" />
-        </div>
-        <div class="mb-3">
-          <label for="yourMessage" class="form-label">Message :</label>
-          <textarea
-            type="text"
-            class="form-control"
-            id="yourMessage"
-            accept="image/*"
-          ></textarea>
-        </div>
-        <button class="btn btn-primary">Send</button>
+        <form [formGroup]="sendMessageForm" (ngSubmit)="sendMessage()">
+          <div class="mb-3">
+            <label for="Image" class="form-label">Image :</label>
+            <input
+              type="file"
+              [formControl]="fileField"
+              (change)="onFileSelected($event)"
+              class="form-control"
+              id="Image"
+            />
+            <ng-container *ngIf="fileField.invalid && fileField.touched">
+              <small *ngIf="fileField.errors?.['required']" class="text-danger">
+                This Field is Required
+              </small>
+            </ng-container>
+          </div>
+          <div class="mb-3">
+            <label for="yourMessage" class="form-label">Message :</label>
+            <textarea
+              type="text"
+              class="form-control"
+              [formControl]="userMessage"
+              id="yourMessage"
+            ></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Send</button>
+        </form>
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ export interface RoomI {
   Id?: string;
   Name: string;
   Description: string;
+
   users: UserI[];
 }
 

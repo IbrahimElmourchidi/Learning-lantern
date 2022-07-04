@@ -18,6 +18,16 @@ export class Message {
   @Column()
   text: string;
 
+  @Column({
+    nullable: true,
+  })
+  file: string;
+
+  @Column({
+    nullable: true,
+  })
+  fileType: string;
+
   @ManyToOne(() => User, (user) => user.messages)
   @JoinColumn()
   user: User;
