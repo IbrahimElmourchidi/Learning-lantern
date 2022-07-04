@@ -30,11 +30,11 @@ export interface QuizArrayI {
   styleUrls: ['./video.component.scss'],
 })
 export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
-  vidoeId: string = '123';
+  vidoeId: string = '';
   player!: videojs.Player;
   playing = false;
   interval: any;
-  source: string = 'https://vjs.zencdn.net/v/oceans.mp4';
+  source: string = ' ';
   @ViewChild('target', { static: true }) target!: ElementRef;
   currentIndex = 0;
   quizList: QuizArrayI[] = [
@@ -130,27 +130,6 @@ export class VideoComponent implements OnDestroy, AfterViewInit, OnInit {
     }
     clearInterval(this.interval);
   }
-
-  ////http func
-  // getVideo() {
-  //   let body = {
-  //     autoplay: Boolean,
-  //     sources:[] {
-  //       src: String,
-  //       type: String,
-  //     }[],
-  // };
-  // return this.http.doPost(``, body, {}).subscribe((res) => {
-  //   let result = res as {
-  //     id: number;
-  //     resHtml: string;
-  //     title: string;
-  //     classroomId: string;
-  //   };
-  //   console.log(res);
-  // });
-  // }
-
   deleteVideo() {
     console.log('delete video with id', this.vidoeId);
     this.appStateService.changeState({

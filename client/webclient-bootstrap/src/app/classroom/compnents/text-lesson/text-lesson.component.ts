@@ -9,13 +9,11 @@ import { ActivatedRoute } from '@angular/router';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import tinymce from 'tinymce';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { environment as env } from 'src/environments/environment';
 
 export interface lessonList {
-  id: number;
+  id: string;
   htmlValue: string;
   title: string;
-  classroomId: string;
 }
 @Component({
   selector: 'app-textlesson',
@@ -60,14 +58,7 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     //  this.get_editor_content();
   }
   editorHidden = true;
-  lessonHTML = `    
-  <h1  id='mustRemove' style="text-align: center;"><strong>hello world</strong></h1>
-<p><strong>Chapter1: hello world</strong></p>
-<p><em>Hello world is our first Lesson</em></p>
-<p>&nbsp;</p>
-<h1 style="text-align: left;"><strong>&nbsp;</strong></h1>
-  
-  `;
+  lessonHTML = ``;
   tinymceConfig = {
     menubar: 'edit view  format tools table help',
     plugins: [
@@ -96,24 +87,35 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     console.log(this.htmlValue);
   }
 
+SetlessonContent(){
+  return this.http.doGet(``,{}).subscribe(
+    (res) =>{
+      console.log(res);
+      const result=res as string;
+      this.lessonHTML=result;
+  },
+  (err) =>{
+    console.log(err.error);
+    
+  });
+}
   myEditor: any;
 
   getLessonContent(data: AppState) {
     let body = {
       htmlValue: String,
-      title: String,
-      classroomId: String,
     };
     return this.http.doPost(``, body, {}).subscribe((res) => {
       let result = res as {
         id: string;
         resHtml: string;
         title: string;
-        classroomId: string;
       };
       console.log(res);
     });
   }
+
+
 
   addVideo(id: string) {
     console.log('lets add new video ', id);
@@ -121,7 +123,7 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     editor.insertContent(
       // TODO: change the 123 to the video id
 
-      ` <div id="123">
+      ` <div id="${id}">
       <iframe style="width:90%; height:380px; border:none"  src="/video/${id}" title="W3Schools Free Online Web Tutorials"></iframe>
       </div> `
     );
@@ -129,7 +131,17 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
       newVideoId: '',
     });
   }
-
+deleteVideo(){
+  return this.http.doDelete(``,{}).subscribe(
+    (res) => {
+      const result = res as string;
+      this.videoToInsert=result;
+    },
+    (err) => {
+      this.deleteVideoFrame('12345');
+    }
+  );
+}
   deleteVideoFrame(id: string) {
     document.querySelector(`#${id}`)?.remove();
     this.appStateService.changeState({

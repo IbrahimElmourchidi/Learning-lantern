@@ -53,6 +53,7 @@ export class TextLessonContainerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.onSubmitlesson();
     this.router.navigate([this.lessonList[0].id], {
       relativeTo: this.activatedRoute,
     });
@@ -73,21 +74,19 @@ export class TextLessonContainerComponent implements OnInit {
   }
 
 // Function get lesson content
-// getLessonContent(data: AppState) {
-//   let body = {
-//   htmlValue: '',
-//   title: this.title,
-//   classroomId:''
-// };
-// return this.http.doPost(``, body, {}).subscribe((res) => {
-//   let result = res as {
-//     htmlValue: string;
-//     title: string;
-//     classroomId: string;
-//   };
-//   console.log(res);
-// });
-// }
+getLessonContent(data: AppState) {
+  let body = {
+  htmlValue: '',
+  title: this.title,
+};
+return this.http.doPost(``, body, {}).subscribe((res) => {
+  let result = res as {
+    htmlValue: string;
+    title: string;
+  };
+  console.log(res);
+});
+}
 
   //Video Post
   onSubmit() {
@@ -97,9 +96,8 @@ export class TextLessonContainerComponent implements OnInit {
     const formData = new FormData();
     formData.append('File', file);
     formData.append('quizList', QuizList);
-
     if (this.uploadFrom.valid) {
-      this.http.doPost('url', formData, {}).subscribe(
+      this.http.doPost('https://learning-lantern.azurewebsites.net/api/v1/Video', formData, {}).subscribe(
         (res) => {
           console.log(res);
           const result = res as string;
