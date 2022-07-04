@@ -6,7 +6,6 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
 import { environment as env } from 'src/environments/environment';
 
-
 export interface LessonInList {
   id: string;
   title: string;
@@ -26,7 +25,7 @@ export class TextLessonContainerComponent implements OnInit {
   lessonList: LessonInList[] = [];
 
   uploadFrom!: FormGroup;
-  File!: FormControl;
+  File!: any;
   quizList = new FormArray([]);
 
   lessonFrom!: FormGroup;
@@ -96,24 +95,28 @@ export class TextLessonContainerComponent implements OnInit {
   //Video Post
   onSubmit() {
     console.log(this.File.value);
-    const file = this.File.value;
     const QuizList = this.quizList.value;
     const formData = new FormData();
-    formData.append('File', file);
+    formData.append('File', this.File);
     formData.append('QuizList', QuizList);
-    console.log(formData.getAll('File'));
     if (this.uploadFrom.valid) {
-      this.http.doPost('url', formData, {}).subscribe(
-        (res) => {
-          console.log(res);
-          const result = res as string;
-          this.uploadedVideoId = result;
-          this.sendVideoId(result);
-        },
-        (err) => {
-          this.sendVideoId('321');
-        }
-      );
+      this.http
+        .doPost(
+          'https://learning-lantern.azurewebsites.net/api/v1/Video',
+          formData,
+          {}
+        )
+        .subscribe(
+          (res) => {
+            console.log(res);
+            const result = res as string;
+            this.uploadedVideoId = result;
+            this.sendVideoId(result);
+          },
+          (err) => {
+            this.sendVideoId('321');
+          }
+        );
     }
   }
   sendVideoId(id: string) {
@@ -143,5 +146,11 @@ export class TextLessonContainerComponent implements OnInit {
     this.appStateService.changeState({
       activeLesson: id,
     });
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    this.File = file;
+    console.log('file was set');
   }
 }

@@ -93,13 +93,8 @@
         <form [formGroup]="uploadFrom" (ngSubmit)="onSubmit()">
           <h5 class="modal-title">Add Video</h5>
           <hr />
-          <input
-            type="file"
-            name="video"
-            formControlName="File"
-            id="video"
-            onchange="console.log(event.target.files)"
-          />
+
+          <input type="file" (change)="onFileSelected($event)" #fileUpload />
           <button class="btn btn-primary" type="submit">Upload</button>
           <br />
           <form formArrayName="quizList">
