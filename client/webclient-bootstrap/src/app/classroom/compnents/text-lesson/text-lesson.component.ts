@@ -27,6 +27,7 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
   videoToInsert: string = '';
   htmlValue: any;
   lessonId: any;
+  title:string = '';
   constructor(
     private appStateService: StateService,
     private route: ActivatedRoute,
@@ -92,7 +93,7 @@ export class TextLessonComponent implements OnInit, AfterViewInit {
     suffix: '.min',
   };
 
-SetlessonContent(){
+SetlessonContent(data: AppState){
   return this.http.doGet(``,{}).subscribe(
     (res) =>{
       console.log(res);
@@ -110,13 +111,14 @@ SetlessonContent(){
       return
     }
       let body = {
-        id:String,
-        htmlValue: String,
-        title:String,
+        id:this.lessonId,
+        htmlValue: this.lessonHTML,
+        title:this.title,
       };
-      return this.http.doPost(``, body, {}).subscribe( (res) => {
+      return this.http.doPost('', body, {}).subscribe( (res) => {
         console.log(res);
-        const result = res as lessonList;
+        const result = res as string;
+        this.lessonHTML=result;
       },
       (err) => {
         console.log(err.error);
@@ -124,9 +126,6 @@ SetlessonContent(){
     );
 
 }
-
-
-
 
   addVideo(id: string) {
     console.log('lets add new video ', id);
@@ -143,7 +142,7 @@ SetlessonContent(){
     });
   }
 deleteVideo(){
-  return this.http.doDelete(``,{}).subscribe(
+  return this.http.doDelete('',{}).subscribe(
     (res) => {
       const result = res as string;
       this.videoToInsert=result;
