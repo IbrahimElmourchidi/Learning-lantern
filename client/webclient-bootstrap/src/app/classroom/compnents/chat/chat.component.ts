@@ -11,9 +11,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, map, Observable, startWith, tap } from 'rxjs';
 import { MessagePaginateI } from 'src/app/shared/interfaces/message.interface';
 import { RoomI } from 'src/app/shared/interfaces/room.interface';
-import { NotifySerivce } from 'src/app/shared/services/notify.service';
+import { HttpService } from 'src/app/shared/services/http.service';
 import { AppState, StateService } from 'src/app/shared/services/state.service';
 import { ChatService } from '../../services/chat.service';
+import { environment as env } from 'src/environments/environment';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+export interface FileResponseI {
+  filePath: string;
+  type: string;
+}
 
 @Component({
   selector: 'app-chat',
@@ -22,23 +29,33 @@ import { ChatService } from '../../services/chat.service';
 })
 export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
-  @ViewChild('closeImageAddModalBtn') closeImageAddModalBtn!: ElementRef;
+  @ViewChild('closeModalBtn') closeModalBtn!: ElementRef;
   chatRoom!: RoomI;
-
+  sending = false;
+  userId!: string;
+  File!: any;
+  fileField: FormControl = new FormControl(null, [Validators.required]);
   messages$!: Observable<MessagePaginateI>;
   appState!: AppState;
-  userMessage: FormControl = new FormControl(null, [Validators.required]);
-  sendMessageFrom: FormGroup = new FormGroup({
+  userMessage: FormControl = new FormControl(null);
+  sendMessageForm: FormGroup = new FormGroup({
     userMessage: this.userMessage,
+    fileField: this.fileField,
   });
+
   constructor(
     private chatService: ChatService,
     private appStateService: StateService,
+    private router: Router,
     private route: ActivatedRoute,
-    private router: Router
+    private http: HttpService,
+    private jwt: JwtHelperService
   ) {}
 
   ngOnInit(): void {
+    this.userId =
+      localStorage.getItem('userId') ||
+      this.jwt.decodeToken(this.jwt.tokenGetter()).sub;
     this.appStateService.currentState.subscribe((data) => {
       this.initiateRoom(data);
     });
@@ -66,10 +83,38 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   sendMessage() {
-    this.chatService.sendMessage({
-      room: this.chatRoom,
-      text: this.userMessage.value,
+    this.sending = true;
+    Object.keys(this.sendMessageForm.controls).forEach((key) => {
+      this.sendMessageForm.controls[key].markAsDirty();
+      this.sendMessageForm.controls[key].markAsTouched();
     });
+    if (this.File) {
+      let fileMessage = this.userMessage.value || '';
+      const formData = new FormData();
+      formData.append('file', this.File);
+      this.closeModalBtn.nativeElement.click();
+      this.http.doPost(env.chatRoot + `/upload`, formData, {}).subscribe(
+        (res) => {
+          const result = res as FileResponseI;
+          console.log(result);
+          this.chatService.sendMessage({
+            room: this.chatRoom,
+            text: fileMessage,
+            file: result.filePath,
+            fileType: result.type,
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else if (this.userMessage.value) {
+      this.chatService.sendMessage({
+        room: this.chatRoom,
+        text: this.userMessage.value,
+      });
+    }
+    this.File = null;
     this.userMessage.reset();
   }
 
@@ -98,4 +143,10 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {}
 
   closeImageAddModal() {}
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    this.File = file;
+    console.log('file was set');
+  }
 }

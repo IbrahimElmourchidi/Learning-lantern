@@ -77,7 +77,6 @@ export class ChatGateway
       } else {
         // add user data to the socket object
         socket.data.user = user;
-        console.log(user);
 
         // save connection to database
         await this.connectedUserService.create({
@@ -160,6 +159,7 @@ export class ChatGateway
         page: 1,
         limit: 10,
       });
+      console.log(messages);
       socket.emit('messages', messages);
     }
   }
@@ -180,6 +180,7 @@ export class ChatGateway
 
   @SubscribeMessage('addMessage')
   async addMessage(socket: Socket, message: MessageI) {
+    console.log(message);
     const createMessage: MessageI = await this.messagesService.create(
       message,
       socket.data.user,

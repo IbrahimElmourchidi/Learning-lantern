@@ -4,5 +4,7 @@ import { UserI } from 'src/user/model/interfaces/user.interface';
 export interface RoomI {
   Id: string;
   Name: string;
+  Description: string;
+
   users: UserI[];
 }

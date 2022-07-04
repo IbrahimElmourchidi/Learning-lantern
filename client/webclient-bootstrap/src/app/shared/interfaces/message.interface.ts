@@ -5,6 +5,8 @@ import { UserI } from './user.interface';
 export interface MessageI {
   Id?: string;
   text: string;
+  file?: string;
+  fileType?: string;
   user?: UserI;
   room: RoomI;
   created_at?: Date;

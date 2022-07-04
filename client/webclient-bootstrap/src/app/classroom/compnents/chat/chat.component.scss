@@ -5,6 +5,7 @@
   margin: 0.75rem 0rem 0.75rem 3rem;
   align-self: end;
   padding: 0.5em;
+  text-align: right;
   border-radius: 8px;
   max-width: 500px;
   color: var(--app-contrast-text);
@@ -12,6 +13,7 @@
 
 .other {
   background-color: var(--app-card-color);
+  text-align: left;
   display: inline-block;
   list-style: none;
   max-width: 500px;

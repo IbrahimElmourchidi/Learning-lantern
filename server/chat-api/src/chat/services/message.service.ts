@@ -18,6 +18,7 @@ export class MessageService {
   ) {}
 
   async create(message: MessageI, user: UserI) {
+    console.log('message to create', message);
     message.user = user;
     try {
       return this.messageRepo.save(this.messageRepo.create(message));
